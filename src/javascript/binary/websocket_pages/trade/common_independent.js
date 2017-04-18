@@ -33,7 +33,11 @@ const countDecimalPlaces = (num) => {
 const trading_times = {};
 
 const processTradingTimesAnswer = (response) => {
-    if (!trading_times.hasOwnProperty(response.echo_req.trading_times) && response.hasOwnProperty('trading_times') && response.trading_times.hasOwnProperty('markets')) {
+    if (
+        !trading_times.hasOwnProperty(response.echo_req.trading_times) &&
+        response.hasOwnProperty('trading_times') &&
+        response.trading_times.hasOwnProperty('markets')
+    ) {
         for (let i = 0; i < response.trading_times.markets.length; i++) {
             const submarkets = response.trading_times.markets[i].submarkets;
             if (submarkets) {
@@ -42,10 +46,17 @@ const processTradingTimesAnswer = (response) => {
                     if (symbols) {
                         for (let k = 0; k < symbols.length; k++) {
                             const symbol = symbols[k];
-                            if (!trading_times[response.echo_req.trading_times]) {
-                                trading_times[response.echo_req.trading_times] = {};
+                            if (
+                                !trading_times[response.echo_req.trading_times]
+                            ) {
+                                trading_times[
+                                    response.echo_req.trading_times
+                                ] = {};
                             }
-                            trading_times[response.echo_req.trading_times][symbol.symbol] = symbol.times.close;
+                            trading_times[response.echo_req.trading_times][
+                                symbol.symbol
+                            ] =
+                                symbol.times.close;
                         }
                     }
                 }

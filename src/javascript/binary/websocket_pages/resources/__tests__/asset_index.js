@@ -17,25 +17,32 @@ describe('Asset Index', () => {
     });
 
     it('Should have all functions that are being tested', () => {
-        expect(asset_index).to.have.all.of.keys(['getAssetIndexData', 'getMarketColumns']);
+        expect(asset_index).to.have.all.of.keys([
+            'getAssetIndexData',
+            'getMarketColumns',
+        ]);
     });
 
     it('Should getAssetIndexData() have all expected data', () => {
-        const asset_index_data = asset_index.getAssetIndexData(asset_index_res, active_symbols_res);
+        const asset_index_data = asset_index.getAssetIndexData(
+            asset_index_res,
+            active_symbols_res,
+        );
         expect(asset_index_data).to.be.an('array');
         asset_index_data.forEach((asset_index_item) => {
-            expect(asset_index_item).to.be.an('array')
-                .to.have.lengthOf(5);
+            expect(asset_index_item).to.be.an('array').to.have.lengthOf(5);
             expect(asset_index_item[0]).to.be.a('string');
             expect(asset_index_item[1]).to.be.a('string');
             expect(asset_index_item[2]).to.be.an('array');
-            expect(asset_index_item[3]).to.be.an('object')
+            expect(asset_index_item[3]).to.be
+                .an('object')
                 .and.to.have.property('market')
                 .that.is.a('string');
-            expect(asset_index_item[3])
-                .and.to.have.property('submarket')
+            expect(asset_index_item[3]).and.to.have
+                .property('submarket')
                 .that.is.a('string');
-            expect(asset_index_item[3]).to.have.property('submarket')
+            expect(asset_index_item[3]).to.have
+                .property('submarket')
                 .that.is.a('string');
             expect(asset_index_item[4]).to.be.an('object');
         });
@@ -45,9 +52,12 @@ describe('Asset Index', () => {
         const market_columns = asset_index.getMarketColumns();
         expect(market_columns).to.be.an('Object');
         Object.keys(market_columns).forEach((market) => {
-            expect(market_columns[market]).to.have.property('columns')
+            expect(market_columns[market]).to.have
+                .property('columns')
                 .that.is.an('array');
-            expect(market_columns[market].columns.length).to.equal(market_columns[market].header.length);
+            expect(market_columns[market].columns.length).to.equal(
+                market_columns[market].header.length,
+            );
         });
     });
 });

@@ -1,17 +1,17 @@
-const TradingAnalysis   = require('./analysis');
-const commonTrading     = require('./common');
+const TradingAnalysis = require('./analysis');
+const commonTrading = require('./common');
 const chartFrameCleanup = require('./charts/chart_frame').chartFrameCleanup;
 const displayCurrencies = require('./currency');
-const Defaults          = require('./defaults');
-const TradingEvents     = require('./event');
-const Price             = require('./price');
-const Process           = require('./process');
-const ViewPopup         = require('../user/view_popup/view_popup');
-const BinaryPjax        = require('../../base/binary_pjax');
-const localize          = require('../../base/localize').localize;
-const State             = require('../../base/storage').State;
-const jpClient          = require('../../common_functions/country_base').jpClient;
-const Guide             = require('../../common_functions/guide');
+const Defaults = require('./defaults');
+const TradingEvents = require('./event');
+const Price = require('./price');
+const Process = require('./process');
+const ViewPopup = require('../user/view_popup/view_popup');
+const BinaryPjax = require('../../base/binary_pjax');
+const localize = require('../../base/localize').localize;
+const State = require('../../base/storage').State;
+const jpClient = require('../../common_functions/country_base').jpClient;
+const Guide = require('../../common_functions/guide');
 
 const TradePage = (() => {
     'use strict';

@@ -1,6 +1,6 @@
 const urlForStatic = require('../base/url').urlForStatic;
-const loadCSS      = require('../../lib/loadCSS').loadCSS;
-const loadJS       = require('../../lib/loadJS').loadJS;
+const loadCSS = require('../../lib/loadCSS').loadCSS;
+const loadJS = require('../../lib/loadJS').loadJS;
 
 const Contact = (() => {
     'use strict';
@@ -13,14 +13,20 @@ const Contact = (() => {
     const displayCsContacts = () => {
         $('.contact-content').on('change', '#cs_telephone_number', function() {
             const val = $(this).val().split(',');
-            $('#display_cs_telephone').html(val[0] + (val.length > 1 ? `<br />${val[1]}` : ''));
+            $('#display_cs_telephone').html(
+                val[0] + (val.length > 1 ? `<br />${val[1]}` : ''),
+            );
         });
     };
 
     const showLiveChatIcon = () => {
         if (typeof DESK === 'undefined') {
-            loadCSS('https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_191.cssgz?1367387331');
-            loadJS('https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_libraries_191.jsgz?1367387332');
+            loadCSS(
+                'https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_191.cssgz?1367387331',
+            );
+            loadJS(
+                'https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_libraries_191.jsgz?1367387332',
+            );
         }
 
         const desk_load = setInterval(() => {
@@ -48,37 +54,39 @@ const Contact = (() => {
             },
             fields: {
                 ticket: {
-                        // desc: &#x27;&#x27;,
-                        // labels_new: &#x27;&#x27;,
-                        // priority: &#x27;&#x27;,
-                        // subject: &#x27;&#x27;,
-                        // custom_loginid: &#x27;&#x27;
+                    // desc: &#x27;&#x27;,
+                    // labels_new: &#x27;&#x27;,
+                    // priority: &#x27;&#x27;,
+                    // subject: &#x27;&#x27;,
+                    // custom_loginid: &#x27;&#x27;
                 },
                 interaction: {
-                        // email: &#x27;&#x27;,
-                        // name: &#x27;&#x27;
+                    // email: &#x27;&#x27;,
+                    // name: &#x27;&#x27;
                 },
                 chat: {
-                        // subject: ''
+                    // subject: ''
                 },
                 customer: {
-                        // company: &#x27;&#x27;,
-                        // desc: &#x27;&#x27;,
-                        // first_name: &#x27;&#x27;,
-                        // last_name: &#x27;&#x27;,
-                        // locale_code: &#x27;&#x27;,
-                        // title: &#x27;&#x27;,
-                        // custom_loginid: &#x27;&#x27;
+                    // company: &#x27;&#x27;,
+                    // desc: &#x27;&#x27;,
+                    // first_name: &#x27;&#x27;,
+                    // last_name: &#x27;&#x27;,
+                    // locale_code: &#x27;&#x27;,
+                    // title: &#x27;&#x27;,
+                    // custom_loginid: &#x27;&#x27;
                 },
             },
         }).render();
     };
 
     const changeChatIcon = () => {
-      // desk.com change icon - crude way
+        // desk.com change icon - crude way
         if ($('#live-chat-icon').length > 0) {
             let timer = null;
-            const image_url = urlForStatic('images/pages/contact/chat-icon.svg');
+            const image_url = urlForStatic(
+                'images/pages/contact/chat-icon.svg',
+            );
             const updateIcon = () => {
                 const desk_widget = $('.a-desk-widget');
                 const image_str = desk_widget.css('background-image');

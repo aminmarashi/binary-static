@@ -1,7 +1,7 @@
 const getLanguage = require('../../../base/language').get;
-const localize    = require('../../../base/localize').localize;
-const Url         = require('../../../base/url');
-const jpClient    = require('../../../common_functions/country_base').jpClient;
+const localize = require('../../../base/localize').localize;
+const Url = require('../../../base/url');
+const jpClient = require('../../../common_functions/country_base').jpClient;
 
 const ChartFrame = (() => {
     const showHighchart = () => {
@@ -10,7 +10,9 @@ const ChartFrame = (() => {
         } else {
             chartFrameCleanup();
             $('#trade_live_chart').hide();
-            $('#chart-error').text(localize('Chart is not available for this underlying.')).show();
+            $('#chart-error')
+                .text(localize('Chart is not available for this underlying.'))
+                .show();
         }
     };
 
@@ -26,8 +28,12 @@ const ChartFrame = (() => {
 
     const chartFrameSource = () => {
         const new_underlying = document.getElementById('underlying').value;
-        const chart_source   = $('#chart_frame').attr('src');
-        if ($('#tab_graph').hasClass('active') && (Url.paramsHash(chart_source).instrument !== new_underlying || /^(|about:blank)$/.test(chart_source))) {
+        const chart_source = $('#chart_frame').attr('src');
+        if (
+            $('#tab_graph').hasClass('active') &&
+            (Url.paramsHash(chart_source).instrument !== new_underlying ||
+                /^(|about:blank)$/.test(chart_source))
+        ) {
             chartFrameCleanup();
             setChartSource();
         }
@@ -37,7 +43,9 @@ const ChartFrame = (() => {
 
     const setChartSource = () => {
         const is_ja = !!jpClient();
-        document.getElementById('chart_frame').src = `https://webtrader.binary.com?affiliates=true&instrument=${document.getElementById('underlying').value}&timePeriod=1t&gtm=true&lang=${getLanguage().toLowerCase()}&hideOverlay=${is_ja}&hideShare=${is_ja}&timezone=GMT+${(is_ja ? '9' : '0')}`;
+        document.getElementById(
+            'chart_frame',
+        ).src = `https://webtrader.binary.com?affiliates=true&instrument=${document.getElementById('underlying').value}&timePeriod=1t&gtm=true&lang=${getLanguage().toLowerCase()}&hideOverlay=${is_ja}&hideShare=${is_ja}&timezone=GMT+${is_ja ? '9' : '0'}`;
     };
 
     return {

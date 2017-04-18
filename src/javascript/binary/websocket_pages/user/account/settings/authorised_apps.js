@@ -1,6 +1,6 @@
 const ApplicationsInit = require('./authorised_apps/authorised_apps.init');
-const BinaryPjax       = require('../../../../base/binary_pjax');
-const jpClient         = require('../../../../common_functions/country_base').jpClient;
+const BinaryPjax = require('../../../../base/binary_pjax');
+const jpClient = require('../../../../common_functions/country_base').jpClient;
 
 const AuthorisedApps = (() => {
     const onLoad = () => {

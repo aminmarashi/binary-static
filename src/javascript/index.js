@@ -13,7 +13,9 @@ require('promise-polyfill');
 exportAllFunctions(require('./binary/websocket_pages/socket'));
 
 // created for handling global onclick
-exportAllFunctions(require('./binary/common_functions/attach_dom/handle_click'));
+exportAllFunctions(
+    require('./binary/common_functions/attach_dom/handle_click'),
+);
 // used by gtm to update page after a new release
 exportAllFunctions(require('./binary/common_functions/check_new_release'));
 

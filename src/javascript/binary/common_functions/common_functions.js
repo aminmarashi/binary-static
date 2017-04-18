@@ -1,11 +1,10 @@
 const Cookies = require('../../lib/js-cookie');
 
-const emailRot13 = str => (
+const emailRot13 = str =>
     str.replace(/[a-zA-Z]/g, (c) => {
         const c2 = c.charCodeAt(0) + 13;
         return String.fromCharCode((c <= 'Z' ? 90 : 122) >= c2 ? c2 : c2 - 26);
-    })
-);
+    });
 
 // hide and show hedging value if trading purpose is set to hedging
 const detectHedging = ($purpose, $hedging) => {
@@ -21,7 +20,12 @@ const detectHedging = ($purpose, $hedging) => {
 const jqueryuiTabsToDropdown = ($container) => {
     const $ddl = $('<select/>');
     $container.find('li a').each(function() {
-        $ddl.append($('<option/>', { text: $(this).text(), value: $(this).attr('href') }));
+        $ddl.append(
+            $('<option/>', {
+                text : $(this).text(),
+                value: $(this).attr('href'),
+            }),
+        );
     });
     $ddl.change(function() {
         $container.find(`li a[href="${$(this).val()}"]`).click();
@@ -64,7 +68,8 @@ const makeOption = (text, value, disabled, el_class) => {
  *
  * alternative to jquery $('#id').is(':visible')
  */
-const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
+const isVisible = elem =>
+    !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 /*
  * function to check if browser supports the type date/time
@@ -74,7 +79,7 @@ const checkInput = (type, wrong_val) => {
     const input = document.createElement('input');
     input.setAttribute('type', type);
     input.setAttribute('value', wrong_val);
-    return (input.value !== wrong_val);
+    return input.value !== wrong_val;
 };
 
 /*
@@ -91,9 +96,11 @@ const dateValueChanged = (element, type) => {
     return true;
 };
 
-const selectorExists = element => (typeof (element) !== 'undefined' && element !== null);
+const selectorExists = element =>
+    typeof element !== 'undefined' && element !== null;
 
-const getSetElementValue = (element, text, type) => { // eslint-disable-line consistent-return
+// eslint-disable-next-line consistent-return
+const getSetElementValue = (element, text, type) => {
     if (selectorExists(element)) {
         if (typeof text === 'undefined') return element[type];
         // else
@@ -112,6 +119,8 @@ module.exports = {
     checkInput            : checkInput,
     dateValueChanged      : dateValueChanged,
     selectorExists        : selectorExists,
-    elementTextContent    : (element, text) => getSetElementValue(element, text, 'textContent'),
-    elementInnerHtml      : (element, text) => getSetElementValue(element, text, 'innerHTML'),
+    elementTextContent    : (element, text) =>
+        getSetElementValue(element, text, 'textContent'),
+    elementInnerHtml: (element, text) =>
+        getSetElementValue(element, text, 'innerHTML'),
 };

@@ -54,12 +54,19 @@ const Platforms = (() => {
 
     const getHash = () => {
         const hash = window.location.hash;
-        return hash && $.inArray(hash.substring(1), sections) !== -1 ? hash : '#trading-platforms';
+        return hash && $.inArray(hash.substring(1), sections) !== -1
+            ? hash
+            : '#trading-platforms';
     };
 
     const showSelectedDiv = () => {
-        const $sections_with_hash = $(`.sections[id="${getHash().substring(1)}"]`);
-        if ($sections_with_hash.is(':visible') && $('.sections:visible').length === 1) {
+        const $sections_with_hash = $(
+            `.sections[id="${getHash().substring(1)}"]`,
+        );
+        if (
+            $sections_with_hash.is(':visible') &&
+            $('.sections:visible').length === 1
+        ) {
             return;
         }
         $('.sections').addClass('invisible');

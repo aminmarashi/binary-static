@@ -1,4 +1,4 @@
-const expect  = require('chai').expect;
+const expect = require('chai').expect;
 const utility = require('../utility');
 
 describe('template', () => {
@@ -9,7 +9,9 @@ describe('template', () => {
     });
 
     it('does not replace twice', () => {
-        expect(utility.template('[_1] [_2]', ['[_2]', 'abc'])).to.eq('[_2] abc');
+        expect(utility.template('[_1] [_2]', ['[_2]', 'abc'])).to.eq(
+            '[_2] abc',
+        );
     });
 });
 

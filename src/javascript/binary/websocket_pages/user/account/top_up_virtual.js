@@ -1,4 +1,4 @@
-const Client   = require('../../../base/client');
+const Client = require('../../../base/client');
 const localize = require('../../../base/localize').localize;
 
 const TopUpVirtual = (() => {
@@ -21,12 +21,16 @@ const TopUpVirtual = (() => {
                 showMessage(localize(response.error.message), false);
             } else {
                 showMessage(
-                    localize('[_1] [_2] has been credited to your Virtual money account [_3]', [
-                        response.topup_virtual.currency,
-                        response.topup_virtual.amount,
-                        Client.get('loginid'),
-                    ]),
-                    true);
+                    localize(
+                        '[_1] [_2] has been credited to your Virtual money account [_3]',
+                        [
+                            response.topup_virtual.currency,
+                            response.topup_virtual.amount,
+                            Client.get('loginid'),
+                        ],
+                    ),
+                    true,
+                );
             }
             $('.barspinner').addClass(hidden_class);
         });

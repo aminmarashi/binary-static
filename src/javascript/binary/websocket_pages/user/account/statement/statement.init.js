@@ -1,15 +1,20 @@
-const moment               = require('moment');
-const StatementUI          = require('./statement.ui');
-const ViewPopup            = require('../../view_popup/view_popup');
-const getLanguage          = require('../../../../base/language').get;
-const localize             = require('../../../../base/localize').localize;
-const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
-const addTooltip           = require('../../../../common_functions/get_app_details').addTooltip;
-const buildOauthApps       = require('../../../../common_functions/get_app_details').buildOauthApps;
-const dateValueChanged     = require('../../../../common_functions/common_functions').dateValueChanged;
-const jpClient             = require('../../../../common_functions/country_base').jpClient;
-const toISOFormat          = require('../../../../common_functions/string_util').toISOFormat;
-const DatePicker           = require('../../../../components/date_picker');
+const moment = require('moment');
+const StatementUI = require('./statement.ui');
+const ViewPopup = require('../../view_popup/view_popup');
+const getLanguage = require('../../../../base/language').get;
+const localize = require('../../../../base/localize').localize;
+const showLocalTimeOnHover = require('../../../../base/clock')
+    .showLocalTimeOnHover;
+const addTooltip = require('../../../../common_functions/get_app_details')
+    .addTooltip;
+const buildOauthApps = require('../../../../common_functions/get_app_details')
+    .buildOauthApps;
+const dateValueChanged = require('../../../../common_functions/common_functions')
+    .dateValueChanged;
+const jpClient = require('../../../../common_functions/country_base').jpClient;
+const toISOFormat = require('../../../../common_functions/string_util')
+    .toISOFormat;
+const DatePicker = require('../../../../components/date_picker');
 
 const StatementInit = (() => {
     'use strict';
@@ -27,9 +32,10 @@ const StatementInit = (() => {
         transactions_received,
         transactions_consumed;
 
-    const tableExist = () => (document.getElementById('statement-table'));
+    const tableExist = () => document.getElementById('statement-table');
 
-    const finishedConsumed = () => (transactions_consumed === transactions_received);
+    const finishedConsumed = () =>
+        transactions_consumed === transactions_received;
 
     const getStatement = (opts) => {
         const req = { statement: 1, description: 1 };
@@ -38,7 +44,9 @@ const StatementInit = (() => {
 
         const jump_to_val = $('#jump-to').attr('data-value');
         if (jump_to_val && jump_to_val !== '') {
-            req.date_to = moment.utc(jump_to_val).unix() + ((jpClient() ? 15 : 24) * (60 * 60));
+            req.date_to =
+                moment.utc(jump_to_val).unix() +
+                (jpClient() ? 15 : 24) * (60 * 60);
             req.date_from = 0;
         }
         BinarySocket.send(req).then((response) => {
@@ -75,24 +83,40 @@ const StatementInit = (() => {
         }
 
         if (!tableExist()) {
-            StatementUI.createEmptyStatementTable().appendTo('#statement-container');
+            StatementUI.createEmptyStatementTable().appendTo(
+                '#statement-container',
+            );
             $('.act, .credit').addClass('nowrap');
             StatementUI.updateStatementTable(getNextChunkStatement());
 
             // Show a message when the table is empty
             if (transactions_received === 0 && current_batch.length === 0) {
-                $('#statement-table').find('tbody')
-                    .append($('<tr/>', { class: 'flex-tr' })
-                        .append($('<td/>', { colspan: 7 })
-                            .append($('<p/>', { class: 'notice-msg center-text', text: localize('Your account has no trading activity.') }))));
+                $('#statement-table').find('tbody').append(
+                    $('<tr/>', { class: 'flex-tr' }).append(
+                        $('<td/>', { colspan: 7 }).append(
+                            $('<p/>', {
+                                class: 'notice-msg center-text',
+                                text : localize(
+                                    'Your account has no trading activity.',
+                                ),
+                            }),
+                        ),
+                    ),
+                );
             } else {
-                $('#jump-to').parent().parent().parent()
-                             .removeClass('invisible');
+                $('#jump-to')
+                    .parent()
+                    .parent()
+                    .parent()
+                    .removeClass('invisible');
                 if (getLanguage() === 'JA') {
-                    $('#download_csv').removeClass('invisible')
-                                      .find('a')
-                                      .unbind('click')
-                                      .click(() => { StatementUI.exportCSV(); });
+                    $('#download_csv')
+                        .removeClass('invisible')
+                        .find('a')
+                        .unbind('click')
+                        .click(() => {
+                            StatementUI.exportCSV();
+                        });
                 }
             }
         }
@@ -102,8 +126,9 @@ const StatementInit = (() => {
     const loadStatementChunkWhenScroll = () => {
         $(document).scroll(() => {
             const hidableHeight = (percentage) => {
-                const total_hideable = $(document).height() - $(window).height();
-                return Math.floor((total_hideable * percentage) / 100);
+                const total_hideable =
+                    $(document).height() - $(window).height();
+                return Math.floor(total_hideable * percentage / 100);
             };
 
             const p_from_top = $(document).scrollTop();
@@ -115,7 +140,9 @@ const StatementInit = (() => {
                 return;
             }
 
-            if (!finishedConsumed()) StatementUI.updateStatementTable(getNextChunkStatement());
+            if (!finishedConsumed()) {
+                StatementUI.updateStatementTable(getNextChunkStatement());
+            }
         });
     };
 
@@ -136,7 +163,7 @@ const StatementInit = (() => {
         batch_size = 200;
         chunk_size = batch_size / 2;
         no_more_data = false;
-        pending = false;            // serve as a lock to prevent ws request is sequential
+        pending = false; // serve as a lock to prevent ws request is sequential
         current_batch = [];
         transactions_received = 0;
         transactions_consumed = 0;
@@ -151,21 +178,22 @@ const StatementInit = (() => {
 
     const attachDatePicker = () => {
         const jump_to = '#jump-to';
-        $(jump_to).attr('data-value', toISOFormat(moment()))
-             .change(function() {
-                 if (!dateValueChanged(this, 'date')) {
-                     return false;
-                 }
-                 $('.table-container').remove();
-                 StatementUI.clearTableContent();
-                 initPage();
-                 return true;
-             });
+        $(jump_to).attr('data-value', toISOFormat(moment())).change(function() {
+            if (!dateValueChanged(this, 'date')) {
+                return false;
+            }
+            $('.table-container').remove();
+            StatementUI.clearTableContent();
+            initPage();
+            return true;
+        });
         DatePicker.init({
             selector: jump_to,
             maxDate : 0,
         });
-        if ($(jump_to).attr('data-picker') !== 'native') $(jump_to).val(localize('Today'));
+        if ($(jump_to).attr('data-picker') !== 'native') {
+            $(jump_to).val(localize('Today'));
+        }
     };
 
     const onLoad = () => {

@@ -1,5 +1,5 @@
 const urlParam = require('../base/url').param;
-const urlFor   = require('../base/url').urlFor;
+const urlFor = require('../base/url').urlFor;
 
 const JobDetails = (() => {
     'use strict';
@@ -16,8 +16,14 @@ const JobDetails = (() => {
 
     const showSelectedDiv = () => {
         const section = window.location.hash;
-        $sections_div.addClass(hidden_class).filter(section).removeClass(hidden_class);
-        if (dept === 'Information_Technology' && /senior_perl_developer/.test(section)) {
+        $sections_div
+            .addClass(hidden_class)
+            .filter(section)
+            .removeClass(hidden_class);
+        if (
+            dept === 'Information_Technology' &&
+            /senior_perl_developer/.test(section)
+        ) {
             $senior_perl_message.removeClass(hidden_class);
         } else {
             $senior_perl_message.addClass(hidden_class);
@@ -37,7 +43,11 @@ const JobDetails = (() => {
         $('#image').find('img').addClass(hidden_class);
         // show section
         $(dept_class).removeClass(hidden_class);
-        $sidebar_dept.removeClass(hidden_class).find(`a[href="${window.location.hash}"]`).parent('li').addClass('selected');
+        $sidebar_dept
+            .removeClass(hidden_class)
+            .find(`a[href="${window.location.hash}"]`)
+            .parent('li')
+            .addClass('selected');
         showSelectedDiv();
         $('#back-button').attr('href', `${urlFor('open-positions')}#${dept}`);
         addEventListeners();

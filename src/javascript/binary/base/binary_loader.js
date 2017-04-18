@@ -1,10 +1,10 @@
-const BinaryPjax         = require('./binary_pjax');
-const pages_config       = require('./binary_pages');
-const Client             = require('./client');
-const GTM                = require('./gtm');
-const localize           = require('./localize').localize;
-const Login              = require('./login');
-const Page               = require('./page');
+const BinaryPjax = require('./binary_pjax');
+const pages_config = require('./binary_pages');
+const Client = require('./client');
+const GTM = require('./gtm');
+const localize = require('./localize').localize;
+const Login = require('./login');
+const Page = require('./page');
 const defaultRedirectUrl = require('./url').defaultRedirectUrl;
 
 const BinaryLoader = (() => {
@@ -44,7 +44,10 @@ const BinaryLoader = (() => {
     };
 
     const error_messages = {
-        login       : () => localize('Please <a href="[_1]">log in</a> to view this page.', [Login.loginUrl()]),
+        login: () =>
+            localize('Please <a href="[_1]">log in</a> to view this page.', [
+                Login.loginUrl(),
+            ]),
         only_virtual: 'Sorry, this feature is available to virtual accounts only.',
         only_real   : 'This feature is not relevant to virtual-money accounts.',
     };
@@ -55,18 +58,19 @@ const BinaryLoader = (() => {
             if (!Client.isLoggedIn()) {
                 displayMessage(error_messages.login());
             } else {
-                BinarySocket.wait('authorize')
-                    .then((response) => {
-                        if (response.error) {
-                            displayMessage(error_messages.login());
-                        } else if (config.only_virtual && !Client.get('is_virtual')) {
-                            displayMessage(error_messages.only_virtual);
-                        } else if (config.only_real && Client.get('is_virtual')) {
-                            displayMessage(error_messages.only_real);
-                        } else {
-                            active_script.onLoad();
-                        }
-                    });
+                BinarySocket.wait('authorize').then((response) => {
+                    if (response.error) {
+                        displayMessage(error_messages.login());
+                    } else if (
+                        config.only_virtual && !Client.get('is_virtual')
+                    ) {
+                        displayMessage(error_messages.only_virtual);
+                    } else if (config.only_real && Client.get('is_virtual')) {
+                        displayMessage(error_messages.only_real);
+                    } else {
+                        active_script.onLoad();
+                    }
+                });
             }
         } else if (config.not_authenticated && Client.isLoggedIn()) {
             BinaryPjax.load(defaultRedirectUrl(), true);
@@ -77,8 +81,19 @@ const BinaryLoader = (() => {
 
     const displayMessage = (message) => {
         const $content = container.find('#content .container');
-        $content.html($('<div/>', { class: 'logged_out_title_container', html: $content.find('h1') }))
-            .append($('<p/>', { class: 'center-text notice-msg', html: localize(message) }));
+        $content
+            .html(
+                $('<div/>', {
+                    class: 'logged_out_title_container',
+                    html : $content.find('h1'),
+                }),
+            )
+            .append(
+                $('<p/>', {
+                    class: 'center-text notice-msg',
+                    html : localize(message),
+                }),
+            );
     };
 
     return {

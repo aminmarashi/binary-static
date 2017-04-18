@@ -1,13 +1,17 @@
-const ProfitTable         = require('../profit_table');
-const Client              = require('../../../../base/client');
-const localize            = require('../../../../base/localize').localize;
-const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
-const addComma            = require('../../../../common_functions/string_util').addComma;
-const elementTextContent  = require('../../../../common_functions/common_functions').elementTextContent;
-const formatMoney         = require('../../../../common_functions/currency_to_symbol').formatMoney;
-const jpClient            = require('../../../../common_functions/country_base').jpClient;
-const showTooltip         = require('../../../../common_functions/get_app_details').showTooltip;
-const Table               = require('../../../../common_functions/attach_dom/table');
+const ProfitTable = require('../profit_table');
+const Client = require('../../../../base/client');
+const localize = require('../../../../base/localize').localize;
+const toJapanTimeIfNeeded = require('../../../../base/clock')
+    .toJapanTimeIfNeeded;
+const addComma = require('../../../../common_functions/string_util').addComma;
+const elementTextContent = require('../../../../common_functions/common_functions')
+    .elementTextContent;
+const formatMoney = require('../../../../common_functions/currency_to_symbol')
+    .formatMoney;
+const jpClient = require('../../../../common_functions/country_base').jpClient;
+const showTooltip = require('../../../../common_functions/get_app_details')
+    .showTooltip;
+const Table = require('../../../../common_functions/attach_dom/table');
 
 const ProfitTableUI = (() => {
     'use strict';
@@ -16,7 +20,17 @@ const ProfitTableUI = (() => {
         currency;
 
     const profit_table_id = 'profit-table';
-    const cols = ['buy-date', 'ref', 'payout', 'contract', 'buy-price', 'sell-date', 'sell-price', 'pl', 'details'];
+    const cols = [
+        'buy-date',
+        'ref',
+        'payout',
+        'contract',
+        'buy-price',
+        'sell-date',
+        'sell-price',
+        'pl',
+        'details',
+    ];
 
     const createEmptyTable = () => {
         const header = [
@@ -34,16 +48,31 @@ const ProfitTableUI = (() => {
         const jp_client = jpClient();
         currency = Client.get('currency');
 
-        header[7] += (jp_client ? '' : (currency ? ` (${currency})` : ''));
+        header[7] += jp_client ? '' : currency ? ` (${currency})` : '';
 
-        const footer = [localize('Total Profit/Loss'), '', '', '', '', '', '', '', ''];
+        const footer = [
+            localize('Total Profit/Loss'),
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+        ];
 
         const data = [];
         const metadata = {
             cols: cols,
             id  : profit_table_id,
         };
-        const $table_container = Table.createFlexTable(data, metadata, header, footer);
+        const $table_container = Table.createFlexTable(
+            data,
+            metadata,
+            header,
+            footer,
+        );
 
         $table_container
             .children('table')
@@ -55,14 +84,16 @@ const ProfitTableUI = (() => {
     };
 
     const updateFooter = (transactions) => {
-        let acc_total = elementTextContent(document.querySelector('#pl-day-total > .pl'));
+        let acc_total = elementTextContent(
+            document.querySelector('#pl-day-total > .pl'),
+        );
         acc_total = parseFloat(acc_total.replace(/,/g, ''));
         if (!acc_total || isNaN(acc_total)) {
             acc_total = 0;
         }
 
         const current_total = transactions.reduce((previous, current) => {
-            const buy_price  = Number(parseFloat(current.buy_price));
+            const buy_price = Number(parseFloat(current.buy_price));
             const sell_price = Number(parseFloat(current.sell_price));
             const pl = sell_price - buy_price;
             return previous + pl;
@@ -70,28 +101,46 @@ const ProfitTableUI = (() => {
 
         const total = acc_total + current_total;
         const jp_client = jpClient();
-        const sub_total_type = (total >= 0) ? 'profit' : 'loss';
+        const sub_total_type = total >= 0 ? 'profit' : 'loss';
 
-        $('#pl-day-total').find(' > .pl').text(jp_client ? formatMoney(currency, total) : addComma(Number(total).toFixed(2)))
+        $('#pl-day-total')
+            .find(' > .pl')
+            .text(
+                jp_client
+                    ? formatMoney(currency, total)
+                    : addComma(Number(total).toFixed(2)),
+            )
             .removeClass('profit loss')
             .addClass(sub_total_type);
     };
 
     const createProfitTableRow = (transaction) => {
         const profit_table_data = ProfitTable.getProfitTabletData(transaction);
-        const pl_type = (profit_table_data.pl >= 0) ? 'profit' : 'loss';
+        const pl_type = profit_table_data.pl >= 0 ? 'profit' : 'loss';
 
         const jp_client = jpClient();
 
         const data = [
-            jp_client ? toJapanTimeIfNeeded(transaction.purchase_time) : profit_table_data.buyDate,
+            jp_client
+                ? toJapanTimeIfNeeded(transaction.purchase_time)
+                : profit_table_data.buyDate,
             `<span ${showTooltip(profit_table_data.app_id, oauth_apps[profit_table_data.app_id])}>${profit_table_data.ref}</span>`,
-            jp_client ? formatMoney(currency, profit_table_data.payout) : profit_table_data.payout,
+            jp_client
+                ? formatMoney(currency, profit_table_data.payout)
+                : profit_table_data.payout,
             '',
-            jp_client ? formatMoney(currency, profit_table_data.buyPrice)  : profit_table_data.buyPrice,
-            jp_client ? toJapanTimeIfNeeded(transaction.sell_time)         : profit_table_data.sellDate,
-            jp_client ? formatMoney(currency, profit_table_data.sellPrice) : profit_table_data.sellPrice,
-            jp_client ? formatMoney(currency, profit_table_data.pl)        : profit_table_data.pl,
+            jp_client
+                ? formatMoney(currency, profit_table_data.buyPrice)
+                : profit_table_data.buyPrice,
+            jp_client
+                ? toJapanTimeIfNeeded(transaction.sell_time)
+                : profit_table_data.sellDate,
+            jp_client
+                ? formatMoney(currency, profit_table_data.sellPrice)
+                : profit_table_data.sellPrice,
+            jp_client
+                ? formatMoney(currency, profit_table_data.pl)
+                : profit_table_data.pl,
             '',
         ];
         const $row = Table.createFlexTableRow(data, cols, 'data');
@@ -103,14 +152,22 @@ const ProfitTableUI = (() => {
         });
 
         // create view button and append
-        const $view_button = $('<button/>', { class: 'button open_contract_details', text: localize('View'), contract_id: profit_table_data.id });
+        const $view_button = $('<button/>', {
+            class      : 'button open_contract_details',
+            text       : localize('View'),
+            contract_id: profit_table_data.id,
+        });
         $row.children('.contract,.details').append($view_button);
 
         return $row[0];
     };
 
     const updateProfitTable = (transactions) => {
-        Table.appendTableBody(profit_table_id, transactions, createProfitTableRow);
+        Table.appendTableBody(
+            profit_table_id,
+            transactions,
+            createProfitTableRow,
+        );
         updateFooter(transactions);
     };
 
@@ -133,7 +190,7 @@ const ProfitTableUI = (() => {
         updateProfitTable: updateProfitTable,
         cleanTableContent: clearTableContent,
         errorMessage     : errorMessage,
-        setOauthApps     : values => (oauth_apps = values),
+        setOauthApps     : values => oauth_apps = values,
     };
 })();
 

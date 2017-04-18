@@ -1,8 +1,9 @@
-const MBDefaults     = require('./mb_defaults');
-const Client         = require('../../base/client');
-const State          = require('../../base/storage').State;
-const jpClient       = require('../../common_functions/country_base').jpClient;
-const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
+const MBDefaults = require('./mb_defaults');
+const Client = require('../../base/client');
+const State = require('../../base/storage').State;
+const jpClient = require('../../common_functions/country_base').jpClient;
+const formatCurrency = require('../../common_functions/currency_to_symbol')
+    .formatCurrency;
 
 /*
  * Handles currency display
@@ -14,7 +15,7 @@ const MBDisplayCurrencies = (selected, show_class) => {
     'use strict';
 
     const target = document.getElementById('currency');
-    const fragment =  document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
     const currencies = Client.get('currencies').split(',');
 
     if (!target) {
@@ -43,8 +44,17 @@ const MBDisplayCurrencies = (selected, show_class) => {
         MBDefaults.set('currency', target.value);
     } else {
         const class_value = show_class ? target.getAttribute('class') : '';
-        const text_value = State.get('is_mb_trading') && jpClient() ? '✕' : formatCurrency(currencies[0]);
-        $('#currency').replaceWith($('<span/>', { id: target.getAttribute('id'), class: class_value, value: currencies[0], text: text_value }));
+        const text_value = State.get('is_mb_trading') && jpClient()
+            ? '✕'
+            : formatCurrency(currencies[0]);
+        $('#currency').replaceWith(
+            $('<span/>', {
+                id   : target.getAttribute('id'),
+                class: class_value,
+                value: currencies[0],
+                text : text_value,
+            }),
+        );
         if ($('.payout-mult:visible').length === 0) $('#payout').width(40); // wider when there is free space
         MBDefaults.set('currency', currencies[0]);
     }

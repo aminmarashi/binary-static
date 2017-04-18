@@ -1,12 +1,13 @@
-const BinaryPjax         = require('../../../base/binary_pjax');
-const Client             = require('../../../base/client');
-const State              = require('../../../base/storage').State;
+const BinaryPjax = require('../../../base/binary_pjax');
+const Client = require('../../../base/client');
+const State = require('../../../base/storage').State;
 const defaultRedirectUrl = require('../../../base/url').defaultRedirectUrl;
-const isEmptyObject      = require('../../../base/utility').isEmptyObject;
-const AccountOpening     = require('../../../common_functions/account_opening');
-const FormManager        = require('../../../common_functions/form_manager');
-const toISOFormat        = require('../../../common_functions/string_util').toISOFormat;
-const moment             = require('moment');
+const isEmptyObject = require('../../../base/utility').isEmptyObject;
+const AccountOpening = require('../../../common_functions/account_opening');
+const FormManager = require('../../../common_functions/form_manager');
+const toISOFormat = require('../../../common_functions/string_util')
+    .toISOFormat;
+const moment = require('moment');
 
 const FinancialAccOpening = (() => {
     const form_id = '#financial-form';
@@ -25,7 +26,9 @@ const FinancialAccOpening = (() => {
             if (Client.get('is_virtual')) {
                 if (Client.canUpgradeVirtualToJapan(landing_company)) {
                     BinaryPjax.load('new_account/japanws');
-                } else if (!Client.canUpgradeVirtualToFinancial(landing_company)) {
+                } else if (
+                    !Client.canUpgradeVirtualToFinancial(landing_company)
+                ) {
                     BinaryPjax.load('new_account/realws');
                 }
             } else if (!Client.canUpgradeGamingToFinancial(landing_company)) {
@@ -64,20 +67,35 @@ const FinancialAccOpening = (() => {
         });
 
         FormManager.handleSubmit({
-            form_selector       : form_id,
-            obj_request         : { new_account_maltainvest: 1, accept_risk: 0 },
+            form_selector: form_id,
+            obj_request  : {
+                new_account_maltainvest: 1,
+                accept_risk            : 0,
+            },
             fnc_response_handler: handleResponse,
         });
     };
 
-    const getValidations = () => (
-        AccountOpening.commonValidations().concat(AccountOpening.selectCheckboxValidation(form_id), [
-            { selector: '#tax_identification_number', validations: ['req', 'postcode', ['length', { min: 1, max: 20 }]] },
-        ])
-    );
+    const getValidations = () =>
+        AccountOpening.commonValidations().concat(
+            AccountOpening.selectCheckboxValidation(form_id),
+            [
+                {
+                    selector   : '#tax_identification_number',
+                    validations: [
+                        'req',
+                        'postcode',
+                        ['length', { min: 1, max: 20 }],
+                    ],
+                },
+            ],
+        );
 
     const handleResponse = (response) => {
-        if ('error' in response && response.error.code === 'show risk disclaimer') {
+        if (
+            'error' in response &&
+            response.error.code === 'show risk disclaimer'
+        ) {
             $('#financial-form').addClass('hidden');
             const $financial_risk = $('#financial-risk');
             $financial_risk.removeClass('hidden');

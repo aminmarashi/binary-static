@@ -1,11 +1,11 @@
-const Highcharts  = require('highcharts/highstock');
+const Highcharts = require('highcharts/highstock');
 const HighchartUI = require('./highchart.ui');
-const MBContract  = require('../../mb_trade/mb_contract');
-const GetTicks    = require('../../trade/get_ticks');
+const MBContract = require('../../mb_trade/mb_contract');
+const GetTicks = require('../../trade/get_ticks');
 const ViewPopupUI = require('../../user/view_popup/view_popup.ui');
-const localize    = require('../../../base/localize').localize;
-const State       = require('../../../base/storage').State;
-const jpClient    = require('../../../common_functions/country_base').jpClient;
+const localize = require('../../../base/localize').localize;
+const State = require('../../../base/storage').State;
+const jpClient = require('../../../common_functions/country_base').jpClient;
 require('highcharts/modules/exporting')(Highcharts);
 
 const Highchart = (() => {
@@ -39,25 +39,31 @@ const Highchart = (() => {
         is_entry_tick_barrier_selected;
 
     const initOnce = () => {
-        chart = options = response_id = contract = request = min_point = max_point = '';
+        chart = options = response_id = contract = '';
+        request = min_point = max_point = '';
 
-        is_initialized = is_chart_delayed = is_chart_subscribed = stop_streaming =
-        is_contracts_for_send = is_history_send = is_entry_tick_barrier_selected = false;
+        is_initialized = is_chart_delayed = is_chart_subscribed = false;
+        stop_streaming = is_contracts_for_send = is_history_send = false;
+        is_entry_tick_barrier_selected = false;
     };
 
     const initializeValues = () => {
-        start_time      = parseInt(contract.date_start);
-        purchase_time   = parseInt(contract.purchase_time);
-        now_time        = parseInt(contract.current_spot_time);
-        end_time        = parseInt(contract.date_expiry);
+        start_time = parseInt(contract.date_start);
+        purchase_time = parseInt(contract.purchase_time);
+        now_time = parseInt(contract.current_spot_time);
+        end_time = parseInt(contract.date_expiry);
         entry_tick_time = parseInt(contract.entry_tick_time);
-        is_sold         = contract.is_sold;
-        sell_time       = parseInt(contract.sell_time);
-        sell_spot_time  = parseInt(contract.sell_spot_time);
-        is_settleable   = contract.is_settleable;
-        exit_tick_time  = parseInt(contract.exit_tick_time);
-        exit_time       = parseInt(is_sold && sell_time < end_time ? sell_spot_time : exit_tick_time || end_time);
-        underlying      = contract.underlying;
+        is_sold = contract.is_sold;
+        sell_time = parseInt(contract.sell_time);
+        sell_spot_time = parseInt(contract.sell_spot_time);
+        is_settleable = contract.is_settleable;
+        exit_tick_time = parseInt(contract.exit_tick_time);
+        exit_time = parseInt(
+            is_sold && sell_time < end_time
+                ? sell_spot_time
+                : exit_tick_time || end_time,
+        );
+        underlying = contract.underlying;
     };
 
     // initialize the chart only once with ticks or candles data
@@ -77,13 +83,16 @@ const Highchart = (() => {
             data.push({
                 x     : time * 1000,
                 y     : price * 1,
-                marker: is_match_entry || is_match_exit ? HighchartUI.getMarkerObject(tick_type) : '',
+                marker: is_match_entry || is_match_exit
+                    ? HighchartUI.getMarkerObject(tick_type)
+                    : '',
             });
         };
 
         let history = '',
             candles = '';
-        if (init_options.history) { // indicates line chart
+        if (init_options.history) {
+            // indicates line chart
             type = 'line';
             history = init_options.history;
             const times = history.times;
@@ -98,15 +107,24 @@ const Highchart = (() => {
                     current_time = parseInt(times[i]);
                     // only display the first tick before entry spot and one tick after exit spot
                     // as well as the set of ticks between them
-                    if (current_time >= min_point && current_time <= max_point) {
+                    if (
+                        current_time >= min_point && current_time <= max_point
+                    ) {
                         pushTicks(current_time, prices[i]);
                     }
                 }
             }
-        } else if (init_options.candles) { // indicates candle chart
+        } else if (init_options.candles) {
+            // indicates candle chart
             candles = init_options.candles;
             type = 'candlestick';
-            data = candles.map(c => [c.epoch * 1000, c.open * 1, c.high * 1, c.low * 1, c.close * 1]);
+            data = candles.map(c => [
+                c.epoch * 1000,
+                c.open * 1,
+                c.high * 1,
+                c.low * 1,
+                c.close * 1,
+            ]);
         }
 
         // element where chart is to be displayed
@@ -122,14 +140,19 @@ const Highchart = (() => {
             decimals  : history ? history.prices[0] : candles[0].open,
             type      : type,
             data      : data,
-            entry_time: entry_tick_time ? entry_tick_time * 1000 : start_time * 1000,
-            exit_time : exit_time ? exit_time * 1000 : null,
-            user_sold : userSold(),
+            entry_time: entry_tick_time
+                ? entry_tick_time * 1000
+                : start_time * 1000,
+            exit_time: exit_time ? exit_time * 1000 : null,
+            user_sold: userSold(),
         });
         Highcharts.setOptions(HighchartUI.getChartOptions(JPClient));
 
         if (!el) return null;
-        const new_chart = Highcharts.StockChart(el, HighchartUI.getChartOptions());
+        const new_chart = Highcharts.StockChart(
+            el,
+            HighchartUI.getChartOptions(),
+        );
         is_initialized = true;
         return new_chart;
     };
@@ -137,25 +160,29 @@ const Highchart = (() => {
     // type 'x' is used to draw lines such as start and end times
     // type 'y' is used to draw lines such as barrier
     const addPlotLine = (params, type) => {
-        chart[(`${type}Axis`)][0].addPlotLine(HighchartUI.getPlotlineOptions(params, type));
+        chart[`${type}Axis`][0].addPlotLine(
+            HighchartUI.getPlotlineOptions(params, type),
+        );
         if (userSold()) {
             HighchartUI.replaceExitLabelWithSell(chart.subtitle.element);
         }
     };
 
     const handleResponse = (response) => {
-        const type  = response.msg_type;
+        const type = response.msg_type;
         const error = response.error;
         if (/(history|candles|tick|ohlc)/.test(type) && !error) {
             response_id = response[type].id;
             // send view popup the response ID so view popup can forget the calls if it's closed before contract ends
-            if (response_id) ViewPopupUI.storeSubscriptionID(response_id, underlying);
+            if (response_id) {
+                ViewPopupUI.storeSubscriptionID(response_id, underlying);
+            }
             options = { title: contract.display_name };
             options[type] = response[type];
             const history = response.history;
             const candles = response.candles;
-            const tick    = response.tick;
-            const ohlc    = response.ohlc;
+            const tick = response.tick;
+            const ohlc = response.ohlc;
             if (history || candles) {
                 const length = (history ? history.times : candles).length;
                 if (length === 0) {
@@ -175,11 +202,22 @@ const Highchart = (() => {
                     chart = initChart(options);
                     if (!chart) return;
 
-                    if (purchase_time !== start_time) drawLineX(purchase_time, localize('Purchase Time'), '', '', '#7cb5ec');
+                    if (purchase_time !== start_time) {
+                        drawLineX(
+                            purchase_time,
+                            localize('Purchase Time'),
+                            '',
+                            '',
+                            '#7cb5ec',
+                        );
+                    }
 
                     // second condition is used to make sure contracts that have purchase time
                     // but are sold before the start time don't show start time
-                    if (!is_sold || (is_sold && sell_time && sell_time > start_time)) {
+                    if (
+                        !is_sold ||
+                        (is_sold && sell_time && sell_time > start_time)
+                    ) {
                         drawLineX(start_time);
                     }
                 }
@@ -191,7 +229,7 @@ const Highchart = (() => {
             if (entry_tick_time && !is_entry_tick_barrier_selected) {
                 selectEntryTickBarrier();
             }
-            if ((is_sold || is_settleable)) {
+            if (is_sold || is_settleable) {
                 updateZone('exit');
                 endContract();
             }
@@ -208,7 +246,9 @@ const Highchart = (() => {
         }
         if (!chart && !is_history_send) {
             requestData(update || '');
-        } else if (chart && entry_tick_time && !is_entry_tick_barrier_selected) {
+        } else if (
+            chart && entry_tick_time && !is_entry_tick_barrier_selected
+        ) {
             selectEntryTickBarrier();
         }
         if (chart && (is_sold || is_settleable)) {
@@ -220,47 +260,64 @@ const Highchart = (() => {
     const requestData = (update) => {
         const calculate_granularity = calculateGranularity();
         const granularity = calculate_granularity[0];
-        const duration    = calculate_granularity[1];
-        const margin      = granularity === 0 ? Math.max(300, (30 * duration) / (60 * 60) || 0) : 3 * granularity;
+        const duration = calculate_granularity[1];
+        const margin = granularity === 0
+            ? Math.max(300, 30 * duration / (60 * 60) || 0)
+            : 3 * granularity;
 
         request = {
-            ticks_history    : underlying,
-            start            : ((purchase_time || start_time) - margin).toFixed(0), /* load more ticks first */
+            ticks_history: underlying,
+            start        : ((purchase_time || start_time) - margin).toFixed(
+                0,
+            ) /* load more ticks first */,
             end              : end_time ? (end_time + margin).toFixed(0) : 'latest',
             style            : granularity === 0 ? 'ticks' : 'candles',
-            count            : 4999, /* maximum number of ticks possible */
+            count            : 4999 /* maximum number of ticks possible */,
             adjust_start_time: 1,
         };
 
         if (is_sold && sell_time < end_time) {
-            request.end = sell_spot_time ? (parseInt(sell_spot_time) + margin).toFixed(0) : 'latest';
+            request.end = sell_spot_time
+                ? (parseInt(sell_spot_time) + margin).toFixed(0)
+                : 'latest';
         }
 
         // switch start and end if start is after end
         if (!isNaN(request.end) && request.start > request.end) {
-            request.end = [request.start, request.start = request.end][0];
+            request.end = [request.start, (request.start = request.end)][0];
         }
 
         if (granularity !== 0) {
             request.granularity = granularity;
         }
 
-        if (!is_settleable && !sell_spot_time && (window.time.valueOf() / 1000) < end_time && !is_chart_subscribed) {
+        if (
+            !is_settleable &&
+            !sell_spot_time &&
+            window.time.valueOf() / 1000 < end_time &&
+            !is_chart_subscribed
+        ) {
             request.subscribe = 1;
         }
 
-        const contracts_response = State.get('is_mb_trading') ? MBContract.getContractsResponse() : window.contracts_for;
+        const contracts_response = State.get('is_mb_trading')
+            ? MBContract.getContractsResponse()
+            : window.contracts_for;
         const stored_delay = sessionStorage.getItem(`license.${underlying}`);
 
-        if (contracts_response && contracts_response.echo_req.contracts_for === underlying) {
+        if (
+            contracts_response &&
+            contracts_response.echo_req.contracts_for === underlying
+        ) {
             delayedChart(contracts_response);
         } else if (stored_delay) {
             handleDelay(stored_delay);
             sendTickRequest();
         } else if (!is_contracts_for_send && update === '') {
+            // eslint-disable-next-line max-len
             BinarySocket.send({ contracts_for: underlying }).then((response) => {
                 const error = response.error;
-                if ((!error || (error.code && error.code === 'InvalidSymbol'))) {
+                if (!error || (error.code && error.code === 'InvalidSymbol')) {
                     delayedChart(response);
                 }
             });
@@ -269,7 +326,10 @@ const Highchart = (() => {
     };
 
     const delayedChart = (contracts_response) => {
-        if (contracts_response.contracts_for && contracts_response.contracts_for.feed_license) {
+        if (
+            contracts_response.contracts_for &&
+            contracts_response.contracts_for.feed_license
+        ) {
             const license = contracts_response.contracts_for.feed_license;
             handleDelay(license);
             saveFeedLicense(contracts_response.echo_req.contracts_for, license);
@@ -278,7 +338,12 @@ const Highchart = (() => {
     };
 
     const sendTickRequest = () => {
-        if (!entry_tick_time && !is_chart_delayed && start_time && window.time.unix() >= parseInt(start_time)) {
+        if (
+            !entry_tick_time &&
+            !is_chart_delayed &&
+            start_time &&
+            window.time.unix() >= parseInt(start_time)
+        ) {
             HighchartUI.showError('', localize('Waiting for entry tick.'));
         } else if (!is_history_send) {
             is_history_send = true;
@@ -311,7 +376,8 @@ const Highchart = (() => {
     const updateZone = (type) => {
         if (chart && type && !userSold()) {
             const value = type === 'entry' ? entry_tick_time : exit_time;
-            chart.series[0].zones[(type === 'entry' ? 0 : 1)].value = value * 1000;
+            chart.series[0].zones[type === 'entry' ? 0 : 1].value =
+                value * 1000;
         }
     };
 
@@ -319,27 +385,62 @@ const Highchart = (() => {
         if (chart.yAxis[0].plotLinesAndBands.length === 0) {
             const barrier = contract.barrier;
             const high_barrier = contract.high_barrier;
-            const low_barrier  = contract.low_barrier;
+            const low_barrier = contract.low_barrier;
             if (barrier) {
-                addPlotLine({ id: 'barrier',      value: barrier * 1,      label: localize('Barrier ([_1])', [barrier]),           dashStyle: 'Dot' }, 'y');
+                addPlotLine(
+                    {
+                        id       : 'barrier',
+                        value    : barrier * 1,
+                        label    : localize('Barrier ([_1])', [barrier]),
+                        dashStyle: 'Dot',
+                    },
+                    'y',
+                );
             } else if (high_barrier && low_barrier) {
-                addPlotLine({ id: 'high_barrier', value: high_barrier * 1, label: localize('High Barrier ([_1])', [high_barrier]), dashStyle: 'Dot' }, 'y');
-                addPlotLine({ id: 'low_barrier',  value: low_barrier * 1,  label: localize('Low Barrier ([_1])', [low_barrier]),   dashStyle: 'Dot' }, 'y');
+                addPlotLine(
+                    {
+                        id       : 'high_barrier',
+                        value    : high_barrier * 1,
+                        label    : localize('High Barrier ([_1])', [high_barrier]),
+                        dashStyle: 'Dot',
+                    },
+                    'y',
+                );
+                addPlotLine(
+                    {
+                        id       : 'low_barrier',
+                        value    : low_barrier * 1,
+                        label    : localize('Low Barrier ([_1])', [low_barrier]),
+                        dashStyle: 'Dot',
+                    },
+                    'y',
+                );
             }
         }
     };
 
     // set an orange circle on the entry/exit tick
     const selectTick = (value, tick_type) => {
-        if (chart && value && tick_type && (options.tick || options.history) &&
-            chart.series[0].data.length !== 0) {
+        if (
+            chart &&
+            value &&
+            tick_type &&
+            (options.tick || options.history) &&
+            chart.series[0].data.length !== 0
+        ) {
             const data = chart.series[0].data;
             if (!data || data.length === 0) return;
             let current_data;
             for (let i = data.length - 1; i >= 0; i--) {
                 current_data = data[i];
-                if (current_data && current_data.x && value * 1000 === current_data.x) {
-                    current_data.update({ marker: HighchartUI.getMarkerObject(tick_type) });
+                if (
+                    current_data &&
+                    current_data.x &&
+                    value * 1000 === current_data.x
+                ) {
+                    current_data.update({
+                        marker: HighchartUI.getMarkerObject(tick_type),
+                    });
                 }
             }
         }
@@ -352,21 +453,19 @@ const Highchart = (() => {
         for (let i = 0; i < history_times_length; i++) {
             history_times_int = parseInt(history_times[i]);
             if (
-                (
-                    entry_tick_time && history_times_int === entry_tick_time
-                ) ||
-                (
-                    purchase_time &&
+                (entry_tick_time && history_times_int === entry_tick_time) ||
+                (purchase_time &&
                     start_time > purchase_time &&
-                    history_times_int === purchase_time
-                ) ||
-                (
-                    history_times_int < purchase_time &&
-                    parseInt(history_times[(i === history_times_length - 1 ? i : i + 1)]) > purchase_time
-                )
+                    history_times_int === purchase_time) ||
+                (history_times_int < purchase_time &&
+                    parseInt(
+                        history_times[
+                            i === history_times_length - 1 ? i : i + 1
+                        ],
+                    ) > purchase_time)
             ) {
                 // set the chart to display from the tick before entry_tick_time or purchase_time
-                min_point = parseInt(history_times[(i === 0 ? i : i - 1)]);
+                min_point = parseInt(history_times[i === 0 ? i : i - 1]);
                 break;
             }
         }
@@ -386,7 +485,11 @@ const Highchart = (() => {
         if (is_settleable || is_sold) {
             for (let i = history_times_length - 1; i >= 0; i--) {
                 if (parseInt(history_times[i]) === end) {
-                    max_point = parseInt(history_times[i === history_times_length - 1 ? i : i + 1]);
+                    max_point = parseInt(
+                        history_times[
+                            i === history_times_length - 1 ? i : i + 1
+                        ],
+                    );
                     break;
                 }
             }
@@ -396,17 +499,20 @@ const Highchart = (() => {
 
     // calculate where to display the minimum value of the x-axis of the chart for candle
     const getMinCandle = (candles) => {
-        const candle_before_time = value => (
-            value && current_candle &&
+        const candle_before_time = value =>
+            value &&
+            current_candle &&
             parseInt(current_candle.epoch) <= value &&
-            candles[(i === candles_length - 1 ? i : i + 1)].epoch > value
-        );
+            candles[i === candles_length - 1 ? i : i + 1].epoch > value;
         let i,
             current_candle;
         const candles_length = candles.length;
         for (i = 1; i < candles_length; i++) {
             current_candle = candles[i];
-            if (candle_before_time(entry_tick_time) || candle_before_time(purchase_time)) {
+            if (
+                candle_before_time(entry_tick_time) ||
+                candle_before_time(purchase_time)
+            ) {
                 // set the chart to display from the candle before entry_tick_time or purchase_time
                 min_point = parseInt(candles[i - 1].epoch);
                 break;
@@ -416,7 +522,9 @@ const Highchart = (() => {
 
     // calculate where to display the maximum value of the x-axis of the chart for candle
     const getMaxCandle = (candles) => {
-        const end = sell_spot_time && sell_time < end_time ? sell_spot_time : end_time;
+        const end = sell_spot_time && sell_time < end_time
+            ? sell_spot_time
+            : end_time;
         const candle_length = candles.length;
         let current_candle,
             next_candle;
@@ -429,7 +537,10 @@ const Highchart = (() => {
                     max_point = end_time;
                     break;
                 }
-                if (parseInt(current_candle.epoch) <= end && parseInt(next_candle.epoch) > end) {
+                if (
+                    parseInt(current_candle.epoch) <= end &&
+                    parseInt(next_candle.epoch) > end
+                ) {
                     max_point = parseInt(next_candle.epoch);
                     break;
                 }
@@ -452,26 +563,39 @@ const Highchart = (() => {
 
     const drawLineX = (value_time, label_name, text_left, dash, color) => {
         if (chart) {
-            addPlotLine({
-                value    : value_time * 1000,
-                label    : label_name || '',
-                textLeft : text_left === 'textLeft',
-                dashStyle: dash || '',
-                color    : color || '',
-            }, 'x');
+            addPlotLine(
+                {
+                    value    : value_time * 1000,
+                    label    : label_name || '',
+                    textLeft : text_left === 'textLeft',
+                    dashStyle: dash || '',
+                    color    : color || '',
+                },
+                'x',
+            );
         }
     };
 
     // draw the last line, mark the exit tick, and forget the streams
     const endContract = () => {
         if (chart) {
-            drawLineX((userSold() ? sell_time : end_time), '', 'textLeft', 'Dash');
+            drawLineX(
+                userSold() ? sell_time : end_time,
+                '',
+                'textLeft',
+                'Dash',
+            );
             if (exit_tick_time) {
                 selectTick(exit_tick_time, 'exit');
             }
             if (!contract.sell_spot && !contract.exit_tick) {
                 if ($('#waiting_exit_tick').length === 0) {
-                    $('#trade_details_message').append($('<div/>', { id: 'waiting_exit_tick', text: localize('Waiting for exit tick.') }));
+                    $('#trade_details_message').append(
+                        $('<div/>', {
+                            id  : 'waiting_exit_tick',
+                            text: localize('Waiting for exit tick.'),
+                        }),
+                    );
                 }
             } else {
                 $('#waiting_exit_tick').remove();
@@ -483,28 +607,44 @@ const Highchart = (() => {
     };
 
     const setStopStreaming = () => {
-        if (chart && (is_sold || is_settleable) && response_id &&
-            chart.series && chart.series[0].options.data.length > 0) {
+        if (
+            chart &&
+            (is_sold || is_settleable) &&
+            response_id &&
+            chart.series &&
+            chart.series[0].options.data.length > 0
+        ) {
             const data = chart.series[0].options.data;
             const last_data = data[data.length - 1];
             const last = parseInt(last_data.x || last_data[0]);
-            if (last > (end_time * 1000) || last > (sell_time * 1000)) {
+            if (last > end_time * 1000 || last > sell_time * 1000) {
                 stop_streaming = true;
             }
         }
     };
 
     const calculateGranularity = () => {
-        const duration = Math.min(exit_time, now_time) - (purchase_time || start_time);
+        const duration =
+            Math.min(exit_time, now_time) - (purchase_time || start_time);
         let granularity;
-              // days * hours * minutes * seconds
-        if      (duration <=            60 * 60) granularity = 0;     // less than 1 hour
-        else if (duration <=        2 * 60 * 60) granularity = 120;   // 2 hours
-        else if (duration <=        6 * 60 * 60) granularity = 600;   // 6 hours
-        else if (duration <=       24 * 60 * 60) granularity = 900;   // 1 day
-        else if (duration <=   5 * 24 * 60 * 60) granularity = 3600;  // 5 days
-        else if (duration <=  30 * 24 * 60 * 60) granularity = 14400; // 30 days
-        else                                     granularity = 86400; // more than 30 days
+        // days * hours * minutes * seconds
+        if (duration <= 60 * 60) granularity = 0;
+        else if (duration <= 2 * 60 * 60) {
+            // less than 1 hour
+            granularity = 120;
+        } else if (duration <= 6 * 60 * 60) {
+            // 2 hours
+            granularity = 600;
+        } else if (duration <= 24 * 60 * 60) {
+            // 6 hours
+            granularity = 900;
+        } else if (duration <= 5 * 24 * 60 * 60) {
+            // 1 day
+            granularity = 3600;
+        } else if (duration <= 30 * 24 * 60 * 60) {
+            // 5 days
+            granularity = 14400;
+        } else granularity = 86400; // 30 days // more than 30 days
 
         return [granularity, duration];
     };
@@ -515,12 +655,21 @@ const Highchart = (() => {
         const series = chart.series[0];
         if (granularity === 0) {
             const data = update_options.tick;
-            chart.series[0].addPoint({ x: data.epoch * 1000, y: data.quote * 1 });
+            chart.series[0].addPoint({
+                x: data.epoch * 1000,
+                y: data.quote * 1,
+            });
         } else {
             const c = update_options.ohlc;
             const last = series.data[series.data.length - 1];
             if (!c || !last) return;
-            const ohlc = [c.open_time * 1000, c.open * 1, c.high * 1, c.low * 1, c.close * 1];
+            const ohlc = [
+                c.open_time * 1000,
+                c.open * 1,
+                c.high * 1,
+                c.low * 1,
+                c.close * 1,
+            ];
 
             if (last.x !== ohlc[0]) {
                 series.addPoint(ohlc, true, true);

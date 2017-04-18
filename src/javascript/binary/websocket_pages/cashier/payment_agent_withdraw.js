@@ -1,7 +1,7 @@
-const Client      = require('../../base/client');
-const localize    = require('../../base/localize').localize;
+const Client = require('../../base/client');
+const localize = require('../../base/localize').localize;
 const FormManager = require('../../common_functions/form_manager');
-const Cookies     = require('../../../lib/js-cookie');
+const Cookies = require('../../../lib/js-cookie');
 
 const PaymentAgentWithdraw = (() => {
     'use strict';
@@ -31,22 +31,59 @@ const PaymentAgentWithdraw = (() => {
         $ddl_agents.empty();
         const pa_list = (response.paymentagent_list || {}).list;
         if (pa_list.length > 0) {
-            BinarySocket.send({ verify_email: Client.get('email'), type: 'paymentagent_withdraw' });
-            insertListOption($ddl_agents, localize('Please select a payment agent'), '');
+            BinarySocket.send({
+                verify_email: Client.get('email'),
+                type        : 'paymentagent_withdraw',
+            });
+            insertListOption(
+                $ddl_agents,
+                localize('Please select a payment agent'),
+                '',
+            );
             for (let i = 0; i < pa_list.length; i++) {
-                insertListOption($ddl_agents, pa_list[i].name, pa_list[i].paymentagent_loginid);
+                insertListOption(
+                    $ddl_agents,
+                    pa_list[i].name,
+                    pa_list[i].paymentagent_loginid,
+                );
             }
             setActiveView(view_ids.form);
             const form_id = `#${$(view_ids.form).find('form').attr('id')}`;
             FormManager.init(form_id, [
-                { selector: field_ids.ddl_agents,        validations: ['req'], request_field: 'paymentagent_loginid' },
-                { selector: field_ids.txt_amount,        validations: ['req', ['number', { type: 'float', decimals: '1, 2', min: 10, max: 2000 }]], request_field: 'amount' },
-                { selector: field_ids.txt_desc,          validations: ['general'], request_field: 'description' },
-                { selector: field_ids.verification_code, validations: ['req', 'email_token'] },
+                {
+                    selector     : field_ids.ddl_agents,
+                    validations  : ['req'],
+                    request_field: 'paymentagent_loginid',
+                },
+                {
+                    selector   : field_ids.txt_amount,
+                    validations: [
+                        'req',
+                        [
+                            'number',
+                            {
+                                type    : 'float',
+                                decimals: '1, 2',
+                                min     : 10,
+                                max     : 2000,
+                            },
+                        ],
+                    ],
+                    request_field: 'amount',
+                },
+                {
+                    selector     : field_ids.txt_desc,
+                    validations  : ['general'],
+                    request_field: 'description',
+                },
+                {
+                    selector   : field_ids.verification_code,
+                    validations: ['req', 'email_token'],
+                },
 
-                { request_field: 'currency',              value: 'USD' },
+                { request_field: 'currency', value: 'USD' },
                 { request_field: 'paymentagent_withdraw', value: 1 },
-                { request_field: 'dry_run',               value: 1 },
+                { request_field: 'dry_run', value: 1 },
             ]);
 
             FormManager.handleSubmit({
@@ -55,12 +92,18 @@ const PaymentAgentWithdraw = (() => {
                 fnc_additional_check: setAgentName,
             });
         } else {
-            showPageError(localize('The Payment Agent facility is currently not available in your country.'));
+            showPageError(
+                localize(
+                    'The Payment Agent facility is currently not available in your country.',
+                ),
+            );
         }
     };
 
     const insertListOption = ($ddl_object, item_text, item_value) => {
-        $ddl_object.append($('<option/>', { value: item_value, text: item_text }));
+        $ddl_object.append(
+            $('<option/>', { value: item_value, text: item_text }),
+        );
     };
 
     // ----------------------------
@@ -69,7 +112,8 @@ const PaymentAgentWithdraw = (() => {
     const withdrawResponse = (response) => {
         const request = response.echo_req;
         switch (response.paymentagent_withdraw) {
-            case 2: { // dry_run success: showing the confirmation page
+            case 2: {
+                // dry_run success: showing the confirmation page
                 setActiveView(view_ids.confirm);
 
                 $('#lblAgentName').text(agent_name);
@@ -77,11 +121,20 @@ const PaymentAgentWithdraw = (() => {
                 $('#lblAmount').text(request.amount);
 
                 FormManager.init(view_ids.confirm, [
-                    { request_field: 'paymentagent_loginid',  value: request.paymentagent_loginid },
-                    { request_field: 'amount',                value: request.amount },
-                    { request_field: 'description',           value: request.description },
-                    { request_field: 'verification_code',     value: request.verification_code },
-                    { request_field: 'currency',              value: request.currency },
+                    {
+                        request_field: 'paymentagent_loginid',
+                        value        : request.paymentagent_loginid,
+                    },
+                    { request_field: 'amount', value: request.amount },
+                    {
+                        request_field: 'description',
+                        value        : request.description,
+                    },
+                    {
+                        request_field: 'verification_code',
+                        value        : request.verification_code,
+                    },
+                    { request_field: 'currency', value: request.currency },
                     { request_field: 'paymentagent_withdraw', value: 1 },
                 ]);
 
@@ -97,19 +150,44 @@ const PaymentAgentWithdraw = (() => {
             }
             case 1: // withdrawal success
                 setActiveView(view_ids.success);
-                $('#successMessage').css('display', '')
+                $('#successMessage')
+                    .css('display', '')
                     .attr('class', 'success-msg')
-                    .html($('<ul/>', { class: 'checked' }).append($('<li/>', { text: localize('Your request to withdraw [_1] [_2] from your account [_3] to Payment Agent [_4] account has been successfully processed.', [request.currency, request.amount, Cookies.get('loginid'), agent_name]) })));
+                    .html(
+                        $('<ul/>', { class: 'checked' }).append(
+                            $('<li/>', {
+                                text: localize(
+                                    'Your request to withdraw [_1] [_2] from your account [_3] to Payment Agent [_4] account has been successfully processed.',
+                                    [
+                                        request.currency,
+                                        request.amount,
+                                        Cookies.get('loginid'),
+                                        agent_name,
+                                    ],
+                                ),
+                            }),
+                        ),
+                    );
                 break;
 
-            default: // error
+            default:
+                // error
                 if (response.echo_req.dry_run === 1) {
                     setActiveView(view_ids.form);
-                    $('#formMessage').css('display', '')
+                    $('#formMessage')
+                        .css('display', '')
                         .attr('class', 'errorfield')
                         .html(response.error.message);
                 } else if (response.error.code === 'InvalidToken') {
-                    showPageError(localize('Your token has expired. Please click [_1]here[_2] to restart the verification process.', ['<a href="javascript:;" onclick="window.location.reload();">', '</a>']));
+                    showPageError(
+                        localize(
+                            'Your token has expired. Please click [_1]here[_2] to restart the verification process.',
+                            [
+                                '<a href="javascript:;" onclick="window.location.reload();">',
+                                '</a>',
+                            ],
+                        ),
+                    );
                 } else {
                     showPageError(response.error.message);
                 }
@@ -126,7 +204,10 @@ const PaymentAgentWithdraw = (() => {
         if (id) {
             $error.find(`#${id}`).removeClass(hidden_class);
         } else {
-            $error.find('#custom-error').html(err_msg).removeClass(hidden_class);
+            $error
+                .find('#custom-error')
+                .html(err_msg)
+                .removeClass(hidden_class);
         }
         setActiveView(view_ids.error);
     };
@@ -142,11 +223,16 @@ const PaymentAgentWithdraw = (() => {
             $views = $('#paymentagent_withdrawal').find('.viewItem');
             $views.addClass(hidden_class);
 
-            if (/(withdrawal|cashier)_locked/.test(data.get_account_status.status)) {
+            if (
+                /(withdrawal|cashier)_locked/.test(
+                    data.get_account_status.status,
+                )
+            ) {
                 showPageError('', 'withdrawal-locked-error');
             } else {
-                BinarySocket.send({ paymentagent_list: Cookies.get('residence') })
-                    .then(response => populateAgentsList(response));
+                BinarySocket.send({
+                    paymentagent_list: Cookies.get('residence'),
+                }).then(response => populateAgentsList(response));
             }
         });
     };

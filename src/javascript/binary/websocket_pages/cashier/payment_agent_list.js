@@ -1,5 +1,5 @@
 const urlForStatic = require('../../base/url').urlForStatic;
-const Cookies      = require('../../../lib/js-cookie');
+const Cookies = require('../../../lib/js-cookie');
 
 const PaymentAgentList = (() => {
     'use strict';
@@ -20,7 +20,7 @@ const PaymentAgentList = (() => {
         });
 
         $pa_list_container = $('#pa_list');
-        $agent_template    = $pa_list_container.find('#accordion').html();
+        $agent_template = $pa_list_container.find('#accordion').html();
 
         let residence = Cookies.get('residence');
         if (!residence || residence.length === 0) {
@@ -80,7 +80,9 @@ const PaymentAgentList = (() => {
     };
 
     const insertListOption = ($ddl_object, item_text, item_value) => {
-        $ddl_object.append($('<option/>', { value: item_value, text: item_text }));
+        $ddl_object.append(
+            $('<option/>', { value: item_value, text: item_text }),
+        );
     };
 
     // -----------------------
@@ -99,9 +101,9 @@ const PaymentAgentList = (() => {
             if (agent.supported_banks && agent.supported_banks.length > 0) {
                 const banks = agent.supported_banks.split(',');
                 banks.map((bank) => {
-                    supported_banks += bank.length === 0 ?
-                        '' :
-                        `<img src="${urlForStatic(`images/pages/payment_agent/banks/${bank.toLowerCase()}.png`)}" alt="${bank}" title="${bank}" />`;
+                    supported_banks += bank.length === 0
+                        ? ''
+                        : `<img src="${urlForStatic(`images/pages/payment_agent/banks/${bank.toLowerCase()}.png`)}" alt="${bank}" title="${bank}" />`;
                 });
             }
 
@@ -110,12 +112,16 @@ const PaymentAgentList = (() => {
                     .replace(/%name/g, agent.name)
                     .replace(/%summary/g, agent.summary)
                     .replace(/%deposit_commission/g, agent.deposit_commission)
-                    .replace(/%withdrawal_commission/g, agent.withdrawal_commission)
+                    .replace(
+                        /%withdrawal_commission/g,
+                        agent.withdrawal_commission,
+                    )
                     .replace(/%url/g, agent.url)
                     .replace(/%email/g, agent.email)
                     .replace(/%telephone/g, agent.telephone)
                     .replace(/%further_information/g, agent.further_information)
-                    .replace(/%supported_banks/g, supported_banks));
+                    .replace(/%supported_banks/g, supported_banks),
+            );
         });
 
         $pa_list_container.empty().append($accordion);

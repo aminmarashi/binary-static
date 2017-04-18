@@ -11,27 +11,30 @@ const FlexTableUI = (() => {
             [],
             getMetadata(),
             config.header,
-            config.footer);
+            config.footer,
+        );
         // Table.appendTablebody expects the table to already
         // exist in the DOM, so we need to append first
         $tableContainer.appendTo(config.container);
         extend(config.data);
     };
 
-    const getMetadata = () => (
-        {
-            id        : config.id,
-            tableClass: config.class,
-            cols      : config.cols,
-        }
-    );
+    const getMetadata = () => ({
+        id        : config.id,
+        tableClass: config.class,
+        cols      : config.cols,
+    });
 
     const extend = (data) => {
         const cols = config.cols;
         const formatter = config.formatter;
         const style = config.style;
         Table.appendTableBody(config.id, data, (datum) => {
-            const $row = Table.createFlexTableRow(formatter(datum), cols, 'data');
+            const $row = Table.createFlexTableRow(
+                formatter(datum),
+                cols,
+                'data',
+            );
             if (style) {
                 style($row, datum);
             }
@@ -42,7 +45,10 @@ const FlexTableUI = (() => {
     const displayError = (message, colspan) => {
         const $tr = $('<tr/>', { class: 'flex-tr' });
         const $td = $('<td/>', { colspan: colspan });
-        const $p  = $('<p/>', { class: 'notice-msg center-text', text: message });
+        const $p = $('<p/>', {
+            class: 'notice-msg center-text',
+            text : message,
+        });
         return $(`#${config.id} tbody`).append($tr.append($td.append($p)));
     };
 

@@ -1,5 +1,5 @@
-const Client        = require('../../binary/base/client');
-const State         = require('../../binary/base/storage').State;
+const Client = require('../../binary/base/client');
+const State = require('../../binary/base/storage').State;
 const PortfolioInit = require('../../binary/websocket_pages/user/account/portfolio/portfolio.init');
 
 const JapanPortfolio = (() => {
@@ -14,7 +14,11 @@ const JapanPortfolio = (() => {
         const $container = $('#tab_portfolio-content');
         $portfolio = $portfolio || $('#portfolio');
 
-        if ($portfolio && (!$portfolio.parent().length || $portfolio.parent().get(0).id !== 'tab_portfolio-content')) {
+        if (
+            $portfolio &&
+            (!$portfolio.parent().length ||
+                $portfolio.parent().get(0).id !== 'tab_portfolio-content')
+        ) {
             $portfolio.detach();
             $container.append($portfolio);
         }

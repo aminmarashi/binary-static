@@ -19,8 +19,12 @@ const Regulation = (() => {
         const relocateLinks = () => {
             $map_area.each(function(index) {
                 let c = '';
-                const new_width = $selector[0].getBoundingClientRect().width.toFixed(2);
-                coords[index].split(',').map((v) => { c += (c ? ',' : '') + ((v * new_width) / 900).toFixed(2); });
+                const new_width = $selector[0]
+                    .getBoundingClientRect()
+                    .width.toFixed(2);
+                coords[index].split(',').map((v) => {
+                    c += (c ? ',' : '') + (v * new_width / 900).toFixed(2);
+                });
                 $(this).attr('coords', c);
             });
         };

@@ -1,5 +1,5 @@
-const BinaryPjax  = require('../../../../base/binary_pjax');
-const localize    = require('../../../../base/localize').localize;
+const BinaryPjax = require('../../../../base/binary_pjax');
+const localize = require('../../../../base/localize').localize;
 const FormManager = require('../../../../common_functions/form_manager');
 
 const CashierPassword = (() => {
@@ -14,7 +14,9 @@ const CashierPassword = (() => {
         $form = $(form_id);
 
         BinarySocket.wait('authorize').then(() => {
-            BinarySocket.send({ cashier_password: 1 }).then(response => init(response));
+            BinarySocket.send({ cashier_password: 1 }).then(response =>
+                init(response),
+            );
         });
     };
 
@@ -43,8 +45,20 @@ const CashierPassword = (() => {
         }
         $form.removeClass(hidden_class);
         FormManager.init(form_id, [
-            { selector: '#cashier_password',        validations: ['req', locked ? ['length', { min: 6, max: 25 }] : 'password'], request_field: locked ? 'unlock_password' : 'lock_password', re_check_field: locked ? null : '#repeat_cashier_password' },
-            { selector: '#repeat_cashier_password', validations: ['req', ['compare', { to: '#cashier_password' }]], exclude_request: 1 },
+            {
+                selector   : '#cashier_password',
+                validations: [
+                    'req',
+                    locked ? ['length', { min: 6, max: 25 }] : 'password',
+                ],
+                request_field : locked ? 'unlock_password' : 'lock_password',
+                re_check_field: locked ? null : '#repeat_cashier_password',
+            },
+            {
+                selector       : '#repeat_cashier_password',
+                validations    : ['req', ['compare', { to: '#cashier_password' }]],
+                exclude_request: 1,
+            },
 
             { request_field: 'cashier_password', value: 1 },
         ]);
@@ -62,14 +76,17 @@ const CashierPassword = (() => {
         if (response.error) {
             let message = response.error.message;
             if (response.error.code === 'InputValidationFailed') {
-                message = 'Sorry, you have entered an incorrect cashier password';
+                message =
+                    'Sorry, you have entered an incorrect cashier password';
             }
             $form_error.text(localize(message));
             return;
         }
         redirect_url = sessionStorage.getItem('cashier_lock_redirect') || '';
         $form.addClass(hidden_class);
-        $form_message.text(localize('Your settings have been updated successfully.'));
+        $form_message.text(
+            localize('Your settings have been updated successfully.'),
+        );
         setTimeout(redirect, 2000);
     };
 

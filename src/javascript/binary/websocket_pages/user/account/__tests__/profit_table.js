@@ -7,32 +7,39 @@ describe('Profit Table', () => {
         this.timeout(10000);
         // this is a read token, even if other people take it, won't be able to do any harm
         api.authorize('hhh9bfrbq0G3dRf').then(() => {
-            api.getProfitTable({ limit: 1, description: 1, offset: 0 }).then((response) => {
-                profit_table = response.profit_table;
-                done();
-            });
+            api
+                .getProfitTable({ limit: 1, description: 1, offset: 0 })
+                .then((response) => {
+                    profit_table = response.profit_table;
+                    done();
+                });
         });
     });
     it('Should have all expected data', () => {
-        const profit_table_data = profitTable.getProfitTabletData(profit_table.transactions[0]);
-        expect(profit_table_data).to.be.an('Object')
+        const profit_table_data = profitTable.getProfitTabletData(
+            profit_table.transactions[0],
+        );
+        expect(profit_table_data).to.be
+            .an('Object')
             .and.to.have.property('buyDate')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('ref')
+        expect(profit_table_data).to.have.property('ref').and.to.be.a('string');
+        expect(profit_table_data).to.have
+            .property('payout')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('payout')
+        expect(profit_table_data).to.have
+            .property('buyPrice')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('buyPrice')
+        expect(profit_table_data).to.have
+            .property('sellDate')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('sellDate')
+        expect(profit_table_data).to.have
+            .property('sellPrice')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('sellPrice')
+        expect(profit_table_data).to.have.property('pl').and.to.be.a('string');
+        expect(profit_table_data).to.have
+            .property('desc')
             .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('pl')
-            .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('desc')
-            .and.to.be.a('string');
-        expect(profit_table_data).to.have.property('id')
-            .and.to.be.a('string');
+        expect(profit_table_data).to.have.property('id').and.to.be.a('string');
     });
 });

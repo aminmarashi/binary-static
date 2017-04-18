@@ -2,7 +2,9 @@ const Authenticate = (() => {
     const onLoad = () => {
         BinarySocket.send({ get_account_status: 1 }).then((response) => {
             if (response.error) {
-                $('#error_message').removeClass('invisible').text(response.error.message);
+                $('#error_message')
+                    .removeClass('invisible')
+                    .text(response.error.message);
             } else {
                 const status = response.get_account_status.status;
                 const authenticated = /authenticated/.test(status);

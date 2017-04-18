@@ -1,7 +1,8 @@
-const getFormNameBarrierCategory = require('../common').getFormNameBarrierCategory;
-const getLanguage                = require('../../../base/language').get;
-const localize                   = require('../../../base/localize').localize;
-const isEmptyObject              = require('../../../base/utility').isEmptyObject;
+const getFormNameBarrierCategory = require('../common')
+    .getFormNameBarrierCategory;
+const getLanguage = require('../../../base/language').get;
+const localize = require('../../../base/localize').localize;
+const isEmptyObject = require('../../../base/utility').isEmptyObject;
 
 /*
  * Contract object mocks the trading form we have on our website
@@ -34,11 +35,11 @@ const Contract_Beta = (() => {
 
     const populateDurations = (current_contract) => {
         const current_category = current_contract.contract_category;
-        const expiry_type      = current_contract.expiry_type;
+        const expiry_type = current_contract.expiry_type;
         const barrier_category = current_contract.barrier_category;
-        const start_type       = current_contract.start_type;
-        const max_duration     = current_contract.max_contract_duration;
-        const min_duration     = current_contract.min_contract_duration;
+        const start_type = current_contract.start_type;
+        const max_duration = current_contract.max_contract_duration;
+        const min_duration = current_contract.min_contract_duration;
 
         if (!durations[expiry_type]) {
             durations[expiry_type] = {};
@@ -52,13 +53,23 @@ const Contract_Beta = (() => {
             durations[expiry_type][current_category][barrier_category] = {};
         }
 
-        if (!durations[expiry_type][current_category][barrier_category][start_type]) {
-            durations[expiry_type][current_category][barrier_category][start_type] = {};
+        if (
+            !durations[expiry_type][current_category][barrier_category][
+                start_type
+            ]
+        ) {
+            durations[expiry_type][current_category][barrier_category][
+                start_type
+            ] = {};
         }
 
-        durations[expiry_type][current_category][barrier_category][start_type].max_contract_duration = max_duration;
+        durations[expiry_type][current_category][barrier_category][
+            start_type
+        ].max_contract_duration = max_duration;
 
-        durations[expiry_type][current_category][barrier_category][start_type].min_contract_duration = min_duration;
+        durations[expiry_type][current_category][barrier_category][
+            start_type
+        ].min_contract_duration = min_duration;
     };
 
     const details = (form_name) => {
@@ -88,14 +99,21 @@ const Contract_Beta = (() => {
                     populateDurations(current_obj);
                 }
 
-                if (current_obj.forward_starting_options && current_obj.start_type === 'forward' && sessionStorage.formname !== 'higherlower') {
+                if (
+                    current_obj.forward_starting_options &&
+                    current_obj.start_type === 'forward' &&
+                    sessionStorage.formname !== 'higherlower'
+                ) {
                     start_dates.list = current_obj.forward_starting_options;
                 } else if (current_obj.start_type === 'spot') {
                     start_dates.has_spot = 1;
                 }
 
                 const symbol = current_obj.underlying_symbol;
-                if (current_obj.barrier_category && current_obj.barrier_category !== 'non_financial') {
+                if (
+                    current_obj.barrier_category &&
+                    current_obj.barrier_category !== 'non_financial'
+                ) {
                     if (!barriers.hasOwnProperty(symbol)) {
                         barriers[symbol] = {};
                     }
@@ -119,15 +137,24 @@ const Contract_Beta = (() => {
                     contract_type[contract_category] = {};
                 }
 
-                if (!contract_type[contract_category].hasOwnProperty(current_obj.contract_type)) {
-                    contract_type[contract_category][current_obj.contract_type] =
-                        localize(current_obj.contract_display);
+                if (
+                    !contract_type[contract_category].hasOwnProperty(
+                        current_obj.contract_type,
+                    )
+                ) {
+                    contract_type[contract_category][
+                        current_obj.contract_type
+                    ] = localize(current_obj.contract_display);
                 }
             }
         });
 
         if (form_name && barrier_category) {
-            if (barriers && barriers[form_name] && barriers[form_name].barrier_category !== barrier_category) {
+            if (
+                barriers &&
+                barriers[form_name] &&
+                barriers[form_name].barrier_category !== barrier_category
+            ) {
                 barriers = {};
             }
         }
@@ -141,20 +168,31 @@ const Contract_Beta = (() => {
 
         contracts.available.forEach((current_obj) => {
             const contract_category = current_obj.contract_category;
-            if (contract_category && !trade_contract_forms.hasOwnProperty(contract_category)) {
+            if (
+                contract_category &&
+                !trade_contract_forms.hasOwnProperty(contract_category)
+            ) {
                 if (contract_category === 'callput') {
                     if (current_obj.barrier_category === 'euro_atm') {
                         trade_contract_forms.risefall = localize('Rise/Fall');
                     } else {
-                        trade_contract_forms.higherlower = localize('Higher/Lower');
+                        trade_contract_forms.higherlower = localize(
+                            'Higher/Lower',
+                        );
                     }
                 } else {
-                    trade_contract_forms[contract_category] = localize(current_obj.contract_category_display);
+                    trade_contract_forms[contract_category] = localize(
+                        current_obj.contract_category_display,
+                    );
                     if (contract_category === 'digits') {
-                        trade_contract_forms.matchdiff = localize('Matches/Differs');
+                        trade_contract_forms.matchdiff = localize(
+                            'Matches/Differs',
+                        );
                         if (getLanguage() !== 'ID') {
                             trade_contract_forms.evenodd = localize('Even/Odd');
-                            trade_contract_forms.overunder = localize('Over/Under');
+                            trade_contract_forms.overunder = localize(
+                                'Over/Under',
+                            );
                         }
                     }
                 }
@@ -186,7 +224,9 @@ const Contract_Beta = (() => {
         contractType : () => contract_type,
         form         : () => form,
         barrier      : () => barrier,
-        setContracts : (data) => { contract_details = data; },
+        setContracts : (data) => {
+            contract_details = data;
+        },
     };
 })();
 

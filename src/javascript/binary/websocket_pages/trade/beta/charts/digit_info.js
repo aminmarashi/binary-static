@@ -1,7 +1,7 @@
-const Highcharts       = require('highcharts');
-const Symbols          = require('../../symbols');
-const localize         = require('../../../../base/localize').localize;
-const template         = require('../../../../base/utility').template;
+const Highcharts = require('highcharts');
+const Symbols = require('../../symbols');
+const localize = require('../../../../base/localize').localize;
+const template = require('../../../../base/utility').template;
 require('highcharts/modules/exporting')(Highcharts);
 
 const DigitInfo_Beta = (() => {
@@ -35,8 +35,8 @@ const DigitInfo_Beta = (() => {
         tooltip: {
             borderWidth: 1,
             formatter  : function() {
-                const total      = $('#tick_count').val();
-                const percentage = (this.y / total) * 100;
+                const total = $('#tick_count').val();
+                const percentage = this.y / total * 100;
                 return `<b>${localize('Digit')}:</b> ${this.x}<br/><b>${localize('Percentage')}:</b> ${percentage.toFixed(1)}%`;
             },
         },
@@ -59,7 +59,7 @@ const DigitInfo_Beta = (() => {
                     },
                     formatter: function() {
                         const total = $('#tick_count').val();
-                        const percentage = (this.point.y / total) * 100;
+                        const percentage = this.point.y / total * 100;
                         return `${percentage.toFixed(2)}%`;
                     },
                 },
@@ -89,7 +89,7 @@ const DigitInfo_Beta = (() => {
                 enabled  : false,
                 formatter: function() {
                     const total = $('#tick_count').val();
-                    const percentage = parseInt((this.value / total) * 100);
+                    const percentage = parseInt(this.value / total * 100);
                     return `${percentage}%`;
                 },
             },
@@ -111,13 +111,19 @@ const DigitInfo_Beta = (() => {
             elem += `<option value="${underlyings[i]}">${localize(symbols[underlyings[i]])}</option>`;
         }
         $('#digit_underlying').html($(elem)).val(underlying);
-        $('#digit_domain').text(domain.charAt(0).toUpperCase() + domain.slice(1));
-        $('#digit_info_underlying').text($('#digit_underlying option:selected').text());
+        $('#digit_domain').text(
+            domain.charAt(0).toUpperCase() + domain.slice(1),
+        );
+        $('#digit_info_underlying').text(
+            $('#digit_underlying option:selected').text(),
+        );
     };
 
     const onLatest = () => {
         const getLatest = () => {
-            const $digit_underlying_option = $('#digit_underlying option:selected');
+            const $digit_underlying_option = $(
+                '#digit_underlying option:selected',
+            );
             const symbol = $digit_underlying_option.val();
             const count = $('#tick_count').val();
             $('#digit_info_underlying').text($digit_underlying_option.text());
@@ -128,7 +134,10 @@ const DigitInfo_Beta = (() => {
                 count        : count,
             };
             if (chart.series[0].name !== symbol) {
-                if ($('#underlying').find('option:selected').val() !== $('#digit_underlying').val()) {
+                if (
+                    $('#underlying').find('option:selected').val() !==
+                    $('#digit_underlying').val()
+                ) {
                     request.subscribe = 1;
                     request.style = 'ticks';
                 }
@@ -137,20 +146,30 @@ const DigitInfo_Beta = (() => {
                     stream_id = null;
                 }
             }
-            BinarySocket.send(request, { callback: (response) => {
-                const type = response.msg_type;
-                if (type === 'tick') {
-                    updateChart(response);
-                } else if (type === 'history') {
-                    showChart(response.echo_req.ticks_history, response.history.prices);
-                }
-            } });
+            BinarySocket.send(request, {
+                callback: (response) => {
+                    const type = response.msg_type;
+                    if (type === 'tick') {
+                        updateChart(response);
+                    } else if (type === 'history') {
+                        showChart(
+                            response.echo_req.ticks_history,
+                            response.history.prices,
+                        );
+                    }
+                },
+            });
         };
-        $('#digit_underlying, #tick_count').off('change').on('change', getLatest);
+        $('#digit_underlying, #tick_count')
+            .off('change')
+            .on('change', getLatest);
     };
 
     const showChart = (underlying, underlying_spots) => {
-        if (typeof underlying_spots === 'undefined' || underlying_spots.length <= 0) {
+        if (
+            typeof underlying_spots === 'undefined' ||
+            underlying_spots.length <= 0
+        ) {
             console.log('Unexpected error occured in the charts.');
             return;
         }
@@ -160,9 +179,12 @@ const DigitInfo_Beta = (() => {
             underlying_spots[i] = val.substr(val.length - 1);
         }
 
-        const getTitle = () => (
-            { text: template($('#last_digit_title').html(), [underlying_spots.length, $('#digit_underlying option:selected').text()]) }
-        );
+        const getTitle = () => ({
+            text: template($('#last_digit_title').html(), [
+                underlying_spots.length,
+                $('#digit_underlying option:selected').text(),
+            ]),
+        });
 
         spots = underlying_spots;
         if (chart && $('#last_digit_histo').html()) {
@@ -189,7 +211,8 @@ const DigitInfo_Beta = (() => {
             latest_spot = undefined; // This simplifies the logic a bit later.
         }
 
-        if (typeof latest_spot !== 'undefined') { // This is a bit later. :D
+        if (typeof latest_spot !== 'undefined') {
+            // This is a bit later. :D
             spots.unshift(latest_spot.slice(-1)); // Only last digit matters
             spots.pop();
         }
@@ -219,9 +242,15 @@ const DigitInfo_Beta = (() => {
                 prev_min_index = min_index;
             } else if (prev_min_index !== min_index) {
                 if (typeof filtered_spots[prev_min_index] === 'object') {
-                    filtered_spots[prev_min_index] = { y: filtered_spots[prev_min_index].y, color: '#e1f0fb' };
+                    filtered_spots[prev_min_index] = {
+                        y    : filtered_spots[prev_min_index].y,
+                        color: '#e1f0fb',
+                    };
                 } else {
-                    filtered_spots[prev_min_index] = { y: filtered_spots[prev_min_index], color: '#e1f0fb' };
+                    filtered_spots[prev_min_index] = {
+                        y    : filtered_spots[prev_min_index],
+                        color: '#e1f0fb',
+                    };
                 }
                 prev_min_index = min_index;
             }
@@ -233,9 +262,15 @@ const DigitInfo_Beta = (() => {
                 prev_max_index = max_index;
             } else if (prev_max_index !== max_index) {
                 if (typeof filtered_spots[prev_max_index] === 'object') {
-                    filtered_spots[prev_max_index] = { y: filtered_spots[prev_max_index].y, color: '#e1f0fb' };
+                    filtered_spots[prev_max_index] = {
+                        y    : filtered_spots[prev_max_index].y,
+                        color: '#e1f0fb',
+                    };
                 } else {
-                    filtered_spots[prev_max_index] = { y: filtered_spots[prev_max_index], color: '#e1f0fb' };
+                    filtered_spots[prev_max_index] = {
+                        y    : filtered_spots[prev_max_index],
+                        color: '#e1f0fb',
+                    };
                 }
                 prev_max_index = max_index;
             }
@@ -249,7 +284,7 @@ const DigitInfo_Beta = (() => {
                 stream_id = tick.tick.id || null;
                 update(tick.tick.symbol, tick.tick.quote);
             } else {
-                BinarySocket.send({ forget: (tick.tick.id).toString() });
+                BinarySocket.send({ forget: tick.tick.id.toString() });
             }
         } else {
             update(tick.tick.symbol, tick.tick.quote);

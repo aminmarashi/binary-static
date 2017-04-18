@@ -1,7 +1,8 @@
-const RealityCheckData      = require('./reality_check.data');
-const showLocalTimeOnHover  = require('../../../base/clock').showLocalTimeOnHover;
-const urlFor               = require('../../../base/url').urlFor;
-const FormManager           = require('../../../common_functions/form_manager');
+const RealityCheckData = require('./reality_check.data');
+const showLocalTimeOnHover = require('../../../base/clock')
+    .showLocalTimeOnHover;
+const urlFor = require('../../../base/url').urlFor;
+const FormManager = require('../../../common_functions/form_manager');
 require('../../../../lib/polyfills/array.includes');
 require('../../../../lib/polyfills/string.includes');
 
@@ -30,11 +31,22 @@ const RealityCheckUI = (() => {
 
     const ajaxSuccess = (reality_check_text, summary) => {
         const content = 'reality_check_content';
-        if (reality_check_text.includes(content) && $('#reality_check').length === 0) {
-            $('body').append($('<div/>', { id: 'reality_check', class: 'lightbox' })
-                .append($('<div />').append($('<div />')
-                .append($(reality_check_text).find(`#${content}`)))));
-            $(form.num_reality_duration).val(Math.floor(+RealityCheckData.get('interval') / 60 / 1000));
+        if (
+            reality_check_text.includes(content) &&
+            $('#reality_check').length === 0
+        ) {
+            $('body').append(
+                $('<div/>', { id: 'reality_check', class: 'lightbox' }).append(
+                    $('<div />').append(
+                        $('<div />').append(
+                            $(reality_check_text).find(`#${content}`),
+                        ),
+                    ),
+                ),
+            );
+            $(form.num_reality_duration).val(
+                Math.floor(+RealityCheckData.get('interval') / 60 / 1000),
+            );
             $('#statement').off('click').on('click dblclick', onStatementClick);
             $('#logout').off('click').on('click dblclick', onLogoutClick);
             if (summary) {
@@ -64,17 +76,27 @@ const RealityCheckUI = (() => {
 
     const handleKeypress = (ev) => {
         const char = String.fromCharCode(ev.which);
-        if ((!/[0-9]/.test(char) && [8, 37, 39].indexOf(ev.keyCode) < 0) ||
-            /['%]/.test(char)) { // similarity to arrows key code in some browsers
+        if (
+            (!/[0-9]/.test(char) && [8, 37, 39].indexOf(ev.keyCode) < 0) ||
+            /['%]/.test(char)
+        ) {
+            // similarity to arrows key code in some browsers
             ev.returnValue = false;
             ev.preventDefault();
         }
     };
 
     const bindValidation = () => {
-        $(form.num_reality_duration).off('keypress').on('keypress', handleKeypress);
+        $(form.num_reality_duration)
+            .off('keypress')
+            .on('keypress', handleKeypress);
         FormManager.init(form.selector, [
-            { selector: form.num_reality_duration, validations: ['req', ['number', { min: 10, max: 120 }]], exclude_request: 1, no_scroll: 1 },
+            {
+                selector       : form.num_reality_duration,
+                validations    : ['req', ['number', { min: 10, max: 120 }]],
+                exclude_request: 1,
+                no_scroll      : 1,
+            },
         ]);
         FormManager.handleSubmit({
             form_selector       : form.selector,
@@ -83,7 +105,7 @@ const RealityCheckUI = (() => {
     };
 
     const responseHandler = () => {
-        const interval_minute = +($(form.num_reality_duration).val());
+        const interval_minute = +$(form.num_reality_duration).val();
         RealityCheckData.set('interval', interval_minute * 60 * 1000);
         RealityCheckData.set('keep_open', 0);
         RealityCheckData.set('ack', 1);
@@ -91,7 +113,10 @@ const RealityCheckUI = (() => {
     };
 
     const onStatementClick = () => {
-        const win = window.open(`${urlFor('user/statementws')}#no-reality-check`, '_blank');
+        const win = window.open(
+            `${urlFor('user/statementws')}#no-reality-check`,
+            '_blank',
+        );
         if (win) {
             win.focus();
         }
@@ -108,7 +133,7 @@ const RealityCheckUI = (() => {
 
     const startSummaryTimer = () => {
         const interval = +RealityCheckData.get('interval');
-        const toWait = interval - ((Date.now() - login_time) % interval);
+        const toWait = interval - (Date.now() - login_time) % interval;
 
         window.setTimeout(() => {
             RealityCheckData.set('keep_open', 1);
@@ -118,7 +143,8 @@ const RealityCheckUI = (() => {
 
     const shouldShowPopup = () => {
         const location = window.location;
-        return !(/no-reality-check/.test(location.hash) && /statementws/.test(location.pathname));
+        return !(/no-reality-check/.test(location.hash) &&
+            /statementws/.test(location.pathname));
     };
 
     const getSummaryAsync = () => {
@@ -130,12 +156,16 @@ const RealityCheckUI = (() => {
     };
 
     return {
-        renderFrequencyPopUp: () => { getAjax(); },
-        closePopUp          : closePopUp,
-        startSummaryTimer   : startSummaryTimer,
-        getSummaryAsync     : getSummaryAsync,
-        setLoginTime        : (time) => { login_time = time; },
-        shouldShowPopup     : shouldShowPopup,
+        renderFrequencyPopUp: () => {
+            getAjax();
+        },
+        closePopUp       : closePopUp,
+        startSummaryTimer: startSummaryTimer,
+        getSummaryAsync  : getSummaryAsync,
+        setLoginTime     : (time) => {
+            login_time = time;
+        },
+        shouldShowPopup: shouldShowPopup,
     };
 })();
 

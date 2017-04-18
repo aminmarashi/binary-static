@@ -1,10 +1,11 @@
-const AssetIndex             = require('../asset_index');
-const BinaryPjax             = require('../../../base/binary_pjax');
-const State                  = require('../../../base/storage').State;
-const showLoadingImage       = require('../../../base/utility').showLoadingImage;
-const Table                  = require('../../../common_functions/attach_dom/table');
-const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions').jqueryuiTabsToDropdown;
-const jpClient               = require('../../../common_functions/country_base').jpClient;
+const AssetIndex = require('../asset_index');
+const BinaryPjax = require('../../../base/binary_pjax');
+const State = require('../../../base/storage').State;
+const showLoadingImage = require('../../../base/utility').showLoadingImage;
+const Table = require('../../../common_functions/attach_dom/table');
+const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions')
+    .jqueryuiTabsToDropdown;
+const jpClient = require('../../../common_functions/country_base').jpClient;
 
 const AssetIndexUI = (() => {
     'use strict';
@@ -33,7 +34,7 @@ const AssetIndexUI = (() => {
 
         showLoadingImage($container);
 
-        is_framed = (config && config.framed);
+        is_framed = config && config.framed;
         if (!asset_index) {
             sendRequest();
         }
@@ -50,11 +51,16 @@ const AssetIndexUI = (() => {
         $contents = $('<div/>');
 
         for (let i = 0; i < asset_index.length; i++) {
-            const asset_item  = asset_index[i];
+            const asset_item = asset_index[i];
             const symbol_info = asset_item[3];
             if (symbol_info) {
-                const $submarket_table = getSubmarketTable(asset_item, symbol_info);
-                $submarket_table.find('tbody').append(createSubmarketTableRow(asset_item, symbol_info));
+                const $submarket_table = getSubmarketTable(
+                    asset_item,
+                    symbol_info,
+                );
+                $submarket_table
+                    .find('tbody')
+                    .append(createSubmarketTableRow(asset_item, symbol_info));
             }
         }
 
@@ -64,12 +70,14 @@ const AssetIndexUI = (() => {
 
         if (is_framed) {
             $container.find('ul').hide();
-            $('<div/>', { class: 'center-text' }).append(jqueryuiTabsToDropdown($container)).prependTo($container);
+            $('<div/>', { class: 'center-text' })
+                .append(jqueryuiTabsToDropdown($container))
+                .prependTo($container);
         }
     };
 
     const getSubmarketTable = (asset_item, symbol_info) => {
-        const market_id    = `market-${symbol_info.market}`;
+        const market_id = `market-${symbol_info.market}`;
         const submarket_id = `submarket-${symbol_info.submarket}`;
 
         let $table = $contents.find(`#${submarket_id}`);
@@ -79,7 +87,15 @@ const AssetIndexUI = (() => {
             if ($market.length === 0) {
                 // Create the market and tab elements
                 $market = $('<div/>', { id: market_id });
-                $tabs.append($('<li/>').append($('<a/>', { href: `#${market_id}`, text: symbol_info.market_display_name, id: 'outline' })));
+                $tabs.append(
+                    $('<li/>').append(
+                        $('<a/>', {
+                            href: `#${market_id}`,
+                            text: symbol_info.market_display_name,
+                            id  : 'outline',
+                        }),
+                    ),
+                );
             }
             $table = createEmptyTable(asset_item, symbol_info, submarket_id);
             $market.append($table);
@@ -90,7 +106,7 @@ const AssetIndexUI = (() => {
     };
 
     const createSubmarketTableRow = (asset_item, symbol_info) => {
-        const cells   = [symbol_info.display_name];
+        const cells = [symbol_info.display_name];
         const columns = ['asset'];
 
         const market_cols = market_columns[symbol_info.market];
@@ -114,10 +130,19 @@ const AssetIndexUI = (() => {
             cols: market_columns[market].columns,
         };
 
-        const $submarket_table = Table.createFlexTable([], metadata, market_columns[market].header);
+        const $submarket_table = Table.createFlexTable(
+            [],
+            metadata,
+            market_columns[market].header,
+        );
 
-        const $submarket_header = $('<tr/>', { class: 'flex-tr' })
-            .append($('<th/>', { class: 'flex-tr-child submarket-name', colspan: market_columns[market].columns.length, text: symbol_info.submarket_display_name }));
+        const $submarket_header = $('<tr/>', { class: 'flex-tr' }).append(
+            $('<th/>', {
+                class  : 'flex-tr-child submarket-name',
+                colspan: market_columns[market].columns.length,
+                text   : symbol_info.submarket_display_name,
+            }),
+        );
         $submarket_table.find('thead').prepend($submarket_header);
 
         return $submarket_table;

@@ -1,14 +1,14 @@
-const localize         = require('../../../base/localize').localize;
-const Validation       = require('../../../common_functions/form_validation');
+const localize = require('../../../base/localize').localize;
+const Validation = require('../../../common_functions/form_validation');
 const MetaTraderConfig = require('./metatrader.config');
-const MetaTraderUI     = require('./metatrader.ui');
+const MetaTraderUI = require('./metatrader.ui');
 
 const MetaTrader = (() => {
     'use strict';
 
-    const types_info   = MetaTraderConfig.types_info;
+    const types_info = MetaTraderConfig.types_info;
     const actions_info = MetaTraderConfig.actions_info;
-    const fields       = MetaTraderConfig.fields;
+    const fields = MetaTraderConfig.fields;
 
     let has_financial_company,
         has_gaming_company;
@@ -21,7 +21,9 @@ const MetaTrader = (() => {
                 getAllAccountsInfo();
                 MetaTraderUI.init(submit);
             } else {
-                MetaTraderUI.displayPageError(localize('Sorry, this feature is not available.'));
+                MetaTraderUI.displayPageError(
+                    localize('Sorry, this feature is not available.'),
+                );
             }
         });
     };
@@ -29,11 +31,18 @@ const MetaTrader = (() => {
     const isEligible = (landing_company_response) => {
         let is_eligible = false;
         if (!landing_company_response.error) {
-            const lc              = landing_company_response.landing_company;
-            has_financial_company = lc.hasOwnProperty('mt_financial_company') && lc.mt_financial_company.shortcode === 'vanuatu';
-            has_gaming_company    = lc.hasOwnProperty('mt_gaming_company') && lc.mt_gaming_company.shortcode === 'costarica';
-            if (lc.hasOwnProperty('financial_company') && lc.financial_company.shortcode === 'costarica' &&
-                (has_financial_company || has_gaming_company)) {
+            const lc = landing_company_response.landing_company;
+            has_financial_company =
+                lc.hasOwnProperty('mt_financial_company') &&
+                lc.mt_financial_company.shortcode === 'vanuatu';
+            has_gaming_company =
+                lc.hasOwnProperty('mt_gaming_company') &&
+                lc.mt_gaming_company.shortcode === 'costarica';
+            if (
+                lc.hasOwnProperty('financial_company') &&
+                lc.financial_company.shortcode === 'costarica' &&
+                (has_financial_company || has_gaming_company)
+            ) {
                 is_eligible = true;
             }
         }
@@ -53,8 +62,11 @@ const MetaTrader = (() => {
             if (response.mt5_login_list && response.mt5_login_list.length > 0) {
                 response.mt5_login_list.map((obj) => {
                     const acc_type = getAccountType(obj.group);
-                    if (acc_type) { // ignore old accounts which are not linked to any group
-                        types_info[acc_type].account_info = { login: obj.login };
+                    if (acc_type) {
+                        // ignore old accounts which are not linked to any group
+                        types_info[acc_type].account_info = {
+                            login: obj.login,
+                        };
                         getAccountDetails(obj.login, acc_type);
                     }
                 });
@@ -81,9 +93,8 @@ const MetaTrader = (() => {
         });
     };
 
-    const getAccountType = group => (
-        group ? (/demo/.test(group) ? 'demo' : group.split('\\')[1] || '') : ''
-    );
+    const getAccountType = group =>
+        (group ? /demo/.test(group) ? 'demo' : group.split('\\')[1] || '' : '');
 
     const makeRequestObject = (acc_type, action) => {
         const req = {};
@@ -91,7 +102,9 @@ const MetaTrader = (() => {
         Object.keys(fields[action]).forEach((field) => {
             const field_obj = fields[action][field];
             if (field_obj.request_field) {
-                req[field_obj.request_field] = MetaTraderUI.$form().find(field_obj.id).val();
+                req[field_obj.request_field] = MetaTraderUI.$form()
+                    .find(field_obj.id)
+                    .val();
             }
         });
 
@@ -126,9 +139,15 @@ const MetaTrader = (() => {
                         MetaTraderUI.enableButton();
                     } else {
                         MetaTraderUI.closeForm();
-                        MetaTraderUI.displayMainMessage(actions_info[action].success_msg(response));
-                        getAccountDetails(actions_info[action].login ?
-                            actions_info[action].login(response) : types_info[acc_type].account_info.login, acc_type);
+                        MetaTraderUI.displayMainMessage(
+                            actions_info[action].success_msg(response),
+                        );
+                        getAccountDetails(
+                            actions_info[action].login
+                                ? actions_info[action].login(response)
+                                : types_info[acc_type].account_info.login,
+                            acc_type,
+                        );
                     }
                 });
             });

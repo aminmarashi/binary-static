@@ -3,12 +3,11 @@ const isEmptyObject = require('../base/utility').isEmptyObject;
 const ActiveSymbols = (() => {
     'use strict';
 
-    const groupBy = (xs, key) => (
+    const groupBy = (xs, key) =>
         xs.reduce((rv, x) => {
             (rv[x[key]] = rv[x[key]] || []).push(x);
             return rv;
-        }, {})
-    );
+        }, {});
 
     const extend = (a, b) => {
         if (!a || !b) return null;
@@ -36,7 +35,8 @@ const ActiveSymbols = (() => {
             const symbol = market_symbols[0];
             markets[market_name] = {
                 name     : symbol.market_display_name,
-                is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+                is_active: !symbol.is_trading_suspended &&
+                    symbol.exchange_is_open,
             };
             getSubmarketsForMarket(market_symbols, markets[market_name]);
         });
@@ -61,9 +61,13 @@ const ActiveSymbols = (() => {
             const symbol = submarket_symbols[0];
             market.submarkets[submarket_name] = {
                 name     : symbol.submarket_display_name,
-                is_active: !symbol.is_trading_suspended && symbol.exchange_is_open,
+                is_active: !symbol.is_trading_suspended &&
+                    symbol.exchange_is_open,
             };
-            getSymbolsForSubmarket(submarket_symbols, market.submarkets[submarket_name]);
+            getSymbolsForSubmarket(
+                submarket_symbols,
+                market.submarkets[submarket_name],
+            );
         });
         return clone(market.submarkets);
     };
@@ -75,10 +79,11 @@ const ActiveSymbols = (() => {
                 submarket.symbols[symbol.symbol] = {
                     display    : symbol.display_name,
                     symbol_type: symbol.symbol_type,
-                    is_active  : !symbol.is_trading_suspended && symbol.exchange_is_open,
-                    pip        : symbol.pip,
-                    market     : symbol.market,
-                    submarket  : symbol.submarket,
+                    is_active  : !symbol.is_trading_suspended &&
+                        symbol.exchange_is_open,
+                    pip      : symbol.pip,
+                    market   : symbol.market,
+                    submarket: symbol.submarket,
                 };
             });
         }
@@ -90,7 +95,10 @@ const ActiveSymbols = (() => {
             const all_markets = getMarkets(active_symbols);
             Object.keys(all_markets).forEach((key) => {
                 const market = all_markets[key];
-                const all_submarkets = getSubmarketsForMarket(active_symbols, market);
+                const all_submarkets = getSubmarketsForMarket(
+                    active_symbols,
+                    market,
+                );
                 extend(submarkets, all_submarkets);
             });
         }
@@ -102,7 +110,10 @@ const ActiveSymbols = (() => {
             const all_submarkets = getSubmarkets(active_symbols);
             Object.keys(all_submarkets).forEach((key) => {
                 const submarket = all_submarkets[key];
-                const all_symbols = getSymbolsForSubmarket(active_symbols, submarket);
+                const all_symbols = getSymbolsForSubmarket(
+                    active_symbols,
+                    submarket,
+                );
                 extend(symbols, all_symbols);
             });
         }

@@ -1,6 +1,6 @@
-const Client        = require('../base/client');
+const Client = require('../base/client');
 const CookieStorage = require('../base/storage').CookieStorage;
-const Url           = require('../base/url');
+const Url = require('../base/url');
 
 /*
  * Handles utm parameters/referrer to use on signup
@@ -31,7 +31,9 @@ const TrafficSource = (() => {
         initCookie();
         const data = cookie.value;
         Object.keys(data).map((key) => {
-            data[key] = (data[key] || '').replace(/[^a-zA-Z0-9\s\-\.\_]/gi, '').substring(0, 100);
+            data[key] = (data[key] || '')
+                .replace(/[^a-zA-Z0-9\s\-\.\_]/gi, '')
+                .substring(0, 100);
         });
         return data;
     };
@@ -51,7 +53,8 @@ const TrafficSource = (() => {
         const params = Url.paramsHash();
         const param_keys = ['utm_source', 'utm_medium', 'utm_campaign'];
 
-        if (params.utm_source) { // url params can be stored only if utm_source is available
+        if (params.utm_source) {
+            // url params can be stored only if utm_source is available
             param_keys.map((key) => {
                 if (params[key] && !current_values[key]) {
                     cookie.set(key, params[key]);
@@ -64,14 +67,21 @@ const TrafficSource = (() => {
             Client.set('gclid', params.gclid);
         }
 
-        const doc_ref  = document.referrer;
+        const doc_ref = document.referrer;
         let referrer = localStorage.getItem('index_referrer') || doc_ref;
         localStorage.removeItem('index_referrer');
-        if (doc_ref && !(new RegExp(window.location.hostname, 'i')).test(doc_ref)) {
+        if (
+            doc_ref && !new RegExp(window.location.hostname, 'i').test(doc_ref)
+        ) {
             referrer = doc_ref;
         }
-        if (referrer && !current_values.referrer && !params.utm_source && !current_values.utm_source) {
-            cookie.set('referrer', (Url.getLocation(referrer)).hostname);
+        if (
+            referrer &&
+            !current_values.referrer &&
+            !params.utm_source &&
+            !current_values.utm_source
+        ) {
+            cookie.set('referrer', Url.getLocation(referrer).hostname);
         }
     };
 

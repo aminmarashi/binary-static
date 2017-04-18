@@ -1,20 +1,20 @@
-const Client            = require('./client');
-const Contents          = require('./contents');
-const Header            = require('./header');
-const Language          = require('./language');
-const Localize          = require('./localize');
-const localize          = require('./localize').localize;
-const Login             = require('./login');
-const Menu              = require('./menu');
-const LocalStore        = require('./storage').LocalStore;
-const State             = require('./storage').State;
-const Url               = require('./url');
-const checkLanguage     = require('../common_functions/country_base').checkLanguage;
-const scrollToTop       = require('../common_functions/scroll').scrollToTop;
-const TrafficSource     = require('../common_functions/traffic_source');
-const RealityCheck      = require('../websocket_pages/user/reality_check/reality_check');
-const Cookies           = require('../../lib/js-cookie');
-const PushNotification  = require('../../lib/push_notification');
+const Client = require('./client');
+const Contents = require('./contents');
+const Header = require('./header');
+const Language = require('./language');
+const Localize = require('./localize');
+const localize = require('./localize').localize;
+const Login = require('./login');
+const Menu = require('./menu');
+const LocalStore = require('./storage').LocalStore;
+const State = require('./storage').State;
+const Url = require('./url');
+const checkLanguage = require('../common_functions/country_base').checkLanguage;
+const scrollToTop = require('../common_functions/scroll').scrollToTop;
+const TrafficSource = require('../common_functions/traffic_source');
+const RealityCheck = require('../websocket_pages/user/reality_check/reality_check');
+const Cookies = require('../../lib/js-cookie');
+const PushNotification = require('../../lib/push_notification');
 require('../../lib/polyfills/array.includes');
 require('../../lib/polyfills/string.includes');
 
@@ -57,7 +57,10 @@ const Page = (() => {
                         }
                         break;
                     case 'new_release_reload_time':
-                        if (jq_event.originalEvent.newValue !== jq_event.originalEvent.oldValue) {
+                        if (
+                            jq_event.originalEvent.newValue !==
+                            jq_event.originalEvent.oldValue
+                        ) {
                             reload(true);
                         }
                         break;
@@ -137,14 +140,18 @@ const Page = (() => {
         return true;
     };
 
-    const reload = (forced_reload) => { window.location.reload(!!forced_reload); };
+    const reload = (forced_reload) => {
+        window.location.reload(!!forced_reload);
+    };
 
     const endpointNotification = () => {
         const server = localStorage.getItem('config.server_url');
         if (server && server.length > 0) {
-            const message = `${(/www\.binary\.com/i.test(window.location.hostname) ? '' :
-                `${localize('This is a staging server - For testing purposes only')} - `)}
-                ${localize('The server <a href="[_1]">endpoint</a> is: [_2]', [Url.urlFor('endpoint'), server])}`;
+            const message = `${/www\.binary\.com/i.test(window.location.hostname) ? '' : `${localize('This is a staging server - For testing purposes only')} - `}
+                ${localize('The server <a href="[_1]">endpoint</a> is: [_2]', [
+                    Url.urlFor('endpoint'),
+                    server,
+                ])}`;
             const $end_note = $('#end-note');
             $end_note.html(message).removeClass('invisible');
             $('#footer').css('padding-bottom', $end_note.height());

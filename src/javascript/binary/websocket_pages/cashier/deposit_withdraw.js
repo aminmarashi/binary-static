@@ -1,8 +1,9 @@
-const Client               = require('../../base/client');
-const localize             = require('../../base/localize').localize;
-const template             = require('../../base/utility').template;
-const appendTextValueChild = require('../../common_functions/common_functions').appendTextValueChild;
-const FormManager          = require('../../common_functions/form_manager');
+const Client = require('../../base/client');
+const localize = require('../../base/localize').localize;
+const template = require('../../base/utility').template;
+const appendTextValueChild = require('../../common_functions/common_functions')
+    .appendTextValueChild;
+const FormManager = require('../../common_functions/form_manager');
 
 const DepositWithdraw = (() => {
     'use strict';
@@ -15,7 +16,10 @@ const DepositWithdraw = (() => {
     const init = (cashier_password) => {
         if (cashier_password) {
             showMessage('cashier_locked_message');
-            sessionStorage.setItem('cashier_lock_redirect', window.location.href);
+            sessionStorage.setItem(
+                'cashier_lock_redirect',
+                window.location.href,
+            );
             return;
         }
         if (!Client.get('currency')) {
@@ -47,7 +51,12 @@ const DepositWithdraw = (() => {
                 showMessage('check_email_message');
                 const withdraw_form_id = '#frm_withdraw';
                 $(withdraw_form_id).removeClass(hidden_class);
-                FormManager.init(withdraw_form_id, [{ selector: '#verification_code', validations: ['req', 'email_token'] }]);
+                FormManager.init(withdraw_form_id, [
+                    {
+                        selector   : '#verification_code',
+                        validations: ['req', 'email_token'],
+                    },
+                ]);
                 const req = populateReq();
                 FormManager.handleSubmit({
                     form_selector       : withdraw_form_id,
@@ -66,7 +75,12 @@ const DepositWithdraw = (() => {
         showMessage('choose_currency_message');
         const currency_form_id = '#frm_currency';
         $(currency_form_id).removeClass(hidden_class);
-        FormManager.init(currency_form_id, [{ selector: '#select_currency', request_field: 'set_account_currency' }]);
+        FormManager.init(currency_form_id, [
+            {
+                selector     : '#select_currency',
+                request_field: 'set_account_currency',
+            },
+        ]);
         FormManager.handleSubmit({
             form_selector       : currency_form_id,
             fnc_response_handler: initDepositWithdraw,
@@ -89,17 +103,23 @@ const DepositWithdraw = (() => {
         const req = { cashier: cashier_type };
         const verification_code_val = $('#verification_code').val();
         if (verification_code_val) verification_code = verification_code_val;
-        if (send_verification && verification_code) req.verification_code = verification_code;
+        if (send_verification && verification_code) {
+            req.verification_code = verification_code;
+        }
         if (/epg/.test(window.location.pathname)) req.provider = 'epg';
         return req;
     };
 
     const getCashierURL = () => {
-        BinarySocket.send(populateReq(1)).then(response => handleCashierResponse(response));
+        BinarySocket.send(populateReq(1)).then(response =>
+            handleCashierResponse(response),
+        );
     };
 
     const hideAll = (option) => {
-        $('#frm_withdraw, #frm_currency, #frm_ukgc, #errors').addClass(hidden_class);
+        $('#frm_withdraw, #frm_currency, #frm_ukgc, #errors').addClass(
+            hidden_class,
+        );
         if (option) {
             $(option).addClass(hidden_class);
         }
@@ -112,7 +132,10 @@ const DepositWithdraw = (() => {
     };
 
     const showMessage = (id, parent = 'messages') => {
-        $(`#${id}`).siblings().addClass(hidden_class).end()
+        $(`#${id}`)
+            .siblings()
+            .addClass(hidden_class)
+            .end()
             .removeClass(hidden_class);
         $(container).find(`#${parent}`).removeClass(hidden_class);
     };
@@ -132,7 +155,9 @@ const DepositWithdraw = (() => {
             };
         }
         const $el = $(`#${msg_id}`);
-        const err_msg = template($el.html(), [localize(details ? error_fields[details] : 'details')]);
+        const err_msg = template($el.html(), [
+            localize(details ? error_fields[details] : 'details'),
+        ]);
         $el.html(err_msg);
         showMessage(msg_id);
     };
@@ -150,7 +175,7 @@ const DepositWithdraw = (() => {
         $(ukgc_form_id).removeClass(hidden_class);
         FormManager.init(ukgc_form_id, [
             { request_field: 'ukgc_funds_protection', value: 1 },
-            { request_field: 'tnc_approval',          value: 1 },
+            { request_field: 'tnc_approval', value: 1 },
         ]);
         FormManager.handleSubmit({
             form_selector       : ukgc_form_id,
@@ -194,7 +219,10 @@ const DepositWithdraw = (() => {
                     showError('custom_error', error.message);
             }
         } else {
-            $(container).find('iframe').attr('src', response.cashier).parent()
+            $(container)
+                .find('iframe')
+                .attr('src', response.cashier)
+                .parent()
                 .removeClass(hidden_class);
         }
     };

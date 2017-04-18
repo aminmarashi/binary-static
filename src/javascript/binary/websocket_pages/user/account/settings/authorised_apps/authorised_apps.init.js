@@ -1,5 +1,5 @@
 const ApplicationsData = require('./authorised_apps.data');
-const ApplicationsUI   = require('./authorised_apps.ui');
+const ApplicationsUI = require('./authorised_apps.ui');
 
 const ApplicationsInit = (() => {
     'use strict';
@@ -10,7 +10,9 @@ const ApplicationsInit = (() => {
             if (response.error) {
                 ApplicationsUI.displayError(response.error.message);
             } else {
-                ApplicationsUI.update(response.oauth_apps.map(ApplicationsData.parse));
+                ApplicationsUI.update(
+                    response.oauth_apps.map(ApplicationsData.parse),
+                );
             }
         });
     };

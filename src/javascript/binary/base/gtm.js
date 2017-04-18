@@ -1,16 +1,16 @@
-const moment      = require('moment');
-const Client      = require('./client');
+const moment = require('moment');
+const Client = require('./client');
 const getLanguage = require('./language').get;
-const Login       = require('./login');
-const State       = require('./storage').State;
-const isVisible   = require('../common_functions/common_functions').isVisible;
-const getAppId    = require('../../config').getAppId;
-const Cookies     = require('../../lib/js-cookie');
+const Login = require('./login');
+const State = require('./storage').State;
+const isVisible = require('../common_functions/common_functions').isVisible;
+const getAppId = require('../../config').getAppId;
+const Cookies = require('../../lib/js-cookie');
 
 const GTM = (() => {
     'use strict';
 
-    const isGtmApplicable = () => (/^(1|1098)$/.test(getAppId()));
+    const isGtmApplicable = () => /^(1|1098)$/.test(getAppId());
 
     const gtmDataLayerInfo = (data) => {
         const data_layer_info = {
@@ -37,7 +37,9 @@ const GTM = (() => {
 
     const pushDataLayer = (data) => {
         if (isGtmApplicable() && !Login.isLoginPages()) {
-            const info = gtmDataLayerInfo(data && typeof data === 'object' ? data : null);
+            const info = gtmDataLayerInfo(
+                data && typeof data === 'object' ? data : null,
+            );
             dataLayer[0] = info.data;
             dataLayer.push(info.data);
             dataLayer.push({ event: info.event });
@@ -51,7 +53,7 @@ const GTM = (() => {
 
     const eventHandler = (get_settings) => {
         if (!isGtmApplicable()) return;
-        const is_login       = localStorage.getItem('GTM_login')       === '1';
+        const is_login = localStorage.getItem('GTM_login') === '1';
         const is_new_account = localStorage.getItem('GTM_new_account') === '1';
         if (!is_login && !is_new_account) return;
 
@@ -75,10 +77,12 @@ const GTM = (() => {
             data.bom_date_joined = data.bom_today;
         }
         if (!Client.get('is_virtual')) {
-            data.bom_age       = parseInt((moment().unix() - get_settings.date_of_birth) / 31557600);
+            data.bom_age = parseInt(
+                (moment().unix() - get_settings.date_of_birth) / 31557600,
+            );
             data.bom_firstname = get_settings.first_name;
-            data.bom_lastname  = get_settings.last_name;
-            data.bom_phone     = get_settings.phone;
+            data.bom_lastname = get_settings.last_name;
+            data.bom_phone = get_settings.phone;
         }
         pushDataLayer(data);
     };
@@ -115,10 +119,10 @@ const GTM = (() => {
             data.bom_barrier = req.barrier;
         } else if (isVisible(document.getElementById('barrier_high'))) {
             data.bom_barrier_high = req.barrier;
-            data.bom_barrier_low  = req.barrier2;
+            data.bom_barrier_low = req.barrier2;
         }
         if (isVisible(document.getElementById('prediction'))) {
-            data.bom_prediction  = req.barrier;
+            data.bom_prediction = req.barrier;
         }
 
         pushDataLayer(data);
@@ -128,7 +132,9 @@ const GTM = (() => {
         pushDataLayer   : pushDataLayer,
         eventHandler    : eventHandler,
         pushPurchaseData: pushPurchaseData,
-        setLoginFlag    : () => { if (isGtmApplicable()) localStorage.setItem('GTM_login', '1'); },
+        setLoginFlag    : () => {
+            if (isGtmApplicable()) localStorage.setItem('GTM_login', '1');
+        },
     };
 })();
 

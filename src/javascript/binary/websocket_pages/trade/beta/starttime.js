@@ -1,10 +1,10 @@
-const moment           = require('moment');
-const Contract_Beta    = require('./contract');
-const Durations_Beta   = require('./duration');
+const moment = require('moment');
+const Contract_Beta = require('./contract');
+const Durations_Beta = require('./duration');
 const getStartDateNode = require('../common_independent').getStartDateNode;
-const Defaults         = require('../defaults');
-const localize         = require('../../../base/localize').localize;
-const State            = require('../../../base/storage').State;
+const Defaults = require('../defaults');
+const localize = require('../../../base/localize').localize;
+const State = require('../../../base/storage').State;
 
 /*
  * Handles start time display
@@ -20,17 +20,16 @@ const StartDates_Beta = (() => {
     let has_now = 0;
     State.remove('is_start_dates_displayed');
 
-    const compareStartDate = (a, b) => (
-        (a.date < b.date) ? -1 : (a.date > b.date ? 1 : 0)
-    );
+    const compareStartDate = (a, b) =>
+        (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
 
     const displayStartDates = () => {
         const start_dates = Contract_Beta.startDates();
 
         if (start_dates && start_dates.list && start_dates.list.length) {
-            const target   = getStartDateNode();
-            const fragment =  document.createDocumentFragment();
-            const row      = document.getElementById('date_start_row');
+            const target = getStartDateNode();
+            const fragment = document.createDocumentFragment();
+            const row = document.getElementById('date_start_row');
             let option,
                 content;
 
@@ -41,7 +40,7 @@ const StartDates_Beta = (() => {
             }
 
             if (start_dates.has_spot) {
-                option  = document.createElement('option');
+                option = document.createElement('option');
                 content = document.createTextNode(localize('Now'));
                 option.setAttribute('value', 'now');
                 $('#date_start').removeClass('light-yellow-background');
@@ -66,7 +65,7 @@ const StartDates_Beta = (() => {
                     a = start;
                 }
 
-                a = moment(Math.ceil((+a) / rounding) * rounding).utc();
+                a = moment(Math.ceil(+a / rounding) * rounding).utc();
 
                 while (a.isBefore(b)) {
                     if (a.unix() - start.unix() > 5 * 60) {
@@ -75,7 +74,9 @@ const StartDates_Beta = (() => {
                         if (typeof first === 'undefined' && !has_now) {
                             first = a.utc().unix();
                         }
-                        content = document.createTextNode(a.format('HH:mm ddd').replace(' ', ' GMT, '));
+                        content = document.createTextNode(
+                            a.format('HH:mm ddd').replace(' ', ' GMT, '),
+                        );
                         if (option.value === Defaults.get('date_start')) {
                             option.setAttribute('selected', 'selected');
                         }
@@ -100,8 +101,12 @@ const StartDates_Beta = (() => {
 
     return {
         display: displayStartDates,
-        disable: () => { getStartDateNode().setAttribute('disabled', 'disabled'); },
-        enable : () => { getStartDateNode().removeAttribute('disabled'); },
+        disable: () => {
+            getStartDateNode().setAttribute('disabled', 'disabled');
+        },
+        enable: () => {
+            getStartDateNode().removeAttribute('disabled');
+        },
     };
 })();
 
