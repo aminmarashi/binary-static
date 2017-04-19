@@ -33,7 +33,7 @@
         'func-names':  ['error', 'never'],
         'indent':      ['error', 4, { 'SwitchCase': 1 }],
         'key-spacing': ['error', { align: 'colon' }],
-        'max-len':     ['error', 80, 4, { ignoreUrls: true, ignoreComments: true, ignoreRegExpLiterals: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
+        'max-len':     ['error', 120, 4, { ignoreUrls: true, ignoreComments: true, ignoreRegExpLiterals: true, ignoreStrings: true, ignoreTemplateLiterals: true }],
         'no-restricted-properties': ['error', { object: 'arguments', property: 'callee', message: 'arguments.callee is deprecated' }],
         'prefer-template':       'error',
         'radix':     ['error', 'as-needed'],
