@@ -92,22 +92,14 @@ const FinancialAssessment = (() => {
             const data = { set_financial_assessment: 1 };
             showLoadingImage($('#msg_form'));
             $(form_selector).find('select').each(function() {
-                financial_assessment[$(this).attr('id')] = data[
-                    $(this).attr('id')
-                ] = $(this).val();
+                financial_assessment[$(this).attr('id')] = data[$(this).attr('id')] = $(this).val();
             });
             BinarySocket.send(data).then((response) => {
                 $btn_submit.removeAttr('disabled');
                 if (response.error) {
-                    showFormMessage(
-                        'Sorry, an error occurred while processing your request.',
-                        false,
-                    );
+                    showFormMessage('Sorry, an error occurred while processing your request.', false);
                 } else {
-                    showFormMessage(
-                        'Your changes have been updated successfully.',
-                        true,
-                    );
+                    showFormMessage('Your changes have been updated successfully.', true);
                     BinarySocket.send({
                         get_financial_assessment: 1,
                     }).then(() => {
@@ -130,9 +122,7 @@ const FinancialAssessment = (() => {
     };
 
     const showFormMessage = (msg, is_success) => {
-        const redirect_url = localStorage.getItem(
-            'financial_assessment_redirect',
-        );
+        const redirect_url = localStorage.getItem('financial_assessment_redirect');
         if (is_success && /metatrader/i.test(redirect_url)) {
             localStorage.removeItem('financial_assessment_redirect');
             $.scrollTo($('h1#heading'), 500, { offset: -10 });
@@ -141,12 +131,7 @@ const FinancialAssessment = (() => {
             BinarySocket.send({
                 get_account_status: 1,
             }).then((response_status) => {
-                if (
-                    $.inArray(
-                        'authenticated',
-                        response_status.get_account_status.status,
-                    ) === -1
-                ) {
+                if ($.inArray('authenticated', response_status.get_account_status.status) === -1) {
                     $('#msg_authenticate').removeClass(hidden_class);
                 }
             });

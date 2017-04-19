@@ -29,11 +29,7 @@ const PaymentAgentTransferUI = (() => {
     };
 
     const showConfirmation = () => {
-        $confirm_transfer
-            .find('.errorfield')
-            .addClass(hidden_class)
-            .end()
-            .removeClass(hidden_class);
+        $confirm_transfer.find('.errorfield').addClass(hidden_class).end().removeClass(hidden_class);
     };
 
     const hideDone = () => {
@@ -53,16 +49,11 @@ const PaymentAgentTransferUI = (() => {
     };
 
     const showTransferError = (err) => {
-        $confirm_transfer
-            .find('.errorfield')
-            .text(localize(err))
-            .removeClass(hidden_class);
+        $confirm_transfer.find('.errorfield').text(localize(err)).removeClass(hidden_class);
     };
 
     const updateFormView = (currency) => {
-        $paymentagent_transfer
-            .find('label[for="amount"]')
-            .text(`${localize('Amount')} ${currency}`);
+        $paymentagent_transfer.find('label[for="amount"]').text(`${localize('Amount')} ${currency}`);
     };
 
     const updateConfirmView = (username, loginid, amount, currency) => {
@@ -81,18 +72,9 @@ const PaymentAgentTransferUI = (() => {
     };
 
     const updateDoneView = (from_id, to_id, amount, currency) => {
-        const template_string =
-            'Your request to transfer [_1] [_2] from [_3] to [_4] has been successfully processed.';
-        const confirm_msg = localize(template_string, [
-            amount,
-            currency,
-            from_id,
-            to_id,
-        ]);
-        $done_transfer
-            .find(' > #confirm_msg')
-            .text(confirm_msg)
-            .removeClass(hidden_class);
+        const template_string = 'Your request to transfer [_1] [_2] from [_3] to [_4] has been successfully processed.';
+        const confirm_msg = localize(template_string, [amount, currency, from_id, to_id]);
+        $done_transfer.find(' > #confirm_msg').text(confirm_msg).removeClass(hidden_class);
     };
 
     const hideFirstForm = () => {

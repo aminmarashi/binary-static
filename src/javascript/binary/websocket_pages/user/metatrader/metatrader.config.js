@@ -2,8 +2,7 @@ const Client = require('../../../base/client');
 const localize = require('../../../base/localize').localize;
 const urlFor = require('../../../base/url').urlFor;
 const isEmptyObject = require('../../../base/utility').isEmptyObject;
-const formatMoney = require('../../../common_functions/currency_to_symbol')
-    .formatMoney;
+const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
 
 const MetaTraderConfig = (() => {
     'use strict';
@@ -44,8 +43,7 @@ const MetaTraderConfig = (() => {
         },
     };
 
-    const needsRealMessage = () =>
-        $(`#msg_${Client.get('has_real') ? 'switch' : 'upgrade'}`).html();
+    const needsRealMessage = () => $(`#msg_${Client.get('has_real') ? 'switch' : 'upgrade'}`).html();
 
     const actions_info = {
         new_account: {
@@ -61,10 +59,7 @@ const MetaTraderConfig = (() => {
                         break;
                     // no default
                 }
-                return localize(
-                    'Congratulations! Your [_1] Account has been created.',
-                    [types_info[acc_type].title],
-                );
+                return localize('Congratulations! Your [_1] Account has been created.', [types_info[acc_type].title]);
             },
             login        : response => response.mt5_new_account.login,
             prerequisites: acc_type =>
@@ -73,16 +68,12 @@ const MetaTraderConfig = (() => {
                         resolve();
                     } else if (Client.get('is_virtual')) {
                         resolve(needsRealMessage());
-                    } else if (
-                        types_info[acc_type].account_type === 'financial'
-                    ) {
+                    } else if (types_info[acc_type].account_type === 'financial') {
                         BinarySocket.send({
                             get_financial_assessment: 1,
                         }).then((response_financial) => {
                             resolve(
-                                isEmptyObject(
-                                    response_financial.get_financial_assessment,
-                                )
+                                isEmptyObject(response_financial.get_financial_assessment)
                                     ? $('#msg_assessment')
                                           .find('a')
                                           .attr(
@@ -100,52 +91,36 @@ const MetaTraderConfig = (() => {
                 }),
             formValues: ($form, acc_type, action) => {
                 // Account type, Sub account type
-                $form
-                    .find(fields[action].lbl_account_type.id)
-                    .text(types_info[acc_type].title);
+                $form.find(fields[action].lbl_account_type.id).text(types_info[acc_type].title);
                 // Email
-                $form
-                    .find(fields[action].lbl_email.id)
-                    .text(fields[action].additional_fields(acc_type).email);
+                $form.find(fields[action].lbl_email.id).text(fields[action].additional_fields(acc_type).email);
                 // Max leverage
-                $form
-                    .find(`${fields[action].ddl_leverage.id} option`)
-                    .each(function() {
-                        if (
-                            +$(this).val() > types_info[acc_type].max_leverage
-                        ) {
-                            $(this).remove();
-                        }
-                    });
+                $form.find(`${fields[action].ddl_leverage.id} option`).each(function() {
+                    if (+$(this).val() > types_info[acc_type].max_leverage) {
+                        $(this).remove();
+                    }
+                });
             },
         },
         password_change: {
             title      : localize('Change Password'),
             success_msg: response =>
-                localize(
-                    'The main password of account number [_1] has been changed.',
-                    [response.echo_req.login],
-                ),
+                localize('The main password of account number [_1] has been changed.', [response.echo_req.login]),
             prerequisites: () => new Promise(resolve => resolve('')),
             formValues   : ($form, acc_type, action) => {
                 // Login ID
-                $form
-                    .find(fields[action].lbl_login.id)
-                    .text(fields[action].additional_fields(acc_type).login);
+                $form.find(fields[action].lbl_login.id).text(fields[action].additional_fields(acc_type).login);
             },
         },
         deposit: {
             title      : localize('Deposit'),
             success_msg: response =>
-                localize(
-                    '[_1] deposit from [_2] to account number [_3] is done. Transaction ID: [_4]',
-                    [
-                        formatMoney(currency, response.echo_req.amount),
-                        response.echo_req.from_binary,
-                        response.echo_req.to_mt5,
-                        response.binary_transaction_id,
-                    ],
-                ),
+                localize('[_1] deposit from [_2] to account number [_3] is done. Transaction ID: [_4]', [
+                    formatMoney(currency, response.echo_req.amount),
+                    response.echo_req.from_binary,
+                    response.echo_req.to_mt5,
+                    response.binary_transaction_id,
+                ]),
             prerequisites: () =>
                 new Promise((resolve) => {
                     if (Client.get('is_virtual')) {
@@ -154,18 +129,11 @@ const MetaTraderConfig = (() => {
                         BinarySocket.send({
                             cashier_password: 1,
                         }).then((response) => {
-                            if (
-                                !response.error &&
-                                response.cashier_password === 1
-                            ) {
+                            if (!response.error && response.cashier_password === 1) {
                                 resolve(
                                     localize(
                                         'Your cashier is locked as per your request - to unlock it, please click <a href="[_1]">here</a>.',
-                                        [
-                                            urlFor(
-                                                'user/security/cashier_passwordws',
-                                            ),
-                                        ],
+                                        [urlFor('user/security/cashier_passwordws')],
                                     ),
                                 );
                             } else {
@@ -176,48 +144,30 @@ const MetaTraderConfig = (() => {
                 }),
             formValues: ($form, acc_type, action) => {
                 // From, To
-                $form
-                    .find(fields[action].lbl_from.id)
-                    .text(
-                        fields[action].additional_fields(acc_type).from_binary,
-                    );
-                $form
-                    .find(fields[action].lbl_to.id)
-                    .text(fields[action].additional_fields(acc_type).to_mt5);
+                $form.find(fields[action].lbl_from.id).text(fields[action].additional_fields(acc_type).from_binary);
+                $form.find(fields[action].lbl_to.id).text(fields[action].additional_fields(acc_type).to_mt5);
             },
         },
         withdrawal: {
             title      : localize('Withdraw'),
             success_msg: response =>
-                localize(
-                    '[_1] withdrawal from account number [_2] to [_3] is done. Transaction ID: [_4]',
-                    [
-                        formatMoney(currency, response.echo_req.amount),
-                        response.echo_req.from_mt5,
-                        response.echo_req.to_binary,
-                        response.binary_transaction_id,
-                    ],
-                ),
+                localize('[_1] withdrawal from account number [_2] to [_3] is done. Transaction ID: [_4]', [
+                    formatMoney(currency, response.echo_req.amount),
+                    response.echo_req.from_mt5,
+                    response.echo_req.to_binary,
+                    response.binary_transaction_id,
+                ]),
             prerequisites: acc_type =>
                 new Promise((resolve) => {
                     if (Client.get('is_virtual')) {
                         resolve(needsRealMessage());
-                    } else if (
-                        types_info[acc_type].account_type === 'financial'
-                    ) {
+                    } else if (types_info[acc_type].account_type === 'financial') {
                         BinarySocket.send({
                             get_account_status: 1,
                         }).then((response_status) => {
                             resolve(
-                                $.inArray(
-                                    'authenticated',
-                                    response_status.get_account_status.status,
-                                ) === -1
-                                    ? $('#msg_authenticate')
-                                          .find('.show_for_mt5')
-                                          .removeClass('invisible')
-                                          .end()
-                                          .html()
+                                $.inArray('authenticated', response_status.get_account_status.status) === -1
+                                    ? $('#msg_authenticate').find('.show_for_mt5').removeClass('invisible').end().html()
                                     : '',
                             );
                         });
@@ -229,9 +179,7 @@ const MetaTraderConfig = (() => {
                 BinarySocket.send({
                     mt5_password_check: 1,
                     login             : types_info[acc_type].account_info.login,
-                    password          : $form
-                        .find(fields.withdrawal.txt_main_pass.id)
-                        .val(),
+                    password          : $form.find(fields.withdrawal.txt_main_pass.id).val(),
                 }).then((response) => {
                     if (+response.mt5_password_check === 1) {
                         return true;
@@ -242,12 +190,8 @@ const MetaTraderConfig = (() => {
                 }),
             formValues: ($form, acc_type, action) => {
                 // From, To
-                $form
-                    .find(fields[action].lbl_from.id)
-                    .text(fields[action].additional_fields(acc_type).from_mt5);
-                $form
-                    .find(fields[action].lbl_to.id)
-                    .text(fields[action].additional_fields(acc_type).to_binary);
+                $form.find(fields[action].lbl_from.id).text(fields[action].additional_fields(acc_type).from_mt5);
+                $form.find(fields[action].lbl_to.id).text(fields[action].additional_fields(acc_type).to_binary);
             },
         },
     };
@@ -276,8 +220,7 @@ const MetaTraderConfig = (() => {
                     },
                     types_info[acc_type].mt5_account_type
                         ? {
-                            mt5_account_type: types_info[acc_type]
-                                  .mt5_account_type,
+                            mt5_account_type: types_info[acc_type].mt5_account_type,
                         }
                         : {},
                 ),
@@ -322,11 +265,7 @@ const MetaTraderConfig = (() => {
         new_account: [
             {
                 selector   : fields.new_account.txt_name.id,
-                validations: [
-                    'req',
-                    'letter_symbol',
-                    ['length', { min: 2, max: 30 }],
-                ],
+                validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]],
             },
             {
                 selector   : fields.new_account.txt_main_pass.id,
@@ -334,10 +273,7 @@ const MetaTraderConfig = (() => {
             },
             {
                 selector   : fields.new_account.txt_re_main_pass.id,
-                validations: [
-                    'req',
-                    ['compare', { to: fields.new_account.txt_main_pass.id }],
-                ],
+                validations: ['req', ['compare', { to: fields.new_account.txt_main_pass.id }]],
             },
             {
                 selector   : fields.new_account.txt_investor_pass.id,
@@ -360,12 +296,7 @@ const MetaTraderConfig = (() => {
             },
             {
                 selector   : fields.new_account.chk_tnc.id,
-                validations: [
-                    [
-                        'req',
-                        { message: 'Please accept the terms and conditions.' },
-                    ],
-                ],
+                validations: [['req', { message: 'Please accept the terms and conditions.' }]],
             },
         ],
         password_change: [
@@ -391,22 +322,13 @@ const MetaTraderConfig = (() => {
             },
             {
                 selector   : fields.password_change.txt_re_new_password.id,
-                validations: [
-                    'req',
-                    [
-                        'compare',
-                        { to: fields.password_change.txt_new_password.id },
-                    ],
-                ],
+                validations: ['req', ['compare', { to: fields.password_change.txt_new_password.id }]],
             },
         ],
         deposit: [
             {
                 selector   : fields.deposit.txt_amount.id,
-                validations: [
-                    'req',
-                    ['number', { type: 'float', min: 1, max: 20000 }],
-                ],
+                validations: ['req', ['number', { type: 'float', min: 1, max: 20000 }]],
             },
         ],
         withdrawal: [
@@ -416,10 +338,7 @@ const MetaTraderConfig = (() => {
             },
             {
                 selector   : fields.withdrawal.txt_amount.id,
-                validations: [
-                    'req',
-                    ['number', { type: 'float', min: 1, max: 20000 }],
-                ],
+                validations: ['req', ['number', { type: 'float', min: 1, max: 20000 }]],
             },
         ],
     };

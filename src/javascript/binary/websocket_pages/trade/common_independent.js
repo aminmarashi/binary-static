@@ -46,17 +46,10 @@ const processTradingTimesAnswer = (response) => {
                     if (symbols) {
                         for (let k = 0; k < symbols.length; k++) {
                             const symbol = symbols[k];
-                            if (
-                                !trading_times[response.echo_req.trading_times]
-                            ) {
-                                trading_times[
-                                    response.echo_req.trading_times
-                                ] = {};
+                            if (!trading_times[response.echo_req.trading_times]) {
+                                trading_times[response.echo_req.trading_times] = {};
                             }
-                            trading_times[response.echo_req.trading_times][
-                                symbol.symbol
-                            ] =
-                                symbol.times.close;
+                            trading_times[response.echo_req.trading_times][symbol.symbol] = symbol.times.close;
                         }
                     }
                 }

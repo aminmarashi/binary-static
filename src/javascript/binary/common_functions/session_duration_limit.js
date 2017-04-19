@@ -40,10 +40,7 @@ const SessionDurationLimit = (() => {
     };
 
     const exclusionResponseHandler = (response) => {
-        if (
-            response.hasOwnProperty('error') ||
-            !response.hasOwnProperty('get_self_exclusion')
-        ) {
+        if (response.hasOwnProperty('error') || !response.hasOwnProperty('get_self_exclusion')) {
             return;
         }
 
@@ -63,10 +60,7 @@ const SessionDurationLimit = (() => {
                     $('<div/>').append(
                         $('<div/>', {
                             class: 'limit_message',
-                            text : localize(
-                                'Your session duration limit will end in [_1] seconds.',
-                                [warning / 1000],
-                            ),
+                            text : localize('Your session duration limit will end in [_1] seconds.', [warning / 1000]),
                         }),
                     ),
                 ),

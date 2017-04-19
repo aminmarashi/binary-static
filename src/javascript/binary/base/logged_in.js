@@ -43,13 +43,7 @@ const LoggedInHandler = (() => {
         // redirect back
         let set_default = true;
         if (redirect_url) {
-            const do_not_redirect = [
-                'reset_passwordws',
-                'lost_passwordws',
-                'change_passwordws',
-                'home',
-                'home-jp',
-            ];
+            const do_not_redirect = ['reset_passwordws', 'lost_passwordws', 'change_passwordws', 'home', 'home-jp'];
             const reg = new RegExp(do_not_redirect.join('|'), 'i');
             if (!reg.test(redirect_url) && urlFor('') !== redirect_url) {
                 set_default = false;
@@ -66,17 +60,13 @@ const LoggedInHandler = (() => {
                 );
             }
         }
-        document
-            .getElementById('loading_link')
-            .setAttribute('href', redirect_url);
+        document.getElementById('loading_link').setAttribute('href', redirect_url);
         window.location.href = redirect_url; // need to redirect not using pjax
     };
 
     const storeTokens = () => {
         // Parse hash for loginids and tokens returned by OAuth
-        const hash = (/acct1/i.test(window.location.hash)
-            ? window.location.hash
-            : window.location.search)
+        const hash = (/acct1/i.test(window.location.hash) ? window.location.hash : window.location.search)
             .substr(1)
             .split('&'); // to maintain compatibility till backend change released
         const tokens = {};
@@ -95,9 +85,7 @@ const LoggedInHandler = (() => {
 
     const getHashValue = (source, key) =>
         (source && source.length > 0
-            ? new RegExp(`^${key}`).test(source.split('=')[0])
-                  ? source.split('=')[1]
-                  : ''
+            ? new RegExp(`^${key}`).test(source.split('=')[0]) ? source.split('=')[1] : ''
             : '');
 
     return {

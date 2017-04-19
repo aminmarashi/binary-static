@@ -21,22 +21,14 @@ const Table = (() => {
         const $body = createFlexTableTopGroup(body, metadata.cols, 'body');
 
         if (header) {
-            const $header = createFlexTableTopGroup(
-                [header],
-                metadata.cols,
-                'header',
-            );
+            const $header = createFlexTableTopGroup([header], metadata.cols, 'header');
             $header.appendTo($table);
         }
 
         $body.appendTo($table);
 
         if (footer) {
-            const $footer = createFlexTableTopGroup(
-                [footer],
-                metadata.cols,
-                'footer',
-            );
+            const $footer = createFlexTableTopGroup([footer], metadata.cols, 'footer');
             $footer.appendTo($table);
         }
 

@@ -81,63 +81,34 @@ describe('Portfolio', () => {
     });
     it('Should have all expected data for portfolio', () => {
         const portfolio_data = portfolio.getPortfolioData(portfolio_mock_data);
-        expect(portfolio_data).to.be
-            .an('Object')
-            .and.to.have.property('transaction_id')
-            .and.to.be.a('string');
-        expect(portfolio_data).to.have
-            .property('contract_id')
-            .and.to.be.a('string');
+        expect(portfolio_data).to.be.an('Object').and.to.have.property('transaction_id').and.to.be.a('string');
+        expect(portfolio_data).to.have.property('contract_id').and.to.be.a('string');
         expect(portfolio_data).to.have.property('payout').and.to.be.a('string');
-        expect(portfolio_data).to.have
-            .property('longcode')
-            .and.to.be.a('string');
-        expect(portfolio_data).to.have
-            .property('currency')
-            .and.to.be.a('string');
-        expect(portfolio_data).to.have
-            .property('buy_price')
-            .and.to.be.a('string');
+        expect(portfolio_data).to.have.property('longcode').and.to.be.a('string');
+        expect(portfolio_data).to.have.property('currency').and.to.be.a('string');
+        expect(portfolio_data).to.have.property('buy_price').and.to.be.a('string');
     });
     it('Should have all expected data for proposal open contract', () => {
-        const proposal_open_contract_data = portfolio.getProposalOpenContract(
-            proposal_open_contract_mock_data,
-        );
+        const proposal_open_contract_data = portfolio.getProposalOpenContract(proposal_open_contract_mock_data);
         expect(proposal_open_contract_data).to.be
             .an('Object')
             .and.to.have.property('contract_id')
             .and.to.be.a('string');
-        expect(proposal_open_contract_data).to.have
-            .property('bid_price')
-            .and.to.be.a('string');
-        expect(proposal_open_contract_data).to.have
-            .property('is_sold')
-            .and.to.be.a('number');
-        expect(proposal_open_contract_data).to.have
-            .property('is_valid_to_sell')
-            .and.to.be.a('number');
-        expect(proposal_open_contract_data).to.have
-            .property('currency')
-            .and.to.be.a('string');
+        expect(proposal_open_contract_data).to.have.property('bid_price').and.to.be.a('string');
+        expect(proposal_open_contract_data).to.have.property('is_sold').and.to.be.a('number');
+        expect(proposal_open_contract_data).to.have.property('is_valid_to_sell').and.to.be.a('number');
+        expect(proposal_open_contract_data).to.have.property('currency').and.to.be.a('string');
     });
     it('Should calculate the correct indicative sum', () => {
-        const indicative_sum_data = portfolio.getIndicativeSum(
-            values_mock_data,
-        );
+        const indicative_sum_data = portfolio.getIndicativeSum(values_mock_data);
         const calculated_sum =
-            parseFloat(values_mock_data[9324828148].indicative) +
-            parseFloat(values_mock_data[9299986648].indicative);
-        expect(indicative_sum_data).to.be
-            .a('string')
-            .and.to.eql(calculated_sum.toFixed(2));
+            parseFloat(values_mock_data[9324828148].indicative) + parseFloat(values_mock_data[9299986648].indicative);
+        expect(indicative_sum_data).to.be.a('string').and.to.eql(calculated_sum.toFixed(2));
     });
     it('Should calculate the correct sum purchase', () => {
         const sum_purchase_data = portfolio.getSumPurchase(values_mock_data);
         const calculated_sum =
-            parseFloat(values_mock_data[9324828148].buy_price) +
-            parseFloat(values_mock_data[9299986648].buy_price);
-        expect(sum_purchase_data).to.be
-            .a('string')
-            .and.to.eql(calculated_sum.toFixed(2));
+            parseFloat(values_mock_data[9324828148].buy_price) + parseFloat(values_mock_data[9299986648].buy_price);
+        expect(sum_purchase_data).to.be.a('string').and.to.eql(calculated_sum.toFixed(2));
     });
 });

@@ -19,10 +19,7 @@ const TimePicker = (() => {
     };
 
     const hide = (selector) => {
-        $(selector)
-            .timepicker('destroy')
-            .removeAttr('data-picker')
-            .off('keydown');
+        $(selector).timepicker('destroy').removeAttr('data-picker').off('keydown');
     };
 
     const create = (selector) => {
@@ -55,9 +52,7 @@ const TimePicker = (() => {
         };
 
         if (options.minTime) {
-            options.minTime = options.minTime === 'now'
-                ? time_now
-                : moment.utc(options.minTime);
+            options.minTime = options.minTime === 'now' ? time_now : moment.utc(options.minTime);
             if (options.minTime.isBefore(time_now)) {
                 options.minTime = time_now;
             }
@@ -86,9 +81,7 @@ const TimePicker = (() => {
             let new_time;
             if (!time.match(/^(:?[0-3]\d):(:?[0-5]\d):(:?[0-5]\d)$/)) {
                 time_now = timeNow();
-                const invalid = time.match(
-                    /([a-z0-9]*):([a-z0-9]*):?([a-z0-9]*)?/,
-                );
+                const invalid = time.match(/([a-z0-9]*):([a-z0-9]*):?([a-z0-9]*)?/);
                 let hour = time_now.format('hh'),
                     minute = time_now.format('mm'),
                     second = time_now.format('ss');
@@ -103,9 +96,9 @@ const TimePicker = (() => {
                     second = formatTime(invalid[3]);
                 }
 
-                new_time = moment(
-                    `${time_now.format('YYYY-MM-DD')} ${[hour, minute, second].join(':')}`,
-                ).format('HH:mm');
+                new_time = moment(`${time_now.format('YYYY-MM-DD')} ${[hour, minute, second].join(':')}`).format(
+                    'HH:mm',
+                );
 
                 if (old_value && old_value === new_time) return false;
                 $this.val(new_time);
@@ -122,17 +115,12 @@ const TimePicker = (() => {
 
     const formatTime = time => padLeft(time, 2, '0');
 
-    const toTime = time =>
-        [formatTime(time.hour), formatTime(time.minute), '00'].join(':');
+    const toTime = time => [formatTime(time.hour), formatTime(time.minute), '00'].join(':');
 
     const checkWidth = (selector) => {
         const $selector = $(selector);
         const time_picker_conf = time_pickers[selector].config_data;
-        if (
-            $(window).width() < 770 &&
-            checkInput('time', 'not-a-time') &&
-            $selector.attr('data-picker') !== 'native'
-        ) {
+        if ($(window).width() < 770 && checkInput('time', 'not-a-time') && $selector.attr('data-picker') !== 'native') {
             hide(selector);
             $selector.attr({ type: 'time', 'data-picker': 'native' });
 
@@ -144,8 +132,7 @@ const TimePicker = (() => {
             return;
         }
         if (
-            ($(window).width() > 769 &&
-                $selector.attr('data-picker') !== 'jquery') ||
+            ($(window).width() > 769 && $selector.attr('data-picker') !== 'jquery') ||
             ($(window).width() < 770 && !checkInput('time', 'not-a-time'))
         ) {
             $selector.attr({ type: 'text', 'data-picker': 'jquery' });

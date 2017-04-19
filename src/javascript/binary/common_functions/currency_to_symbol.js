@@ -7,13 +7,8 @@ const formatMoney = (currency_value, amount) => {
     if (amount) amount = String(amount).replace(/,/g, '');
     if (typeof Intl !== 'undefined' && currency_value && amount) {
         const options = { style: 'currency', currency: currency_value };
-        const language = typeof window !== 'undefined'
-            ? getLanguage().toLowerCase()
-            : 'en';
-        money = new Intl.NumberFormat(
-            language.replace('_', '-'),
-            options,
-        ).format(amount);
+        const language = typeof window !== 'undefined' ? getLanguage().toLowerCase() : 'en';
+        money = new Intl.NumberFormat(language.replace('_', '-'), options).format(amount);
     } else {
         let updated_amount,
             sign = '';
@@ -28,9 +23,7 @@ const formatMoney = (currency_value, amount) => {
         updated_amount = addComma(updated_amount);
         const symbol = map_currency[currency_value];
 
-        money = symbol
-            ? sign + symbol + updated_amount
-            : `${currency_value} ${updated_amount}`;
+        money = symbol ? sign + symbol + updated_amount : `${currency_value} ${updated_amount}`;
     }
     return money;
 };

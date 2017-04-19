@@ -1,14 +1,12 @@
 const Portfolio = require('../portfolio').Portfolio;
 const ViewPopup = require('../../view_popup/view_popup');
 const Client = require('../../../../base/client');
-const toJapanTimeIfNeeded = require('../../../../base/clock')
-    .toJapanTimeIfNeeded;
+const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
 const localize = require('../../../../base/localize').localize;
 const urlParam = require('../../../../base/url').param;
 const showLoadingImage = require('../../../../base/utility').showLoadingImage;
 const jpClient = require('../../../../common_functions/country_base').jpClient;
-const formatMoney = require('../../../../common_functions/currency_to_symbol')
-    .formatMoney;
+const formatMoney = require('../../../../common_functions/currency_to_symbol').formatMoney;
 const GetAppDetails = require('../../../../common_functions/get_app_details');
 
 const PortfolioInit = (() => {
@@ -38,10 +36,7 @@ const PortfolioInit = (() => {
             updatePortfolio(response);
         });
         // Subscribe to transactions to auto update new purchases
-        BinarySocket.send(
-            { transaction: 1, subscribe: 1 },
-            { callback: transactionResponseHandler },
-        );
+        BinarySocket.send({ transaction: 1, subscribe: 1 }, { callback: transactionResponseHandler });
         BinarySocket.send({ oauth_apps: 1 }).then((response) => {
             updateOAuthApps(response);
         });
@@ -57,9 +52,7 @@ const PortfolioInit = (() => {
     const createPortfolioRow = (data, is_first) => {
         const long_code = typeof module !== 'undefined'
             ? data.longcode
-            : jpClient()
-                  ? toJapanTimeIfNeeded(undefined, undefined, data.longcode)
-                  : data.longcode;
+            : jpClient() ? toJapanTimeIfNeeded(undefined, undefined, data.longcode) : data.longcode;
 
         const new_class = is_first ? '' : 'new';
         const $div = $('<div/>');
@@ -87,10 +80,7 @@ const PortfolioInit = (() => {
                     .append(
                         $('<td/>', { class: 'purchase' }).append(
                             $('<strong/>', {
-                                text: formatMoney(
-                                    data.currency,
-                                    data.buy_price,
-                                ),
+                                text: formatMoney(data.currency, data.buy_price),
                             }),
                         ),
                     )
@@ -123,9 +113,7 @@ const PortfolioInit = (() => {
     const updateBalance = () => {
         const $portfolio_balance = $('#portfolio-balance');
         if ($portfolio_balance.length === 0) return;
-        $portfolio_balance.text(
-            Portfolio.getBalance(Client.get('balance'), Client.get('currency')),
-        );
+        $portfolio_balance.text(Portfolio.getBalance(Client.get('balance'), Client.get('currency')));
         const $if_balance_zero = $('#if-balance-zero');
         if (Client.get('balance') > 0 || Client.get('is_virtual')) {
             $if_balance_zero.addClass(hidden_class);
@@ -168,10 +156,7 @@ const PortfolioInit = (() => {
             updateFooter();
 
             // request "proposal_open_contract"
-            BinarySocket.send(
-                { proposal_open_contract: 1, subscribe: 1 },
-                { callback: updateIndicative },
-            );
+            BinarySocket.send({ proposal_open_contract: 1, subscribe: 1 }, { callback: updateIndicative });
         }
         // ready to show portfolio table
         $('#portfolio-loading').hide();
@@ -196,9 +181,7 @@ const PortfolioInit = (() => {
             return;
         }
 
-        const proposal = Portfolio.getProposalOpenContract(
-            data.proposal_open_contract,
-        );
+        const proposal = Portfolio.getProposalOpenContract(data.proposal_open_contract);
         // avoid updating 'values' before the new contract row added to the table
         if (!values.hasOwnProperty(proposal.contract_id)) {
             return;
@@ -224,21 +207,15 @@ const PortfolioInit = (() => {
                 });
                 $td.addClass('no_resale');
             } else {
-                status_class = values[proposal.contract_id].indicative <
-                    old_indicative
+                status_class = values[proposal.contract_id].indicative < old_indicative
                     ? ' price_moved_down'
-                    : values[proposal.contract_id].indicative > old_indicative
-                          ? ' price_moved_up'
-                          : '';
+                    : values[proposal.contract_id].indicative > old_indicative ? ' price_moved_up' : '';
                 $td.removeClass('no_resale');
             }
             $td.html(
                 $('<strong/>', {
                     class: `indicative_price ${status_class}`,
-                    text : formatMoney(
-                        proposal.currency,
-                        values[proposal.contract_id].indicative,
-                    ),
+                    text : formatMoney(proposal.currency, values[proposal.contract_id].indicative),
                 }).append(no_resale_html),
             );
         }
@@ -253,29 +230,20 @@ const PortfolioInit = (() => {
 
     const removeContract = (contract_id) => {
         delete values[contract_id];
-        $(`tr.${contract_id}`)
-            .removeClass('new')
-            .css('opacity', '0.5')
-            .fadeOut(1000, function() {
-                $(this).remove();
-                if ($('#portfolio-body').find('tr').length === 0) {
-                    $('#portfolio-table').addClass(hidden_class);
-                    $('#cost-of-open-positions, #value-of-open-positions').text(
-                        '',
-                    );
-                    $('#portfolio-no-contract').show();
-                }
-            });
+        $(`tr.${contract_id}`).removeClass('new').css('opacity', '0.5').fadeOut(1000, function() {
+            $(this).remove();
+            if ($('#portfolio-body').find('tr').length === 0) {
+                $('#portfolio-table').addClass(hidden_class);
+                $('#cost-of-open-positions, #value-of-open-positions').text('');
+                $('#portfolio-no-contract').show();
+            }
+        });
         updateFooter();
     };
 
     const updateFooter = () => {
-        $('#cost-of-open-positions').text(
-            formatMoney(currency, Portfolio.getSumPurchase(values)),
-        );
-        $('#value-of-open-positions').text(
-            formatMoney(currency, Portfolio.getIndicativeSum(values)),
-        );
+        $('#cost-of-open-positions').text(formatMoney(currency, Portfolio.getSumPurchase(values)));
+        $('#value-of-open-positions').text(formatMoney(currency, Portfolio.getIndicativeSum(values)));
     };
 
     const errorMessage = (msg) => {

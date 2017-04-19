@@ -4,8 +4,7 @@ const Tick = require('./tick');
 const updatePurchaseStatus = require('./update_values').updatePurchaseStatus;
 const ViewPopupUI = require('../user/view_popup/view_popup.ui');
 const localize = require('../../base/localize').localize;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
 const isVisible = require('../../common_functions/common_functions').isVisible;
 require('highcharts/modules/exporting')(Highcharts);
 
@@ -52,8 +51,7 @@ const TickDisplay = (() => {
         }
 
         const minimize = data.show_contract_result;
-        const end_time =
-            parseInt(data.contract_start) + parseInt((number_of_ticks + 2) * 5);
+        const end_time = parseInt(data.contract_start) + parseInt((number_of_ticks + 2) * 5);
 
         setXIndicators();
         initializeChart({
@@ -101,11 +99,9 @@ const TickDisplay = (() => {
     const initializeChart = (config) => {
         chart = new Highcharts.Chart({
             chart: {
-                type    : 'line',
-                renderTo: 'tick_chart',
-                width   : config.width
-                    ? config.width
-                    : config.minimize ? 394 : null,
+                type           : 'line',
+                renderTo       : 'tick_chart',
+                width          : config.width ? config.width : config.minimize ? 394 : null,
                 height         : config.minimize ? 143 : null,
                 backgroundColor: null,
                 events         : {
@@ -117,9 +113,7 @@ const TickDisplay = (() => {
             tooltip: {
                 formatter: function() {
                     const new_y = this.y.toFixed(display_decimals);
-                    const mom = moment
-                        .utc(applicable_ticks[this.x].epoch * 1000)
-                        .format('dddd, MMM D, HH:mm:ss');
+                    const mom = moment.utc(applicable_ticks[this.x].epoch * 1000).format('dddd, MMM D, HH:mm:ss');
                     return `${mom}<br/>${display_symbol} ${new_y}`;
                 },
             },
@@ -158,27 +152,15 @@ const TickDisplay = (() => {
         const chart_container = $('#tick_chart');
         if (contract_sentiment === 'up') {
             if (tick.quote > contract_barrier) {
-                chart_container.css(
-                    'background-color',
-                    'rgba(46,136,54,0.198039)',
-                );
+                chart_container.css('background-color', 'rgba(46,136,54,0.198039)');
             } else {
-                chart_container.css(
-                    'background-color',
-                    'rgba(204,0,0,0.098039)',
-                );
+                chart_container.css('background-color', 'rgba(204,0,0,0.098039)');
             }
         } else if (contract_sentiment === 'down') {
             if (tick.quote < contract_barrier) {
-                chart_container.css(
-                    'background-color',
-                    'rgba(46,136,54,0.198039)',
-                );
+                chart_container.css('background-color', 'rgba(46,136,54,0.198039)');
             } else {
-                chart_container.css(
-                    'background-color',
-                    'rgba(204,0,0,0.098039)',
-                );
+                chart_container.css('background-color', 'rgba(204,0,0,0.098039)');
             }
         }
     };
@@ -188,9 +170,7 @@ const TickDisplay = (() => {
             return;
         }
 
-        const barrier_type = contract_category.match('asian')
-            ? 'asian'
-            : 'static';
+        const barrier_type = contract_category.match('asian') ? 'asian' : 'static';
 
         if (barrier_type === 'static') {
             const barrier_tick = applicable_ticks[0];
@@ -199,9 +179,7 @@ const TickDisplay = (() => {
                 let final_barrier = barrier_tick.quote + parseFloat(barrier);
                 // sometimes due to rounding issues, result is 1.009999 while it should
                 // be 1.01
-                final_barrier = Number(
-                    `${Math.round(`${final_barrier}e${display_decimals}`)}e-${display_decimals}`,
-                );
+                final_barrier = Number(`${Math.round(`${final_barrier}e${display_decimals}`)}e-${display_decimals}`);
 
                 barrier_tick.quote = final_barrier;
             } else if (abs_barrier) {
@@ -245,14 +223,9 @@ const TickDisplay = (() => {
             });
             contract_barrier = calc_barrier;
         }
-        const purchase_barrier = document.getElementById(
-            'contract_purchase_barrier',
-        );
+        const purchase_barrier = document.getElementById('contract_purchase_barrier');
         if (contract_barrier && purchase_barrier) {
-            elementInnerHtml(
-                purchase_barrier,
-                `${localize('Barrier')}: ${contract_barrier}`,
-            );
+            elementInnerHtml(purchase_barrier, `${localize('Barrier')}: ${contract_barrier}`);
         }
     };
 
@@ -315,20 +288,11 @@ const TickDisplay = (() => {
     const dispatch = (data) => {
         const tick_chart = document.getElementById('tick_chart');
 
-        if (
-            !tick_chart ||
-            !isVisible(tick_chart) ||
-            !data ||
-            (!data.tick && !data.history)
-        ) {
+        if (!tick_chart || !isVisible(tick_chart) || !data || (!data.tick && !data.history)) {
             return;
         }
 
-        if (
-            window.subscribe &&
-            data.tick &&
-            document.getElementById('sell_content_wrapper')
-        ) {
+        if (window.subscribe && data.tick && document.getElementById('sell_content_wrapper')) {
             window.responseID = data.tick.id;
             ViewPopupUI.storeSubscriptionID(window.responseID);
         }
@@ -340,15 +304,11 @@ const TickDisplay = (() => {
             if (data.tick && document.getElementById('sell_content_wrapper')) {
                 Tick.details(data);
                 if (!chart_display_decimals) {
-                    chart_display_decimals =
-                        data.tick.quote.split('.')[1].length || 2;
+                    chart_display_decimals = data.tick.quote.split('.')[1].length || 2;
                 }
-            } else if (
-                data.history && document.getElementById('sell_content_wrapper')
-            ) {
+            } else if (data.history && document.getElementById('sell_content_wrapper')) {
                 if (!chart_display_decimals) {
-                    chart_display_decimals =
-                        data.history.prices[0].split('.')[1].length || 2;
+                    chart_display_decimals = data.history.prices[0].split('.')[1].length || 2;
                 }
             }
             if (!window.tick_init) {
@@ -357,9 +317,7 @@ const TickDisplay = (() => {
                     number_of_ticks  : window.tick_count,
                     contract_category: /asian/i.test(window.tick_shortcode)
                         ? 'asian'
-                        : /digit/i.test(window.tick_shortcode)
-                              ? 'digits'
-                              : 'callput',
+                        : /digit/i.test(window.tick_shortcode) ? 'digits' : 'callput',
                     longcode            : window.tick_longcode,
                     display_symbol      : window.tick_display_name,
                     contract_start      : window.tick_date_start,
@@ -378,11 +336,7 @@ const TickDisplay = (() => {
             epoches = data.history.times;
         }
 
-        if (
-            applicable_ticks &&
-            ticks_needed &&
-            applicable_ticks.length >= ticks_needed
-        ) {
+        if (applicable_ticks && ticks_needed && applicable_ticks.length >= ticks_needed) {
             evaluateContractOutcome();
             if (window.responseID) {
                 BinarySocket.send({ forget: window.responseID });
@@ -402,16 +356,9 @@ const TickDisplay = (() => {
                     };
                 }
 
-                if (
-                    tick.epoch > contract_start_moment.unix() &&
-                    !spots_list[tick.epoch]
-                ) {
+                if (tick.epoch > contract_start_moment.unix() && !spots_list[tick.epoch]) {
                     if (!chart || !chart.series) return;
-                    chart.series[0].addPoint(
-                        [counter, tick.quote],
-                        true,
-                        false,
-                    );
+                    chart.series[0].addPoint([counter, tick.quote], true, false);
                     applicable_ticks.push(tick);
                     spots_list[tick.epoch] = tick.quote;
                     const indicator_key = `_${counter}`;

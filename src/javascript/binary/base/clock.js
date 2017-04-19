@@ -12,29 +12,17 @@ const Clock = (() => {
         if (jpClient()) return;
         $(s || '.date').each((idx, ele) => {
             const gmt_time_str = ele.textContent.replace('\n', ' ');
-            const local_time = moment
-                .utc(gmt_time_str, 'YYYY-MM-DD HH:mm:ss')
-                .local();
+            const local_time = moment.utc(gmt_time_str, 'YYYY-MM-DD HH:mm:ss').local();
             if (local_time.isValid()) {
-                $(ele).attr(
-                    'data-balloon',
-                    local_time.format('YYYY-MM-DD HH:mm:ss Z'),
-                );
+                $(ele).attr('data-balloon', local_time.format('YYYY-MM-DD HH:mm:ss Z'));
             }
         });
     };
 
-    const toJapanTimeIfNeeded = (
-        gmt_time_str,
-        show_time_zone,
-        longcode,
-        hide_seconds,
-    ) => {
+    const toJapanTimeIfNeeded = (gmt_time_str, show_time_zone, longcode, hide_seconds) => {
         let match;
         if (longcode && longcode !== '') {
-            match = longcode.match(
-                /((?:\d{4}-\d{2}-\d{2})\s?(\d{2}:\d{2}:\d{2})?(?:\sGMT)?)/,
-            );
+            match = longcode.match(/((?:\d{4}-\d{2}-\d{2})\s?(\d{2}:\d{2}:\d{2})?(?:\sGMT)?)/);
             if (!match) return longcode;
         }
 
@@ -56,9 +44,7 @@ const Clock = (() => {
             .utcOffset(jp_client ? '+09:00' : '+00:00')
             .format(
                 (hide_seconds ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD HH:mm:ss') +
-                    (show_time_zone && show_time_zone !== ''
-                        ? jp_client ? ' zZ' : ' Z'
-                        : ''),
+                    (show_time_zone && show_time_zone !== '' ? jp_client ? ' zZ' : ' Z' : ''),
             );
 
         return longcode ? longcode.replace(match[0], time_str) : time_str;
@@ -88,15 +74,10 @@ const Clock = (() => {
         const start_timestamp = response.time;
 
         const client_time_at_response = moment().valueOf();
-        const server_time_at_response =
-            start_timestamp * 1000 + (client_time_at_response - client_time);
+        const server_time_at_response = start_timestamp * 1000 + (client_time_at_response - client_time);
 
         const updateTime = () => {
-            window.time = moment(
-                server_time_at_response +
-                    moment().valueOf() -
-                    client_time_at_response,
-            ).utc();
+            window.time = moment(server_time_at_response + moment().valueOf() - client_time_at_response).utc();
             const time_str = `${window.time.format('YYYY-MM-DD HH:mm')} GMT`;
             if (jpClient()) {
                 $clock.html(toJapanTimeIfNeeded(time_str, 1, '', 1));

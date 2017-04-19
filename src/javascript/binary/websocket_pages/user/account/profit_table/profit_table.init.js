@@ -1,12 +1,9 @@
 const ProfitTableUI = require('./profit_table.ui');
 const ViewPopup = require('../../view_popup/view_popup');
 const localize = require('../../../../base/localize').localize;
-const showLocalTimeOnHover = require('../../../../base/clock')
-    .showLocalTimeOnHover;
-const addTooltip = require('../../../../common_functions/get_app_details')
-    .addTooltip;
-const buildOauthApps = require('../../../../common_functions/get_app_details')
-    .buildOauthApps;
+const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
+const addTooltip = require('../../../../common_functions/get_app_details').addTooltip;
+const buildOauthApps = require('../../../../common_functions/get_app_details').buildOauthApps;
 
 const ProfitTableInit = (() => {
     let batch_size,
@@ -19,8 +16,7 @@ const ProfitTableInit = (() => {
 
     const tableExist = () => document.getElementById('profit-table');
 
-    const finishedConsumed = () =>
-        transaction_consumed === transactions_received;
+    const finishedConsumed = () => transaction_consumed === transactions_received;
 
     const onUnload = () => {
         current_batch = [];
@@ -62,9 +58,7 @@ const ProfitTableInit = (() => {
         }
 
         if (!tableExist()) {
-            ProfitTableUI.createEmptyTable().appendTo(
-                '#profit-table-container',
-            );
+            ProfitTableUI.createEmptyTable().appendTo('#profit-table-container');
             ProfitTableUI.updateProfitTable(getNextChunk());
 
             // Show a message when the table is empty
@@ -74,9 +68,7 @@ const ProfitTableInit = (() => {
                         $('<td/>', { colspan: 8 }).append(
                             $('<p/>', {
                                 class: 'notice-msg center-text',
-                                text : localize(
-                                    'Your account has no trading activity.',
-                                ),
+                                text : localize('Your account has no trading activity.'),
                             }),
                         ),
                     ),

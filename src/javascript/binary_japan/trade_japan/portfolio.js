@@ -14,11 +14,7 @@ const JapanPortfolio = (() => {
         const $container = $('#tab_portfolio-content');
         $portfolio = $portfolio || $('#portfolio');
 
-        if (
-            $portfolio &&
-            (!$portfolio.parent().length ||
-                $portfolio.parent().get(0).id !== 'tab_portfolio-content')
-        ) {
+        if ($portfolio && (!$portfolio.parent().length || $portfolio.parent().get(0).id !== 'tab_portfolio-content')) {
             $portfolio.detach();
             $container.append($portfolio);
         }

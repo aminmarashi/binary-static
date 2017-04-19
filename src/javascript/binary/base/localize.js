@@ -20,9 +20,7 @@ const Localize = (() => {
     };
 
     const localize = (text, params) =>
-        (Array.isArray(text)
-            ? text.map(t => doLocalize(t, params))
-            : doLocalize(text, params));
+        (Array.isArray(text) ? text.map(t => doLocalize(t, params)) : doLocalize(text, params));
 
     return {
         forLang : localizeForLang,

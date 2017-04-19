@@ -64,10 +64,7 @@ const MBTick = (() => {
             spot_element.className = 'error';
         } else {
             spot_element.classList.remove('error');
-            MBTick.displayPriceMovement(
-                parseFloat(spot_element.textContent),
-                parseFloat(message),
-            );
+            MBTick.displayPriceMovement(parseFloat(spot_element.textContent), parseFloat(message));
         }
 
         spot_element.textContent = message;
@@ -77,9 +74,7 @@ const MBTick = (() => {
      * Display price/spot movement variation to depict price moved up or down
      */
     const displayPriceMovement = (old_value, current_value) => {
-        const class_name = current_value > old_value
-            ? 'up'
-            : current_value < old_value ? 'down' : 'still';
+        const class_name = current_value > old_value ? 'up' : current_value < old_value ? 'down' : 'still';
         $('#spot-dyn').attr('class', `dynamics ${class_name}`);
     };
 
@@ -101,9 +96,7 @@ const MBTick = (() => {
 
     const updateWarmChart = () => {
         $chart = $chart || $('#trading_worm_chart');
-        const spots_array = Object.keys(MBTick.spots())
-            .sort((a, b) => a - b)
-            .map(v => MBTick.spots()[v]);
+        const spots_array = Object.keys(MBTick.spots()).sort((a, b) => a - b).map(v => MBTick.spots()[v]);
         if ($chart && typeof $chart.sparkline === 'function') {
             $chart.sparkline(spots_array, chart_config);
             if (spots_array.length) {
@@ -137,19 +130,12 @@ const MBTick = (() => {
                 return;
             }
             const symbol = MBDefaults.get('underlying');
-            if (
-                response.echo_req.ticks === symbol ||
-                (response.tick && response.tick.symbol === symbol)
-            ) {
+            if (response.echo_req.ticks === symbol || (response.tick && response.tick.symbol === symbol)) {
                 MBTick.details(response);
                 MBTick.display();
                 MBTick.updateWarmChart();
             }
-        } else if (
-            response.history &&
-            response.history.times &&
-            response.history.prices
-        ) {
+        } else if (response.history && response.history.times && response.history.prices) {
             for (let i = 0; i < response.history.times.length; i++) {
                 details({
                     tick: {

@@ -31,9 +31,7 @@ const TrafficSource = (() => {
         initCookie();
         const data = cookie.value;
         Object.keys(data).map((key) => {
-            data[key] = (data[key] || '')
-                .replace(/[^a-zA-Z0-9\s\-\.\_]/gi, '')
-                .substring(0, 100);
+            data[key] = (data[key] || '').replace(/[^a-zA-Z0-9\s\-\.\_]/gi, '').substring(0, 100);
         });
         return data;
     };
@@ -70,17 +68,10 @@ const TrafficSource = (() => {
         const doc_ref = document.referrer;
         let referrer = localStorage.getItem('index_referrer') || doc_ref;
         localStorage.removeItem('index_referrer');
-        if (
-            doc_ref && !new RegExp(window.location.hostname, 'i').test(doc_ref)
-        ) {
+        if (doc_ref && !new RegExp(window.location.hostname, 'i').test(doc_ref)) {
             referrer = doc_ref;
         }
-        if (
-            referrer &&
-            !current_values.referrer &&
-            !params.utm_source &&
-            !current_values.utm_source
-        ) {
+        if (referrer && !current_values.referrer && !params.utm_source && !current_values.utm_source) {
             cookie.set('referrer', Url.getLocation(referrer).hostname);
         }
     };

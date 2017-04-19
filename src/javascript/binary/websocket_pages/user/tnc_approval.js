@@ -23,23 +23,14 @@ const TNCApproval = (() => {
         $tnc_msg.html(
             template($tnc_msg.html(), [
                 landing_company,
-                urlFor(
-                    Client.get('residence') === 'jp'
-                        ? 'terms-and-conditions-jp'
-                        : 'terms-and-conditions',
-                ),
+                urlFor(Client.get('residence') === 'jp' ? 'terms-and-conditions-jp' : 'terms-and-conditions'),
             ]),
         );
         $container.find('#tnc_loading').remove();
         $container.find('#tnc_approval').removeClass(hidden_class);
     };
 
-    const requiresTNCApproval = (
-        $btn,
-        funcDisplay,
-        onSuccess,
-        redirect_anyway,
-    ) => {
+    const requiresTNCApproval = ($btn, funcDisplay, onSuccess, redirect_anyway) => {
         BinarySocket.wait('website_status', 'get_settings').then(() => {
             if (!Client.shouldAcceptTnc()) {
                 redirectBack(redirect_anyway);
@@ -51,19 +42,11 @@ const TNCApproval = (() => {
             $btn.click((e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                BinarySocket.send(
-                    { tnc_approval: '1' },
-                    { forced: true },
-                ).then((response) => {
+                BinarySocket.send({ tnc_approval: '1' }, { forced: true }).then((response) => {
                     if (response.error) {
-                        $('#err_message')
-                            .html(response.error.message)
-                            .removeClass(hidden_class);
+                        $('#err_message').html(response.error.message).removeClass(hidden_class);
                     } else {
-                        BinarySocket.send(
-                            { get_settings: 1 },
-                            { forced: true },
-                        ).then(() => {
+                        BinarySocket.send({ get_settings: 1 }, { forced: true }).then(() => {
                             Header.displayAccountStatus();
                         });
                         redirectBack(redirect_anyway);

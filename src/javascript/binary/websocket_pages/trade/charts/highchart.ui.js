@@ -9,8 +9,7 @@ const HighchartUI = (() => {
     const initLabels = () => {
         common_time_style =
             'margin-bottom: 3px; margin-left: 10px; height: 0; width: 20px; border: 0; border-bottom: 2px; border-color: #e98024; display: inline-block;';
-        common_spot_style =
-            'margin-left: 10px; display: inline-block; border-radius: 6px;';
+        common_spot_style = 'margin-left: 10px; display: inline-block; border-radius: 6px;';
     };
 
     const getLabels = (option) => {
@@ -56,9 +55,7 @@ const HighchartUI = (() => {
             },
             credits: { enabled: false },
             tooltip: {
-                xDateFormat: params.JPClient
-                    ? '%Y/%m/%d, %H:%M:%S'
-                    : '%A, %b %e, %H:%M:%S GMT',
+                xDateFormat  : params.JPClient ? '%Y/%m/%d, %H:%M:%S' : '%A, %b %e, %H:%M:%S GMT',
                 valueDecimals: params.decimals.split('.')[1].length || 3,
             },
             subtitle: {
@@ -164,9 +161,7 @@ const HighchartUI = (() => {
         $('#analysis_live_chart').html(
             $('<p/>', {
                 class: 'error-msg',
-                text : type === 'missing'
-                    ? localize('Ticks history returned an empty array.')
-                    : message,
+                text : type === 'missing' ? localize('Ticks history returned an empty array.') : message,
             }),
         );
     };

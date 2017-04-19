@@ -62,14 +62,8 @@ const ViewPopupUI = (() => {
     };
 
     const forgetChartStreams = () => {
-        if (
-            State.get('is_trading') ||
-            State.get('is_mb_trading') ||
-            State.get('is_beta_trading')
-        ) {
-            const underlying = State.get('is_mb_trading')
-                ? MBDefaults.get('underlying')
-                : Defaults.get('underlying');
+        if (State.get('is_trading') || State.get('is_mb_trading') || State.get('is_beta_trading')) {
+            const underlying = State.get('is_mb_trading') ? MBDefaults.get('underlying') : Defaults.get('underlying');
             if (underlying === chart_underlying) {
                 return;
             }
@@ -172,20 +166,10 @@ const ViewPopupUI = (() => {
             y_min = 0;
         }
         if (x === undefined) {
-            x =
-                Math.max(
-                    Math.floor(
-                        (win_.width() - win_.scrollLeft() - con.width()) / 2,
-                    ),
-                    x_min,
-                ) + win_.scrollLeft();
+            x = Math.max(Math.floor((win_.width() - win_.scrollLeft() - con.width()) / 2), x_min) + win_.scrollLeft();
         }
         if (y === undefined) {
-            y =
-                Math.min(
-                    Math.floor((win_.height() - con.height()) / 2),
-                    y_min,
-                ) + win_.scrollTop();
+            y = Math.min(Math.floor((win_.height() - con.height()) / 2), y_min) + win_.scrollTop();
             if (y < win_.scrollTop()) {
                 y = win_.scrollTop();
             }
@@ -203,16 +187,9 @@ const ViewPopupUI = (() => {
             chart_stream_ids = [];
             chart_underlying = underlying;
         }
-        if (
-            !underlying && id && id.length > 0 && $.inArray(id, stream_ids) < 0
-        ) {
+        if (!underlying && id && id.length > 0 && $.inArray(id, stream_ids) < 0) {
             stream_ids.push(id);
-        } else if (
-            underlying &&
-            id &&
-            id.length > 0 &&
-            $.inArray(id, chart_stream_ids) < 0
-        ) {
+        } else if (underlying && id && id.length > 0 && $.inArray(id, chart_stream_ids) < 0) {
             chart_stream_ids.push(id);
         }
     };

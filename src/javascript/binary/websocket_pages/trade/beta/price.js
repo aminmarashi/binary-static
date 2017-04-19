@@ -1,18 +1,14 @@
 const moment = require('moment');
 const Contract_Beta = require('./contract');
 const commonTrading = require('../common');
-const displayPriceMovement = require('../common_independent')
-    .displayPriceMovement;
+const displayPriceMovement = require('../common_independent').displayPriceMovement;
 const getStartDateNode = require('../common_independent').getStartDateNode;
 const getTradingTimes = require('../common_independent').getTradingTimes;
 const Defaults = require('../defaults');
 const localize = require('../../../base/localize').localize;
-const elementTextContent = require('../../../common_functions/common_functions')
-    .elementTextContent;
-const isVisible = require('../../../common_functions/common_functions')
-    .isVisible;
-const formatMoney = require('../../../common_functions/currency_to_symbol')
-    .formatMoney;
+const elementTextContent = require('../../../common_functions/common_functions').elementTextContent;
+const isVisible = require('../../../common_functions/common_functions').isVisible;
+const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
 
 /*
  * Price object handles all the functions we need to display prices
@@ -66,8 +62,7 @@ const Price_Beta = (() => {
         }
 
         if (currency && (currency.value || currency.getAttribute('value'))) {
-            proposal.currency =
-                currency.value || currency.getAttribute('value');
+            proposal.currency = currency.value || currency.getAttribute('value');
         }
 
         if (underlying && underlying.value) {
@@ -78,41 +73,29 @@ const Price_Beta = (() => {
             proposal.date_start = start_time.value;
         }
 
-        if (
-            expiry_type &&
-            isVisible(expiry_type) &&
-            expiry_type.value === 'duration'
-        ) {
+        if (expiry_type && isVisible(expiry_type) && expiry_type.value === 'duration') {
             proposal.duration = parseInt(duration.value);
             proposal.duration_unit = duration_unit.value;
-        } else if (
-            expiry_type &&
-            isVisible(expiry_type) &&
-            expiry_type.value === 'endtime'
-        ) {
+        } else if (expiry_type && isVisible(expiry_type) && expiry_type.value === 'endtime') {
             const end_date2 = end_date.getAttribute('data-value');
             let end_time2 = Defaults.get('expiry_time');
             if (!end_time2) {
                 const trading_times = getTradingTimes();
                 if (
                     trading_times.hasOwnProperty(end_date2) &&
-                    typeof trading_times[end_date2][underlying.value] ===
-                        'object' &&
+                    typeof trading_times[end_date2][underlying.value] === 'object' &&
                     trading_times[end_date2][underlying.value].length &&
                     trading_times[end_date2][underlying.value][0] !== '--'
                 ) {
                     if (trading_times[end_date2][underlying.value].length > 1) {
-                        end_time2 =
-                            trading_times[end_date2][underlying.value][1];
+                        end_time2 = trading_times[end_date2][underlying.value][1];
                     } else {
                         end_time2 = trading_times[end_date2][underlying.value];
                     }
                 }
             }
 
-            proposal.date_expiry = moment
-                .utc(`${end_date2} ${end_time2 || '23:59:59'}`)
-                .unix();
+            proposal.date_expiry = moment.utc(`${end_date2} ${end_time2 || '23:59:59'}`).unix();
             // For stopping tick trade behaviour
             proposal.duration_unit = 'm';
         }
@@ -166,9 +149,7 @@ const Price_Beta = (() => {
             return;
         }
 
-        const container = document.getElementById(
-            `price_container_${position}`,
-        );
+        const container = document.getElementById(`price_container_${position}`);
         if (!container) return;
         if (!$(container).is(':visible')) {
             $(container).fadeIn(200, () => {
@@ -178,22 +159,16 @@ const Price_Beta = (() => {
 
         const h4 = container.getElementsByClassName('contract_heading')[0];
         const amount = container.getElementsByClassName('contract_amount')[0];
-        const payout_amount = container.getElementsByClassName(
-            'contract_payout',
-        )[0];
+        const payout_amount = container.getElementsByClassName('contract_payout')[0];
         const stake = container.getElementsByClassName('stake')[0];
         const payout = container.getElementsByClassName('payout')[0];
         const purchase = container.getElementsByClassName('purchase_button')[0];
-        const description = container.getElementsByClassName(
-            'contract_description',
-        )[0];
+        const description = container.getElementsByClassName('contract_description')[0];
         const comment = container.getElementsByClassName('price_comment')[0];
         const error = container.getElementsByClassName('contract_error')[0];
         const currency = document.getElementById('currency');
 
-        const display_type = type
-            ? contract_type ? contract_type[type] : ''
-            : '';
+        const display_type = type ? contract_type ? contract_type[type] : '' : '';
         if (display_type) {
             h4.setAttribute('class', `contract_heading ${type}`);
             elementTextContent(h4, display_type);
@@ -206,10 +181,7 @@ const Price_Beta = (() => {
                 elementTextContent(stake, `${localize('Stake')}: `);
                 elementTextContent(
                     amount,
-                    formatMoney(
-                        currency.value || currency.getAttribute('value'),
-                        data.display_value,
-                    ),
+                    formatMoney(currency.value || currency.getAttribute('value'), data.display_value),
                 );
                 $('.stake_wrapper:hidden').show();
             } else {
@@ -220,10 +192,7 @@ const Price_Beta = (() => {
                 elementTextContent(payout, `${localize('Payout')}: `);
                 elementTextContent(
                     payout_amount,
-                    formatMoney(
-                        currency.value || currency.getAttribute('value'),
-                        +data.payout,
-                    ),
+                    formatMoney(currency.value || currency.getAttribute('value'), +data.payout),
                 );
                 $('.payout_wrapper:hidden').show();
             } else {
@@ -334,10 +303,7 @@ const Price_Beta = (() => {
                         response.echo_req.passthrough.form_id === form_id
                     ) {
                         commonTrading.hideOverlayContainer();
-                        Price_Beta.display(
-                            response,
-                            Contract_Beta.contractType()[Contract_Beta.form()],
-                        );
+                        Price_Beta.display(response, Contract_Beta.contractType()[Contract_Beta.form()]);
                         commonTrading.hidePriceOverlay();
                     }
                 },

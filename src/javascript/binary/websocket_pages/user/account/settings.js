@@ -12,9 +12,7 @@ const Settings = (() => {
             if (Client.get('is_virtual')) {
                 $(class_real).addClass(class_hidden);
             } else {
-                $(class_real)
-                    .not(jpClient() ? '.ja-hide' : '')
-                    .removeClass(class_hidden);
+                $(class_real).not(jpClient() ? '.ja-hide' : '').removeClass(class_hidden);
             }
 
             if (/has_password/.test(response.get_account_status.status)) {

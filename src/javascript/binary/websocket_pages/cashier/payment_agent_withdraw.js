@@ -35,17 +35,9 @@ const PaymentAgentWithdraw = (() => {
                 verify_email: Client.get('email'),
                 type        : 'paymentagent_withdraw',
             });
-            insertListOption(
-                $ddl_agents,
-                localize('Please select a payment agent'),
-                '',
-            );
+            insertListOption($ddl_agents, localize('Please select a payment agent'), '');
             for (let i = 0; i < pa_list.length; i++) {
-                insertListOption(
-                    $ddl_agents,
-                    pa_list[i].name,
-                    pa_list[i].paymentagent_loginid,
-                );
+                insertListOption($ddl_agents, pa_list[i].name, pa_list[i].paymentagent_loginid);
             }
             setActiveView(view_ids.form);
             const form_id = `#${$(view_ids.form).find('form').attr('id')}`;
@@ -92,18 +84,12 @@ const PaymentAgentWithdraw = (() => {
                 fnc_additional_check: setAgentName,
             });
         } else {
-            showPageError(
-                localize(
-                    'The Payment Agent facility is currently not available in your country.',
-                ),
-            );
+            showPageError(localize('The Payment Agent facility is currently not available in your country.'));
         }
     };
 
     const insertListOption = ($ddl_object, item_text, item_value) => {
-        $ddl_object.append(
-            $('<option/>', { value: item_value, text: item_text }),
-        );
+        $ddl_object.append($('<option/>', { value: item_value, text: item_text }));
     };
 
     // ----------------------------
@@ -150,42 +136,28 @@ const PaymentAgentWithdraw = (() => {
             }
             case 1: // withdrawal success
                 setActiveView(view_ids.success);
-                $('#successMessage')
-                    .css('display', '')
-                    .attr('class', 'success-msg')
-                    .html(
-                        $('<ul/>', { class: 'checked' }).append(
-                            $('<li/>', {
-                                text: localize(
-                                    'Your request to withdraw [_1] [_2] from your account [_3] to Payment Agent [_4] account has been successfully processed.',
-                                    [
-                                        request.currency,
-                                        request.amount,
-                                        Cookies.get('loginid'),
-                                        agent_name,
-                                    ],
-                                ),
-                            }),
-                        ),
-                    );
+                $('#successMessage').css('display', '').attr('class', 'success-msg').html(
+                    $('<ul/>', { class: 'checked' }).append(
+                        $('<li/>', {
+                            text: localize(
+                                'Your request to withdraw [_1] [_2] from your account [_3] to Payment Agent [_4] account has been successfully processed.',
+                                [request.currency, request.amount, Cookies.get('loginid'), agent_name],
+                            ),
+                        }),
+                    ),
+                );
                 break;
 
             default:
                 // error
                 if (response.echo_req.dry_run === 1) {
                     setActiveView(view_ids.form);
-                    $('#formMessage')
-                        .css('display', '')
-                        .attr('class', 'errorfield')
-                        .html(response.error.message);
+                    $('#formMessage').css('display', '').attr('class', 'errorfield').html(response.error.message);
                 } else if (response.error.code === 'InvalidToken') {
                     showPageError(
                         localize(
                             'Your token has expired. Please click [_1]here[_2] to restart the verification process.',
-                            [
-                                '<a href="javascript:;" onclick="window.location.reload();">',
-                                '</a>',
-                            ],
+                            ['<a href="javascript:;" onclick="window.location.reload();">', '</a>'],
                         ),
                     );
                 } else {
@@ -204,10 +176,7 @@ const PaymentAgentWithdraw = (() => {
         if (id) {
             $error.find(`#${id}`).removeClass(hidden_class);
         } else {
-            $error
-                .find('#custom-error')
-                .html(err_msg)
-                .removeClass(hidden_class);
+            $error.find('#custom-error').html(err_msg).removeClass(hidden_class);
         }
         setActiveView(view_ids.error);
     };
@@ -223,11 +192,7 @@ const PaymentAgentWithdraw = (() => {
             $views = $('#paymentagent_withdrawal').find('.viewItem');
             $views.addClass(hidden_class);
 
-            if (
-                /(withdrawal|cashier)_locked/.test(
-                    data.get_account_status.status,
-                )
-            ) {
+            if (/(withdrawal|cashier)_locked/.test(data.get_account_status.status)) {
                 showPageError('', 'withdrawal-locked-error');
             } else {
                 BinarySocket.send({

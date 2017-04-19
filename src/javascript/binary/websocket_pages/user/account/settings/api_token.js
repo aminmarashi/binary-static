@@ -1,12 +1,10 @@
 const BinaryPjax = require('../../../../base/binary_pjax');
-const showLocalTimeOnHover = require('../../../../base/clock')
-    .showLocalTimeOnHover;
+const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
 const localize = require('../../../../base/localize').localize;
 const FlexTableUI = require('../../../../common_functions/attach_dom/flextable');
 const jpClient = require('../../../../common_functions/country_base').jpClient;
 const FormManager = require('../../../../common_functions/form_manager');
-const toTitleCase = require('../../../../common_functions/string_util')
-    .toTitleCase;
+const toTitleCase = require('../../../../common_functions/string_util').toTitleCase;
 
 const APIToken = (() => {
     'use strict';
@@ -30,9 +28,7 @@ const APIToken = (() => {
 
         BinarySocket.send({ api_token: 1 }).then(populateTokensList);
 
-        const regex_msg = localize('Only [_1] are allowed.', [
-            ['letters', 'numbers', 'space', '_'].join(', '),
-        ]);
+        const regex_msg = localize('Only [_1] are allowed.', [['letters', 'numbers', 'space', '_'].join(', ')]);
         FormManager.init(form_id, [
             {
                 selector     : '#txt_name',
@@ -50,9 +46,7 @@ const APIToken = (() => {
                     [
                         'req',
                         {
-                            message: localize(
-                                'Please select at least one scope',
-                            ),
+                            message: localize('Please select at least one scope'),
                         },
                     ],
                 ],
@@ -104,12 +98,7 @@ const APIToken = (() => {
             return;
         } else if (tokens.length >= max_tokens) {
             $form.addClass(hidden_class);
-            showErrorMessage(
-                localize(
-                    'The maximum number of tokens ([_1]) has been reached.',
-                    [max_tokens],
-                ),
-            );
+            showErrorMessage(localize('The maximum number of tokens ([_1]) has been reached.', [max_tokens]));
         } else {
             $form.removeClass(hidden_class);
         }
@@ -136,9 +125,7 @@ const APIToken = (() => {
     };
 
     const createDeleteButton = ($row, token) => {
-        const message = localize(
-            'Are you sure that you want to permanently delete token',
-        );
+        const message = localize('Are you sure that you want to permanently delete token');
         const $button = $('<button/>', {
             class: 'button btn_delete',
             text : localize('Delete'),
@@ -155,12 +142,8 @@ const APIToken = (() => {
     };
 
     const formatToken = (token) => {
-        const last_used = token.last_used
-            ? `${token.last_used} GMT`
-            : localize('Never Used');
-        const scopes = token.scopes
-            .map(scope => localize(toTitleCase(scope)))
-            .join(', ');
+        const last_used = token.last_used ? `${token.last_used} GMT` : localize('Never Used');
+        const scopes = token.scopes.map(scope => localize(toTitleCase(scope))).join(', ');
         return [
             token.display_name,
             token.token,
@@ -175,13 +158,10 @@ const APIToken = (() => {
             api_token   : 1,
             delete_token: token,
         }).then((response) => {
-            $(`#${response.echo_req.delete_token}`)
-                .removeClass('new')
-                .addClass('deleting')
-                .fadeOut(700, function() {
-                    $(this).remove();
-                    populateTokensList(response);
-                });
+            $(`#${response.echo_req.delete_token}`).removeClass('new').addClass('deleting').fadeOut(700, function() {
+                $(this).remove();
+                populateTokensList(response);
+            });
         });
     };
 
@@ -189,21 +169,13 @@ const APIToken = (() => {
     // ----- Message Functions -----
     // -----------------------------
     const showErrorMessage = (msg) => {
-        $('#token_message')
-            .removeClass(hidden_class)
-            .find('p')
-            .attr('class', error_class)
-            .html(localize(msg));
+        $('#token_message').removeClass(hidden_class).find('p').attr('class', error_class).html(localize(msg));
     };
 
     const showFormMessage = (msg, is_success) => {
         $('#msg_form')
             .attr('class', is_success ? 'success-msg' : error_class)
-            .html(
-                is_success
-                    ? `<ul class="checked"><li>${localize(msg)}</li></ul>`
-                    : localize(msg),
-            )
+            .html(is_success ? `<ul class="checked"><li>${localize(msg)}</li></ul>` : localize(msg))
             .css('display', 'block')
             .delay(3000)
             .fadeOut(1000);

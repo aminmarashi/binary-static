@@ -2,8 +2,7 @@ const MBDefaults = require('./mb_defaults');
 const Client = require('../../base/client');
 const State = require('../../base/storage').State;
 const jpClient = require('../../common_functions/country_base').jpClient;
-const formatCurrency = require('../../common_functions/currency_to_symbol')
-    .formatCurrency;
+const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
 
 /*
  * Handles currency display
@@ -44,9 +43,7 @@ const MBDisplayCurrencies = (selected, show_class) => {
         MBDefaults.set('currency', target.value);
     } else {
         const class_value = show_class ? target.getAttribute('class') : '';
-        const text_value = State.get('is_mb_trading') && jpClient()
-            ? '✕'
-            : formatCurrency(currencies[0]);
+        const text_value = State.get('is_mb_trading') && jpClient() ? '✕' : formatCurrency(currencies[0]);
         $('#currency').replaceWith(
             $('<span/>', {
                 id   : target.getAttribute('id'),

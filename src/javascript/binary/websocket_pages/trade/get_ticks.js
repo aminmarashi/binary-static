@@ -19,15 +19,8 @@ const GetTicks = (() => {
     let underlying;
 
     const request = (symbol, req, callback) => {
-        underlying = State.get('is_mb_trading')
-            ? MBDefaults.get('underlying')
-            : Defaults.get('underlying');
-        if (
-            underlying &&
-            req &&
-            callback &&
-            (underlying !== req.ticks_history || !req.subscribe)
-        ) {
+        underlying = State.get('is_mb_trading') ? MBDefaults.get('underlying') : Defaults.get('underlying');
+        if (underlying && req && callback && (underlying !== req.ticks_history || !req.subscribe)) {
             BinarySocket.send(req, { callback: callback });
         } else {
             BinarySocket.send({ forget_all: 'ticks' });
@@ -44,8 +37,7 @@ const GetTicks = (() => {
                     callback: (response) => {
                         const type = response.msg_type;
                         const is_digit = getActiveTab() === 'tab_last_digit';
-                        const is_digit_beta =
-                            getActiveTab_Beta() === 'tab_last_digit';
+                        const is_digit_beta = getActiveTab_Beta() === 'tab_last_digit';
                         if (typeof callback === 'function') {
                             callback(response);
                         }
@@ -68,15 +60,9 @@ const GetTicks = (() => {
                         } else if (type === 'history') {
                             processHistory(response);
                             if (is_digit) {
-                                DigitInfo.showChart(
-                                    response.echo_req.ticks_history,
-                                    response.history.prices,
-                                );
+                                DigitInfo.showChart(response.echo_req.ticks_history, response.history.prices);
                             } else if (is_digit_beta) {
-                                DigitInfo_Beta.showChart(
-                                    response.echo_req.ticks_history,
-                                    response.history.prices,
-                                );
+                                DigitInfo_Beta.showChart(response.echo_req.ticks_history, response.history.prices);
                             }
                         }
                     },
@@ -87,10 +73,7 @@ const GetTicks = (() => {
 
     const processTick = (tick) => {
         const symbol = underlying;
-        if (
-            tick.echo_req.ticks === symbol ||
-            (tick.tick && tick.tick.symbol === symbol)
-        ) {
+        if (tick.echo_req.ticks === symbol || (tick.tick && tick.tick.symbol === symbol)) {
             Tick.details(tick);
             Tick.display();
             TickDisplay.updateChart(tick);
@@ -118,10 +101,7 @@ const GetTicks = (() => {
 
     const processTick_Beta = (tick) => {
         const symbol = underlying;
-        if (
-            tick.echo_req.ticks === symbol ||
-            (tick.tick && tick.tick.symbol === symbol)
-        ) {
+        if (tick.echo_req.ticks === symbol || (tick.tick && tick.tick.symbol === symbol)) {
             Tick.details(tick);
             Tick.display();
             TickDisplay_Beta.updateChart(tick);

@@ -10,14 +10,12 @@ const Notifications = require('./notifications');
 const Price = require('./price');
 const Process = require('./process');
 const Purchase = require('./purchase');
-const setFormPlaceholderContent = require('./set_values')
-    .setFormPlaceholderContent;
+const setFormPlaceholderContent = require('./set_values').setFormPlaceholderContent;
 const getStartDateNode = require('./common_independent').getStartDateNode;
 const Tick = require('./tick');
 const BinaryPjax = require('../../base/binary_pjax');
 const GTM = require('../../base/gtm');
-const dateValueChanged = require('../../common_functions/common_functions')
-    .dateValueChanged;
+const dateValueChanged = require('../../common_functions/common_functions').dateValueChanged;
 const isVisible = require('../../common_functions/common_functions').isVisible;
 const onlyNumericOnKeypress = require('../../common_functions/event_handler');
 const TimePicker = require('../../components/time_picker');
@@ -66,9 +64,7 @@ const TradingEvents = (() => {
             TradingAnalysis.request();
         };
 
-        const form_nav_element = document.getElementById(
-            'contract_form_name_nav',
-        );
+        const form_nav_element = document.getElementById('contract_form_name_nav');
         if (form_nav_element) {
             form_nav_element.addEventListener('click', (e) => {
                 const clicked_form = e.target;
@@ -76,24 +72,16 @@ const TradingEvents = (() => {
                     const is_form_active =
                         clicked_form.classList.contains('active') ||
                         clicked_form.parentElement.classList.contains('active');
-                    Defaults.set(
-                        'formname',
-                        clicked_form.getAttribute('menuitem'),
-                    );
+                    Defaults.set('formname', clicked_form.getAttribute('menuitem'));
 
                     setFormPlaceholderContent();
                     // if form is already active then no need to send same request again
-                    commonTrading.toggleActiveCatMenuElement(
-                        form_nav_element,
-                        e.target.getAttribute('menuitem'),
-                    );
+                    commonTrading.toggleActiveCatMenuElement(form_nav_element, e.target.getAttribute('menuitem'));
 
                     if (!is_form_active) {
                         contractFormEventChange();
                     }
-                    const contract_form_checkbox = document.getElementById(
-                        'contract_form_show_menu',
-                    );
+                    const contract_form_checkbox = document.getElementById('contract_form_show_menu');
                     if (contract_form_checkbox) {
                         contract_form_checkbox.checked = false;
                     }
@@ -127,10 +115,7 @@ const TradingEvents = (() => {
 
                     // get ticks for current underlying
                     GetTicks.request(underlying);
-                    commonTrading.displayTooltip(
-                        Defaults.get('market'),
-                        underlying,
-                    );
+                    commonTrading.displayTooltip(Defaults.get('market'), underlying);
                 }
             });
         }
@@ -155,15 +140,10 @@ const TradingEvents = (() => {
             Price.processPriceRequest();
             commonTrading.submitForm(document.getElementById('websocket_form'));
         };
-        const duration_amount_element = document.getElementById(
-            'duration_amount',
-        );
+        const duration_amount_element = document.getElementById('duration_amount');
         let input_event_triggered = false; // For triggering one of the two events.
         if (duration_amount_element) {
-            duration_amount_element.addEventListener(
-                'keypress',
-                onlyNumericOnKeypress,
-            );
+            duration_amount_element.addEventListener('keypress', onlyNumericOnKeypress);
             // jquery needed for datepicker
             $('#duration_amount')
                 .on(
@@ -179,10 +159,7 @@ const TradingEvents = (() => {
                     commonTrading.debounce((e) => {
                         // using Defaults, to update the value by datepicker if it was emptied by keyboard (delete)
                         Durations.validateMinDurationAmount();
-                        if (
-                            input_event_triggered === false ||
-                            !Defaults.get('duration_amount')
-                        ) {
+                        if (input_event_triggered === false || !Defaults.get('duration_amount')) {
                             triggerOnDurationChange(e);
                         } else {
                             input_event_triggered = false;
@@ -230,9 +207,7 @@ const TradingEvents = (() => {
                     return false;
                 }
                 if (commonTrading.timeIsValid($('#expiry_date'))) {
-                    Durations.selectEndDate(
-                        moment(this.getAttribute('data-value')),
-                    );
+                    Durations.selectEndDate(moment(this.getAttribute('data-value')));
                 }
                 return true;
             });
@@ -278,9 +253,7 @@ const TradingEvents = (() => {
                     }
                     Defaults.set('amount', e.target.value);
                     Price.processPriceRequest();
-                    commonTrading.submitForm(
-                        document.getElementById('websocket_form'),
-                    );
+                    commonTrading.submitForm(document.getElementById('websocket_form'));
                 }),
             );
         }
@@ -326,16 +299,12 @@ const TradingEvents = (() => {
 
                     for (let i = 0, len = underlyings.length; i < len; i++) {
                         underlyings[i].disabled =
-                            e.target.value !== 'all' &&
-                            e.target.value !== underlyings[i].className;
+                            e.target.value !== 'all' && e.target.value !== underlyings[i].className;
                     }
 
                     // as submarket change has modified the underlying list so we need to manually
                     // fire change event for underlying
-                    document.querySelectorAll('#underlying option:enabled')[
-                        0
-                    ].selected =
-                        'selected';
+                    document.querySelectorAll('#underlying option:enabled')[0].selected = 'selected';
                     const event = new Event('change');
                     elem.dispatchEvent(event);
                 }
@@ -357,11 +326,7 @@ const TradingEvents = (() => {
          * attach event to purchase buttons to buy the current contract
          */
         $('.purchase_button').on('click dblclick', function() {
-            if (
-                !isVisible(
-                    document.getElementById('confirmation_message_container'),
-                )
-            ) {
+            if (!isVisible(document.getElementById('confirmation_message_container'))) {
                 const id = this.getAttribute('data-purchase-id');
                 const ask_price = this.getAttribute('data-ask-price');
 
@@ -374,19 +339,10 @@ const TradingEvents = (() => {
                         !/data\-balloon/.test(this.attributes[attr].name)
                     ) {
                         // do not send tooltip data
-                        const m = this.attributes[attr].name.match(
-                            /data\-(.+)/,
-                        );
+                        const m = this.attributes[attr].name.match(/data\-(.+)/);
 
-                        if (
-                            m &&
-                            m[1] &&
-                            m[1] !== 'purchase-id' &&
-                            m[1] !== 'passthrough'
-                        ) {
-                            params.passthrough[m[1]] = this.attributes[
-                                attr
-                            ].value;
+                        if (m && m[1] && m[1] !== 'purchase-id' && m[1] !== 'passthrough') {
+                            params.passthrough[m[1]] = this.attributes[attr].value;
                         }
                     }
                 }, this);
@@ -405,9 +361,7 @@ const TradingEvents = (() => {
         /*
          * attach event to close icon for purchase container
          */
-        $(
-            '#close_confirmation_container, #contract_purchase_new_trade',
-        ).on('click dblclick', (e) => {
+        $('#close_confirmation_container, #contract_purchase_new_trade').on('click dblclick', (e) => {
             if (e.target) {
                 e.preventDefault();
                 commonTrading.hideOverlayContainer();
@@ -430,9 +384,7 @@ const TradingEvents = (() => {
                         Barriers.validateBarrier();
                         Defaults.set('barrier', e.target.value);
                         Price.processPriceRequest();
-                        commonTrading.submitForm(
-                            document.getElementById('websocket_form'),
-                        );
+                        commonTrading.submitForm(document.getElementById('websocket_form'));
                     }, 1000),
                 );
         }
@@ -447,9 +399,7 @@ const TradingEvents = (() => {
                 commonTrading.debounce((e) => {
                     Defaults.set('barrier_low', e.target.value);
                     Price.processPriceRequest();
-                    commonTrading.submitForm(
-                        document.getElementById('websocket_form'),
-                    );
+                    commonTrading.submitForm(document.getElementById('websocket_form'));
                 }),
             );
         }
@@ -464,9 +414,7 @@ const TradingEvents = (() => {
                 commonTrading.debounce((e) => {
                     Defaults.set('barrier_high', e.target.value);
                     Price.processPriceRequest();
-                    commonTrading.submitForm(
-                        document.getElementById('websocket_form'),
-                    );
+                    commonTrading.submitForm(document.getElementById('websocket_form'));
                 }),
             );
         }
@@ -481,9 +429,7 @@ const TradingEvents = (() => {
                 commonTrading.debounce((e) => {
                     Defaults.set('prediction', e.target.value);
                     Price.processPriceRequest();
-                    commonTrading.submitForm(
-                        document.getElementById('websocket_form'),
-                    );
+                    commonTrading.submitForm(document.getElementById('websocket_form'));
                 }),
             );
         }
@@ -492,8 +438,7 @@ const TradingEvents = (() => {
         const isStandardFloat = value =>
             !isNaN(value) &&
             value % 1 !== 0 &&
-            (+parseFloat(value)).toFixed(10).replace(/^-?\d*\.?|0+$/g, '')
-                .length > 2;
+            (+parseFloat(value)).toFixed(10).replace(/^-?\d*\.?|0+$/g, '').length > 2;
 
         const init_logo = document.getElementById('trading_init_progress');
         if (init_logo) {
@@ -519,9 +464,7 @@ const TradingEvents = (() => {
     const attachTimePicker = () => {
         const date_start = document.getElementById('date_start').value;
         const now = !date_start || date_start === 'now';
-        const current_moment = now
-            ? window.time ? window.time : moment.utc()
-            : parseInt(date_start) * 1000;
+        const current_moment = now ? window.time ? window.time : moment.utc() : parseInt(date_start) * 1000;
         TimePicker.init({
             selector: '#expiry_time',
             minTime : current_moment,

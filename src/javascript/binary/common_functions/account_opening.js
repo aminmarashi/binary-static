@@ -27,18 +27,13 @@ const AccountOpening = (() => {
             // redirect client to correct account opening page if needed
             if (
                 !State.get('is_financial_opening') &&
-                ((!is_virtual &&
-                    Client.canUpgradeGamingToFinancial(landing_company)) ||
+                ((!is_virtual && Client.canUpgradeGamingToFinancial(landing_company)) ||
                     Client.canUpgradeVirtualToFinancial(landing_company))
             ) {
                 BinaryPjax.load('new_account/maltainvestws');
                 return false;
             }
-            if (
-                !State.get('is_japan_opening') &&
-                is_virtual &&
-                Client.canUpgradeVirtualToJapan(landing_company)
-            ) {
+            if (!State.get('is_japan_opening') && is_virtual && Client.canUpgradeVirtualToJapan(landing_company)) {
                 BinaryPjax.load('new_account/japanws');
                 return false;
             }
@@ -55,9 +50,7 @@ const AccountOpening = (() => {
     };
 
     const getResidence = () => {
-        BinarySocket.send({ residence_list: 1 }).then(response =>
-            handleResidenceList(response.residence_list),
-        );
+        BinarySocket.send({ residence_list: 1 }).then(response => handleResidenceList(response.residence_list));
     };
 
     const handleResidenceList = (residence_list) => {
@@ -74,11 +67,7 @@ const AccountOpening = (() => {
 
                 if (residence_value === res.value) {
                     residence_text = res.text;
-                    if (
-                        residence_value !== 'jp' &&
-                        res.phone_idd &&
-                        !$phone.val()
-                    ) {
+                    if (residence_value !== 'jp' && res.phone_idd && !$phone.val()) {
                         $phone.val(`+${res.phone_idd}`);
                     }
                 }
@@ -101,9 +90,7 @@ const AccountOpening = (() => {
     };
 
     const getTaxResidence = () => {
-        const tax_residence = State.get(
-            ['response', 'get_settings', 'get_settings'] || {},
-        ).tax_residence;
+        const tax_residence = State.get(['response', 'get_settings', 'get_settings'] || {}).tax_residence;
         return tax_residence ? tax_residence.split(',') : '';
     };
 
@@ -158,9 +145,7 @@ const AccountOpening = (() => {
                 .find('.notice-msg')
                 .text(
                     response.msg_type === 'sanity_check'
-                        ? localize(
-                              'There was some invalid character in an input field.',
-                          )
+                        ? localize('There was some invalid character in an input field.')
                         : errorMessage,
                 )
                 .end()
@@ -180,28 +165,16 @@ const AccountOpening = (() => {
             { selector: '#salutation', validations: ['req'] },
             {
                 selector   : '#first_name',
-                validations: [
-                    'req',
-                    'letter_symbol',
-                    ['length', { min: 2, max: 30 }],
-                ],
+                validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]],
             },
             {
                 selector   : '#last_name',
-                validations: [
-                    'req',
-                    'letter_symbol',
-                    ['length', { min: 2, max: 30 }],
-                ],
+                validations: ['req', 'letter_symbol', ['length', { min: 2, max: 30 }]],
             },
             { selector: '#date_of_birth', validations: ['req'] },
             {
                 selector   : '#address_line_1',
-                validations: [
-                    'req',
-                    'address',
-                    ['length', { min: 1, max: 70 }],
-                ],
+                validations: ['req', 'address', ['length', { min: 1, max: 70 }]],
             },
             {
                 selector   : '#address_line_2',
@@ -209,11 +182,7 @@ const AccountOpening = (() => {
             },
             {
                 selector   : '#address_city',
-                validations: [
-                    'req',
-                    'letter_symbol',
-                    ['length', { min: 1, max: 35 }],
-                ],
+                validations: ['req', 'letter_symbol', ['length', { min: 1, max: 35 }]],
             },
             {
                 selector   : '#address_state',
@@ -232,20 +201,11 @@ const AccountOpening = (() => {
             { selector: '#secret_question', validations: ['req'] },
             {
                 selector   : '#secret_answer',
-                validations: [
-                    'req',
-                    'general',
-                    ['length', { min: 4, max: 50 }],
-                ],
+                validations: ['req', 'general', ['length', { min: 4, max: 50 }]],
             },
             {
-                selector   : '#tnc',
-                validations: [
-                    [
-                        'req',
-                        { message: 'Please accept the terms and conditions.' },
-                    ],
-                ],
+                selector       : '#tnc',
+                validations    : [['req', { message: 'Please accept the terms and conditions.' }]],
                 exclude_request: 1,
             },
 

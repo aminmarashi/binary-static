@@ -14,8 +14,7 @@ const localize = require('../base/localize').localize;
 const Login = require('../base/login');
 const State = require('../base/storage').State;
 const getPropertyValue = require('../base/utility').getPropertyValue;
-const getLoginToken = require('../common_functions/common_functions')
-    .getLoginToken;
+const getLoginToken = require('../common_functions/common_functions').getLoginToken;
 const SessionDurationLimit = require('../common_functions/session_duration_limit');
 const getAppId = require('../../config').getAppId;
 const getSocketURL = require('../../config').getSocketURL;
@@ -72,9 +71,7 @@ const BinarySocketClass = () => {
         },
         another_exists: (pr, msg_type) =>
             Object.keys(waiting_list.items).some(
-                type =>
-                    type !== msg_type &&
-                    $.inArray(pr, waiting_list.items[type]) >= 0,
+                type => type !== msg_type && $.inArray(pr, waiting_list.items[type]) >= 0,
             ),
     };
 
@@ -87,10 +84,7 @@ const BinarySocketClass = () => {
 
     const isReady = () => binary_socket && binary_socket.readyState === 1;
 
-    const isClose = () =>
-        !binary_socket ||
-        binary_socket.readyState === 2 ||
-        binary_socket.readyState === 3;
+    const isClose = () => !binary_socket || binary_socket.readyState === 2 || binary_socket.readyState === 3;
 
     const sendBufferedSends = () => {
         while (buffered_sends.length > 0) {
@@ -128,8 +122,7 @@ const BinarySocketClass = () => {
     const send = function(data, options = {}) {
         const promise_obj = new PromiseClass();
 
-        const msg_type =
-            options.msg_type || no_duplicate_requests.find(c => c in data);
+        const msg_type = options.msg_type || no_duplicate_requests.find(c => c in data);
         if (!options.forced && msg_type) {
             const last_response = State.get(['response', msg_type]);
             if (last_response) {
@@ -161,25 +154,15 @@ const BinarySocketClass = () => {
         };
 
         if (isReady()) {
-            if (
-                !data.hasOwnProperty('passthrough') &&
-                !data.hasOwnProperty('verify_email')
-            ) {
+            if (!data.hasOwnProperty('passthrough') && !data.hasOwnProperty('verify_email')) {
                 data.passthrough = {};
             }
             // temporary check
-            if (
-                (data.contracts_for || data.proposal) &&
-                !State.get('is_mb_trading')
-            ) {
+            if ((data.contracts_for || data.proposal) && !State.get('is_mb_trading')) {
                 data.passthrough.req_number = ++req_number;
                 timeouts[req_number] = setTimeout(() => {
-                    if (
-                        typeof reloadPage === 'function' && data.contracts_for
-                    ) {
-                        window.alert(
-                            `The server didn't respond to the request:\n\n${JSON.stringify(data)}\n\n`,
-                        );
+                    if (typeof reloadPage === 'function' && data.contracts_for) {
+                        window.alert(`The server didn't respond to the request:\n\n${JSON.stringify(data)}\n\n`);
                         reloadPage();
                     } else {
                         $('.price_container').hide();
@@ -232,11 +215,7 @@ const BinarySocketClass = () => {
             Notifications.hide('CONNECTION_ERROR');
             MBNotifications.hide('CONNECTION_ERROR');
             const api_token = getLoginToken();
-            if (
-                api_token &&
-                !authorized &&
-                localStorage.getItem('client.tokens')
-            ) {
+            if (api_token && !authorized && localStorage.getItem('client.tokens')) {
                 binary_socket.send(JSON.stringify({ authorize: api_token }));
             } else {
                 sendBufferedSends();
@@ -258,10 +237,7 @@ const BinarySocketClass = () => {
         binary_socket.onmessage = (msg) => {
             const response = JSON.parse(msg.data);
             if (response) {
-                const passthrough = getPropertyValue(response, [
-                    'echo_req',
-                    'passthrough',
-                ]);
+                const passthrough = getPropertyValue(response, ['echo_req', 'passthrough']);
                 if (passthrough) {
                     const this_req_number = passthrough.req_number;
                     if (this_req_number) {
@@ -273,10 +249,7 @@ const BinarySocketClass = () => {
                 const type = response.msg_type;
 
                 // store in State
-                if (
-                    !getPropertyValue(response, ['echo_req', 'subscribe']) ||
-                    type === 'balance'
-                ) {
+                if (!getPropertyValue(response, ['echo_req', 'subscribe']) || type === 'balance') {
                     State.set(['response', type], $.extend({}, response));
                 }
                 // resolve the send promise
@@ -291,22 +264,16 @@ const BinarySocketClass = () => {
                 // resolve the wait promise
                 waiting_list.resolve(response);
 
-                const error_code = getPropertyValue(response, [
-                    'error',
-                    'code',
-                ]);
+                const error_code = getPropertyValue(response, ['error', 'code']);
                 if (type === 'authorize') {
                     if (response.error) {
-                        const is_active_tab =
-                            sessionStorage.getItem('active_tab') === '1';
+                        const is_active_tab = sessionStorage.getItem('active_tab') === '1';
                         if (error_code === 'SelfExclusion' && is_active_tab) {
                             sessionStorage.removeItem('active_tab');
                             window.alert(response.error.message);
                         }
                         Client.sendLogoutRequest(is_active_tab);
-                    } else if (
-                        response.authorize.loginid !== Cookies.get('loginid')
-                    ) {
+                    } else if (response.authorize.loginid !== Cookies.get('loginid')) {
                         Client.sendLogoutRequest(true);
                     } else {
                         authorized = true;
@@ -316,10 +283,7 @@ const BinarySocketClass = () => {
                             send({ get_settings: 1 });
                             send({ get_account_status: 1 });
                             send({ payout_currencies: 1 });
-                            setResidence(
-                                response.authorize.country ||
-                                    Cookies.get('residence'),
-                            );
+                            setResidence(response.authorize.country || Cookies.get('residence'));
                             if (!Client.get('is_virtual')) {
                                 send({ get_self_exclusion: 1 });
                                 // TODO: remove this when back-end adds it as a status to get_account_status
@@ -338,18 +302,12 @@ const BinarySocketClass = () => {
                     // Header.metatraderMenuItemVisibility(response); // to be uncommented once MetaTrader launched
                     const company = Client.currentLandingCompany();
                     if (company) {
-                        Client.set(
-                            'default_currency',
-                            company.legal_default_currency,
-                        );
+                        Client.set('default_currency', company.legal_default_currency);
                     }
                 } else if (type === 'get_self_exclusion') {
                     SessionDurationLimit.exclusionResponseHandler(response);
                 } else if (type === 'payout_currencies') {
-                    Client.set(
-                        'currencies',
-                        response.payout_currencies.join(','),
-                    );
+                    Client.set('currencies', response.payout_currencies.join(','));
                 } else if (type === 'get_settings' && response.get_settings) {
                     setResidence(response.get_settings.country_code);
                     GTM.eventHandler(response.get_settings);
@@ -362,12 +320,9 @@ const BinarySocketClass = () => {
                 switch (error_code) {
                     case 'WrongResponse':
                     case 'OutputValidationFailed': {
-                        const text_value = error_code === 'WrongResponse' &&
-                            response.error.message
+                        const text_value = error_code === 'WrongResponse' && response.error.message
                             ? response.error.message
-                            : localize(
-                                  'Sorry, an error occurred while processing your request.',
-                              );
+                            : localize('Sorry, an error occurred while processing your request.');
                         $('#content').empty().html(
                             $('<div/>', { class: 'container' }).append(
                                 $('<p/>', {
@@ -379,17 +334,10 @@ const BinarySocketClass = () => {
                         break;
                     }
                     case 'RateLimit':
-                        $('#ratelimit-error-message:hidden').css(
-                            'display',
-                            'block',
-                        );
+                        $('#ratelimit-error-message:hidden').css('display', 'block');
                         break;
                     case 'InvalidToken':
-                        if (
-                            !/^(reset_password|new_account_virtual|paymentagent_withdraw|cashier)$/.test(
-                                type,
-                            )
-                        ) {
+                        if (!/^(reset_password|new_account_virtual|paymentagent_withdraw|cashier)$/.test(type)) {
                             Client.sendLogoutRequest();
                         }
                         break;
@@ -416,14 +364,10 @@ const BinarySocketClass = () => {
                     ? TradePage.onDisconnect
                     : State.get('is_beta_trading')
                           ? TradePage_Beta.onDisconnect
-                          : State.get('is_mb_trading')
-                                ? MBTradePage.onDisconnect
-                                : '';
+                          : State.get('is_mb_trading') ? MBTradePage.onDisconnect : '';
                 if (toCall) {
                     Notifications.show({
-                        text: localize(
-                            'Connection error: Please check your internet connection.',
-                        ),
+                        text       : localize('Connection error: Please check your internet connection.'),
                         uid        : 'CONNECTION_ERROR',
                         dismissible: true,
                     });

@@ -21,9 +21,7 @@ const MetaTrader = (() => {
                 getAllAccountsInfo();
                 MetaTraderUI.init(submit);
             } else {
-                MetaTraderUI.displayPageError(
-                    localize('Sorry, this feature is not available.'),
-                );
+                MetaTraderUI.displayPageError(localize('Sorry, this feature is not available.'));
             }
         });
     };
@@ -33,11 +31,9 @@ const MetaTrader = (() => {
         if (!landing_company_response.error) {
             const lc = landing_company_response.landing_company;
             has_financial_company =
-                lc.hasOwnProperty('mt_financial_company') &&
-                lc.mt_financial_company.shortcode === 'vanuatu';
+                lc.hasOwnProperty('mt_financial_company') && lc.mt_financial_company.shortcode === 'vanuatu';
             has_gaming_company =
-                lc.hasOwnProperty('mt_gaming_company') &&
-                lc.mt_gaming_company.shortcode === 'costarica';
+                lc.hasOwnProperty('mt_gaming_company') && lc.mt_gaming_company.shortcode === 'costarica';
             if (
                 lc.hasOwnProperty('financial_company') &&
                 lc.financial_company.shortcode === 'costarica' &&
@@ -93,8 +89,7 @@ const MetaTrader = (() => {
         });
     };
 
-    const getAccountType = group =>
-        (group ? /demo/.test(group) ? 'demo' : group.split('\\')[1] || '' : '');
+    const getAccountType = group => (group ? /demo/.test(group) ? 'demo' : group.split('\\')[1] || '' : '');
 
     const makeRequestObject = (acc_type, action) => {
         const req = {};
@@ -102,9 +97,7 @@ const MetaTrader = (() => {
         Object.keys(fields[action]).forEach((field) => {
             const field_obj = fields[action][field];
             if (field_obj.request_field) {
-                req[field_obj.request_field] = MetaTraderUI.$form()
-                    .find(field_obj.id)
-                    .val();
+                req[field_obj.request_field] = MetaTraderUI.$form().find(field_obj.id).val();
             }
         });
 
@@ -139,9 +132,7 @@ const MetaTrader = (() => {
                         MetaTraderUI.enableButton();
                     } else {
                         MetaTraderUI.closeForm();
-                        MetaTraderUI.displayMainMessage(
-                            actions_info[action].success_msg(response),
-                        );
+                        MetaTraderUI.displayMainMessage(actions_info[action].success_msg(response));
                         getAccountDetails(
                             actions_info[action].login
                                 ? actions_info[action].login(response)

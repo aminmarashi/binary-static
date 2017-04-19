@@ -7,14 +7,11 @@ const Client = require('../../base/client');
 const localize = require('../../base/localize').localize;
 const urlFor = require('../../base/url').urlFor;
 const isEmptyObject = require('../../base/utility').isEmptyObject;
-const formatMoney = require('../../common_functions/currency_to_symbol')
-    .formatMoney;
+const formatMoney = require('../../common_functions/currency_to_symbol').formatMoney;
 const addComma = require('../../common_functions/string_util').addComma;
 const toISOFormat = require('../../common_functions/string_util').toISOFormat;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
-const elementTextContent = require('../../common_functions/common_functions')
-    .elementTextContent;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
+const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
 
 /*
  * This contains common functions we need for processing the response
@@ -82,9 +79,7 @@ const commonTrading = (() => {
                     if (fragment2.hasChildNodes()) {
                         const ul = document.createElement('ul');
                         const a = document.createElement('a');
-                        const content = document.createTextNode(
-                            elements[el1[0]],
-                        );
+                        const content = document.createTextNode(elements[el1[0]]);
 
                         a.appendChild(content);
                         a.setAttribute('class', 'tm-a');
@@ -152,13 +147,8 @@ const commonTrading = (() => {
             option.appendChild(content);
             fragment.appendChild(option);
 
-            if (
-                elements[key].submarkets &&
-                !isEmptyObject(elements[key].submarkets)
-            ) {
-                const keys2 = Object.keys(elements[key].submarkets).sort(
-                    submarketSort,
-                );
+            if (elements[key].submarkets && !isEmptyObject(elements[key].submarkets)) {
+                const keys2 = Object.keys(elements[key].submarkets).sort(submarketSort);
                 for (let j = 0; j < keys2.length; j++) {
                     const key2 = keys2[j];
                     option = document.createElement('option');
@@ -166,10 +156,7 @@ const commonTrading = (() => {
                     if (selected && selected === key2) {
                         option.setAttribute('selected', 'selected');
                     }
-                    elementTextContent(
-                        option,
-                        `\xA0\xA0\xA0\xA0${elements[key].submarkets[key2].name}`,
-                    );
+                    elementTextContent(option, `\xA0\xA0\xA0\xA0${elements[key].submarkets[key2].name}`);
                     fragment.appendChild(option);
                 }
             }
@@ -188,13 +175,10 @@ const commonTrading = (() => {
             if (current.disabled) {
                 // there is no open market
                 Notifications.show({
-                    text: localize(
-                        'All markets are closed now. Please try again later.',
-                    ),
-                    uid: 'MARKETS_CLOSED',
+                    text: localize('All markets are closed now. Please try again later.'),
+                    uid : 'MARKETS_CLOSED',
                 });
-                document.getElementById('trading_init_progress').style.display =
-                    'none';
+                document.getElementById('trading_init_progress').style.display = 'none';
             }
         }
     };
@@ -218,9 +202,7 @@ const commonTrading = (() => {
 
     const generateUnderlyingOptions = (elements, selected) => {
         const fragment = document.createDocumentFragment();
-        const keys = Object.keys(elements).sort((a, b) =>
-            elements[a].display.localeCompare(elements[b].display),
-        );
+        const keys = Object.keys(elements).sort((a, b) => elements[a].display.localeCompare(elements[b].display));
         const submarkets = {};
         for (let i = 0; i < keys.length; i++) {
             if (!submarkets.hasOwnProperty(elements[keys[i]].submarket)) {
@@ -233,9 +215,7 @@ const commonTrading = (() => {
             for (let k = 0; k < submarkets[keys2[j]].length; k++) {
                 const key = submarkets[keys2[j]][k];
                 const option = document.createElement('option');
-                const content = document.createTextNode(
-                    localize(elements[key].display),
-                );
+                const content = document.createTextNode(localize(elements[key].display));
                 option.setAttribute('value', key);
                 if (selected && selected === key) {
                     option.setAttribute('selected', 'selected');
@@ -253,11 +233,8 @@ const commonTrading = (() => {
      * for e.g risefall is mapped to callput with barrierCategory euro_atm
      */
     const getFormNameBarrierCategory = form_name => ({
-        form_name: form_name &&
-            !/(risefall|higherlower|callput)/.test(form_name)
-            ? /(overunder|evenodd|matchdiff)/.test(form_name)
-                  ? 'digits'
-                  : form_name
+        form_name: form_name && !/(risefall|higherlower|callput)/.test(form_name)
+            ? /(overunder|evenodd|matchdiff)/.test(form_name) ? 'digits' : form_name
             : 'callput',
         barrier_category: form_name && !/(risefall|callput)/.test(form_name)
             ? /higherlower/.test(form_name) ? 'euro_non_atm' : ''
@@ -544,41 +521,19 @@ const commonTrading = (() => {
             tip.hide();
             if (guide) guide.show();
         }
-        if (
-            market.match(/^otc_index/) ||
-            symbol.match(/^OTC_/) ||
-            market.match(/stock/) ||
-            markets.match(/stocks/)
-        ) {
+        if (market.match(/^otc_index/) || symbol.match(/^OTC_/) || market.match(/stock/) || markets.match(/stocks/)) {
             tip.show();
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/otc-indices-stocks'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/otc-indices-stocks'));
         }
         if (market.match(/^random_index/) || symbol.match(/^R_/)) {
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/volidx-markets', '#volidx-indices'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/volidx-markets', '#volidx-indices'));
         }
-        if (
-            market.match(/^random_daily/) ||
-            symbol.match(/^RDB/) ||
-            symbol.match(/^RDMO/) ||
-            symbol.match(/^RDS/)
-        ) {
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/volidx-markets', '#volidx-quotidians'),
-            );
+        if (market.match(/^random_daily/) || symbol.match(/^RDB/) || symbol.match(/^RDMO/) || symbol.match(/^RDS/)) {
+            tip.setAttribute('target', urlFor('/get-started/volidx-markets', '#volidx-quotidians'));
         }
         if (market.match(/^smart_fx/) || symbol.match(/^WLD/)) {
             tip.show();
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/smart-indices', '#world-fx-indices'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/smart-indices', '#world-fx-indices'));
         }
     };
 
@@ -586,10 +541,7 @@ const commonTrading = (() => {
         const options = select.getElementsByTagName('option');
         let contains = 0;
         for (let i = 0; i < options.length; i++) {
-            if (
-                options[i].value === option &&
-                !options[i].hasAttribute('disabled')
-            ) {
+            if (options[i].value === option && !options[i].hasAttribute('disabled')) {
                 contains = 1;
                 break;
             }
@@ -618,9 +570,7 @@ const commonTrading = (() => {
 
     const updateWarmChart = () => {
         $chart = $chart || $('#trading_worm_chart');
-        const spots = Object.keys(Tick.spots())
-            .sort((a, b) => a - b)
-            .map(v => Tick.spots()[v]);
+        const spots = Object.keys(Tick.spots()).sort((a, b) => a - b).map(v => Tick.spots()[v]);
         if ($chart && typeof $chart.sparkline === 'function') {
             $chart.sparkline(spots, chart_config);
             if (spots.length) {
@@ -665,9 +615,7 @@ const commonTrading = (() => {
             }
             classes.add('active');
             const parent = event_element.parentElement.parentElement;
-            if (
-                parent.tagName === 'LI' && !parent.classList.contains('active')
-            ) {
+            if (parent.tagName === 'LI' && !parent.classList.contains('active')) {
                 parent.classList.add('active');
             }
         }
@@ -685,18 +633,11 @@ const commonTrading = (() => {
         labelValue(payout, localize('Payout'), addComma(final_price));
 
         const isWin = final_price > 0;
-        $('#contract_purchase_profit_value').attr(
-            'class',
-            isWin ? 'profit' : 'loss',
-        );
+        $('#contract_purchase_profit_value').attr('class', isWin ? 'profit' : 'loss');
         labelValue(
             profit,
             isWin ? localize('Profit') : localize('Loss'),
-            addComma(
-                isWin
-                    ? Math.round((final_price - pnl) * 100) / 100
-                    : -Math.abs(pnl),
-            ),
+            addComma(isWin ? Math.round((final_price - pnl) * 100) / 100 : -Math.abs(pnl)),
         );
     };
 
@@ -715,41 +656,19 @@ const commonTrading = (() => {
         } else {
             tip.hide();
         }
-        if (
-            market.match(/^otc_index/) ||
-            symbol.match(/^OTC_/) ||
-            market.match(/stock/) ||
-            markets.match(/stocks/)
-        ) {
+        if (market.match(/^otc_index/) || symbol.match(/^OTC_/) || market.match(/stock/) || markets.match(/stocks/)) {
             tip.show();
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/otc-indices-stocks'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/otc-indices-stocks'));
         }
         if (market.match(/^random_index/) || symbol.match(/^R_/)) {
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/volidx-markets', '#volidx-indices'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/volidx-markets', '#volidx-indices'));
         }
-        if (
-            market.match(/^random_daily/) ||
-            symbol.match(/^RDB/) ||
-            symbol.match(/^RDMO/) ||
-            symbol.match(/^RDS/)
-        ) {
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/volidx-markets', '#volidx-quotidians'),
-            );
+        if (market.match(/^random_daily/) || symbol.match(/^RDB/) || symbol.match(/^RDMO/) || symbol.match(/^RDS/)) {
+            tip.setAttribute('target', urlFor('/get-started/volidx-markets', '#volidx-quotidians'));
         }
         if (market.match(/^smart_fx/) || symbol.match(/^WLD/)) {
             tip.show();
-            tip.setAttribute(
-                'target',
-                urlFor('/get-started/smart-indices', '#world-fx-indices'),
-            );
+            tip.setAttribute('target', urlFor('/get-started/smart-indices', '#world-fx-indices'));
         }
     };
 
@@ -757,17 +676,12 @@ const commonTrading = (() => {
         const currency = Client.get('currency');
         elementInnerHtml(label_elem, label);
         const value_elem = document.getElementById(`${label_elem.id}_value`);
-        elementInnerHtml(
-            value_elem,
-            no_currency ? value : formatMoney(currency, value),
-        );
+        elementInnerHtml(value_elem, no_currency ? value : formatMoney(currency, value));
         value_elem.setAttribute('value', String(value).replace(/,/g, ''));
     };
 
     const timeIsValid = ($element) => {
-        let end_date_value = document
-            .getElementById('expiry_date')
-            .getAttribute('data-value'),
+        let end_date_value = document.getElementById('expiry_date').getAttribute('data-value'),
             start_date_value = document.getElementById('date_start').value,
             end_time_value = document.getElementById('expiry_time').value;
         const $invalid_time = $('#invalid-time');
@@ -793,18 +707,11 @@ const commonTrading = (() => {
         $element.removeClass('error-field');
         $invalid_time.remove();
 
-        end_date_value = end_date_value
-            ? toISOFormat(Moment(end_date_value))
-            : toISOFormat(new Moment());
-        start_date_value = start_date_value === 'now'
-            ? Math.floor(window.time._i / 1000)
-            : start_date_value;
+        end_date_value = end_date_value ? toISOFormat(Moment(end_date_value)) : toISOFormat(new Moment());
+        start_date_value = start_date_value === 'now' ? Math.floor(window.time._i / 1000) : start_date_value;
         end_time_value = end_time_value || '23:59:59';
 
-        if (
-            Moment.utc(`${end_date_value} ${end_time_value}`).unix() <=
-            start_date_value
-        ) {
+        if (Moment.utc(`${end_date_value} ${end_time_value}`).unix() <= start_date_value) {
             $element.addClass('error-field');
             if (!document.getElementById('end_time_validation')) {
                 $('#expiry_type_endtime').append(

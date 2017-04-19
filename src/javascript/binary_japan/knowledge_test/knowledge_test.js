@@ -1,7 +1,6 @@
 const KnowledgeTestUI = require('./knowledge_test.ui');
 const BinaryPjax = require('../../binary/base/binary_pjax');
-const toJapanTimeIfNeeded = require('../../binary/base/clock')
-    .toJapanTimeIfNeeded;
+const toJapanTimeIfNeeded = require('../../binary/base/clock').toJapanTimeIfNeeded;
 const Header = require('../../binary/base/header');
 const localize = require('../../binary/base/localize').localize;
 const urlFor = require('../../binary/base/url').urlFor;
@@ -19,8 +18,7 @@ const KnowledgeTest = (() => {
 
     const msg_pass =
         '{JAPAN ONLY}Congratulations, you have pass the test, our Customer Support will contact you shortly.';
-    const msg_fail =
-        '{JAPAN ONLY}Sorry, you have failed the test, please try again after 24 hours.';
+    const msg_fail = '{JAPAN ONLY}Sorry, you have failed the test, please try again after 24 hours.';
 
     const questionAnswerHandler = (ev) => {
         submitted[ev.target.name] = +ev.target.value === 1;
@@ -32,13 +30,10 @@ const KnowledgeTest = (() => {
         const answered_qid = Object.keys(submitted).map(k => +k);
         if (answered_qid.length !== 20) {
             $('#knowledge-test-instructions').addClass('invisible');
-            $('#knowledge-test-msg')
-                .addClass('notice-msg')
-                .text(localize('You need to finish all 20 questions.'));
+            $('#knowledge-test-msg').addClass('notice-msg').text(localize('You need to finish all 20 questions.'));
 
-            const unanswered = random_picks
-                .reduce((a, b) => a.concat(b))
-                .find(q => answered_qid.indexOf(q.id) === -1).id;
+            const unanswered = random_picks.reduce((a, b) => a.concat(b)).find(q => answered_qid.indexOf(q.id) === -1)
+                .id;
 
             $.scrollTo(`a[name="${unanswered}"]`, 500, { offset: -10 });
             return;
@@ -73,17 +68,13 @@ const KnowledgeTest = (() => {
         $questions.find('input[type=radio]').click(questionAnswerHandler);
         $('#knowledge-test-submit').click(submitHandler);
         $questions.removeClass(hidden_class);
-        $('#knowledge-test-msg').text(
-            localize('{JAPAN ONLY}Please complete the following questions.'),
-        );
+        $('#knowledge-test-msg').text(localize('{JAPAN ONLY}Please complete the following questions.'));
         $('#knowledge-test-instructions').removeClass('invisible');
     };
 
     const showResult = (score, time) => {
         $('#knowledge-test-instructions').addClass('invisible');
-        $('#knowledge-test-header').text(
-            localize('{JAPAN ONLY}Knowledge Test Result'),
-        );
+        $('#knowledge-test-header').text(localize('{JAPAN ONLY}Knowledge Test Result'));
         const msg = score >= 14 ? msg_pass : msg_fail;
         $('#knowledge-test-msg').text(localize(msg));
 
@@ -103,10 +94,7 @@ const KnowledgeTest = (() => {
         showMsgOnly(
             localize(
                 '{JAPAN ONLY}Dear customer, you are not allowed to take knowledge test until [_1]. Last test taken at [_2].',
-                [
-                    toJapanTimeIfNeeded(jp_status.next_test_epoch),
-                    toJapanTimeIfNeeded(jp_status.last_test_epoch),
-                ],
+                [toJapanTimeIfNeeded(jp_status.next_test_epoch), toJapanTimeIfNeeded(jp_status.last_test_epoch)],
             ),
         );
 
@@ -121,10 +109,7 @@ const KnowledgeTest = (() => {
 
     const onLoad = () => {
         // need to send get_settings because client status needs to be checked against latest available data
-        BinarySocket.send(
-            { get_settings: 1 },
-            { forced: true },
-        ).then((response) => {
+        BinarySocket.send({ get_settings: 1 }, { forced: true }).then((response) => {
             const jp_status = response.get_settings.jp_account_status;
 
             if (!jp_status) {
@@ -265,8 +250,7 @@ const KnowledgeTest = (() => {
 
         const random_picks_four = [];
         for (let i = 0; i < 4; i++) {
-            const random_index =
-                Math.floor(Math.random() * 100) % availables.length;
+            const random_index = Math.floor(Math.random() * 100) % availables.length;
             random_picks_four.push(obj_questions[availables[random_index]]);
             availables.splice(random_index, 1);
         }
@@ -297,9 +281,7 @@ const KnowledgeTest = (() => {
         });
 
         const picked_questions = [];
-        Object.keys(questions).forEach(section =>
-            picked_questions.push(randomPick4(questions[section])),
-        );
+        Object.keys(questions).forEach(section => picked_questions.push(randomPick4(questions[section])));
         return picked_questions;
     };
 
@@ -311,15 +293,9 @@ const KnowledgeTest = (() => {
             questions        : questions,
         }).then((response) => {
             if (!response.error) {
-                showResult(
-                    result_score,
-                    response.jp_knowledge_test.test_taken_epoch * 1000,
-                );
+                showResult(result_score, response.jp_knowledge_test.test_taken_epoch * 1000);
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
-                BinarySocket.send(
-                    { get_settings: 1 },
-                    { forced: true },
-                ).then(() => {
+                BinarySocket.send({ get_settings: 1 }, { forced: true }).then(() => {
                     Header.upgradeMessageVisibility();
                 });
             } else if (response.error.code === 'TestUnavailableNow') {
@@ -327,9 +303,7 @@ const KnowledgeTest = (() => {
                     '{JAPAN ONLY}The test is unavailable now, test can only be taken again on next business day with respect of most recent test.',
                 );
             } else {
-                $('#form-msg')
-                    .html(response.error.message)
-                    .removeClass(hidden_class);
+                $('#form-msg').html(response.error.message).removeClass(hidden_class);
                 submit_completed = false;
             }
         });

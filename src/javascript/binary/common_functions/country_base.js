@@ -28,10 +28,7 @@ const limitLanguage = (lang) => {
     }
 };
 
-const jpClient = () =>
-    (typeof window === 'undefined'
-        ? false
-        : Language.get() === 'JA' || jpResidence());
+const jpClient = () => (typeof window === 'undefined' ? false : Language.get() === 'JA' || jpResidence());
 
 const jpResidence = () => Cookies.get('residence') === 'jp';
 
@@ -48,18 +45,10 @@ const checkLanguage = () => {
         const visible = 'visibility: visible;';
         $('.ja-hide').addClass('invisible');
         $('.ja-show').attr('style', `display: inline !important; ${visible}`);
-        $('.ja-show-block').attr(
-            'style',
-            `display: block !important; ${visible}`,
-        );
-        $('.ja-show-inline-block').attr(
-            'style',
-            `display: inline-block !important; ${visible}`,
-        );
+        $('.ja-show-block').attr('style', `display: block !important; ${visible}`);
+        $('.ja-show-inline-block').attr('style', `display: inline-block !important; ${visible}`);
         $('.ja-no-padding').attr('style', 'padding-top: 0; padding-bottom: 0;');
-        $('#regulatory-text')
-            .addClass('gr-12 gr-12-p')
-            .removeClass('gr-9 gr-7-p');
+        $('#regulatory-text').addClass('gr-12 gr-12-p').removeClass('gr-9 gr-7-p');
         if (!jpResidence()) {
             $('#topMenuCashier').hide();
         }

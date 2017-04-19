@@ -4,8 +4,7 @@ const GetTicks = require('./get_ticks');
 const getLanguage = require('../../base/language').get;
 const State = require('../../base/storage').State;
 const Url = require('../../base/url');
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
 const JapanPortfolio = require('../../../binary_japan/trade_japan/portfolio');
 
 /*
@@ -42,11 +41,7 @@ const TradingAnalysis = (() => {
                     `underlying_symbol=${$('#underlying').val()}&form_name=${form_name}`,
                 ),
             );
-        if (
-            form_name === 'digits' ||
-            form_name === 'overunder' ||
-            form_name === 'evenodd'
-        ) {
+        if (form_name === 'digits' || form_name === 'overunder' || form_name === 'evenodd') {
             $('#tab_last_digit').removeClass('invisible');
         } else {
             $('#tab_last_digit').addClass('invisible');
@@ -60,9 +55,7 @@ const TradingAnalysis = (() => {
      * navigation
      */
     const bindAnalysisTabEvent = () => {
-        const analysis_nav_element = document.querySelector(
-            '#trading_bottom_content #betsBottomPage',
-        );
+        const analysis_nav_element = document.querySelector('#trading_bottom_content #betsBottomPage');
         if (analysis_nav_element) {
             analysis_nav_element.addEventListener('click', (e) => {
                 if (e.target && e.target.nodeName === 'A') {
@@ -70,14 +63,9 @@ const TradingAnalysis = (() => {
 
                     const clicked_link = e.target;
                     const clicked_element = clicked_link.parentElement;
-                    const is_tab_active = clicked_element.classList.contains(
-                        'active',
-                    );
+                    const is_tab_active = clicked_element.classList.contains('active');
 
-                    sessionStorage.setItem(
-                        'currentAnalysisTab',
-                        clicked_element.id,
-                    );
+                    sessionStorage.setItem('currentAnalysisTab', clicked_element.id);
 
                     if (!is_tab_active) {
                         loadAnalysisTab();
@@ -96,13 +84,8 @@ const TradingAnalysis = (() => {
         const current_link = document.querySelector(`#${current_tab} a`);
         const content_id = document.getElementById(`${current_tab}-content`);
 
-        const analysis_nav_element = document.querySelector(
-            '#trading_bottom_content #betsBottomPage',
-        );
-        toggleActiveNavMenuElement(
-            analysis_nav_element,
-            current_link.parentElement,
-        );
+        const analysis_nav_element = document.querySelector('#trading_bottom_content #betsBottomPage');
+        toggleActiveNavMenuElement(analysis_nav_element, current_link.parentElement);
         toggleActiveAnalysisTabs();
 
         JapanPortfolio.init();
@@ -114,8 +97,7 @@ const TradingAnalysis = (() => {
                 showHighchart();
             } else if (current_tab === 'tab_last_digit') {
                 const underlying =
-                    $('#digit_underlying option:selected').val() ||
-                    $('#underlying').find('option:selected').val();
+                    $('#digit_underlying option:selected').val() || $('#underlying').find('option:selected').val();
                 const tick = $('#tick_count').val() || 100;
                 GetTicks.request('', {
                     ticks_history: underlying,
@@ -141,15 +123,11 @@ const TradingAnalysis = (() => {
      */
     const toggleActiveAnalysisTabs = () => {
         const current_tab = getActiveTab();
-        const analysis_container = document.getElementById(
-            'bet_bottom_content',
-        );
+        const analysis_container = document.getElementById('bet_bottom_content');
 
         if (analysis_container) {
             const child_elements = analysis_container.children;
-            const current_tab_element = document.getElementById(
-                `${current_tab}-content`,
-            );
+            const current_tab_element = document.getElementById(`${current_tab}-content`);
             const classes = current_tab_element.classList;
 
             for (let i = 0, len = child_elements.length; i < len; i++) {
@@ -169,23 +147,17 @@ const TradingAnalysis = (() => {
         const options = Url.paramsHash(href);
         const form_name = options.form_name || 'risefall';
         const show_image = options.show_image ? options.show_image > 0 : true;
-        const show_winning = options.show_winning
-            ? options.show_winning > 0
-            : true;
+        const show_winning = options.show_winning ? options.show_winning > 0 : true;
         const show_explain = true;
         const hidden_class = 'invisible';
         const $container = $('#tab_explanation-content');
 
         if (show_winning) {
-            $container
-                .find(`#explanation_winning, #winning_${form_name}`)
-                .removeClass(hidden_class);
+            $container.find(`#explanation_winning, #winning_${form_name}`).removeClass(hidden_class);
         }
 
         if (show_explain) {
-            $container
-                .find(`#explanation_explain, #explain_${form_name}`)
-                .removeClass(hidden_class);
+            $container.find(`#explanation_explain, #explain_${form_name}`).removeClass(hidden_class);
         }
 
         const images = {
@@ -227,12 +199,8 @@ const TradingAnalysis = (() => {
             const image_path = Url.urlForStatic(
                 `images/pages/trade-explanation/${getLanguage() === 'JA' ? 'ja/' : ''}`,
             );
-            $container
-                .find('#explanation_image_1')
-                .attr('src', image_path + images[form_name].image1);
-            $container
-                .find('#explanation_image_2')
-                .attr('src', image_path + images[form_name].image2);
+            $container.find('#explanation_image_1').attr('src', image_path + images[form_name].image1);
+            $container.find('#explanation_image_2').attr('src', image_path + images[form_name].image2);
             $container.find('#explanation_image').removeClass(hidden_class);
         }
     };

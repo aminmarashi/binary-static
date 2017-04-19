@@ -21,14 +21,11 @@ const TopUpVirtual = (() => {
                 showMessage(localize(response.error.message), false);
             } else {
                 showMessage(
-                    localize(
-                        '[_1] [_2] has been credited to your Virtual money account [_3]',
-                        [
-                            response.topup_virtual.currency,
-                            response.topup_virtual.amount,
-                            Client.get('loginid'),
-                        ],
-                    ),
+                    localize('[_1] [_2] has been credited to your Virtual money account [_3]', [
+                        response.topup_virtual.currency,
+                        response.topup_virtual.amount,
+                        Client.get('loginid'),
+                    ]),
                     true,
                 );
             }

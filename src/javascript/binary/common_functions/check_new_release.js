@@ -9,10 +9,7 @@ const check_new_release = () => {
         return;
     }
     localStorage.setItem('new_release_reload_time', moment().valueOf());
-    const currect_hash = ($(
-        'script[src*="binary.min.js"],script[src*="binary.js"]',
-    ).attr('src') || '')
-        .split('?')[1];
+    const currect_hash = ($('script[src*="binary.min.js"],script[src*="binary.js"]').attr('src') || '').split('?')[1];
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
         if (+xhttp.readyState === 4 && +xhttp.status === 200) {
@@ -22,11 +19,7 @@ const check_new_release = () => {
             }
         }
     };
-    xhttp.open(
-        'GET',
-        `${urlForStatic()}version?${Math.random().toString(36).slice(2)}`,
-        true,
-    );
+    xhttp.open('GET', `${urlForStatic()}version?${Math.random().toString(36).slice(2)}`, true);
     xhttp.send();
 };
 

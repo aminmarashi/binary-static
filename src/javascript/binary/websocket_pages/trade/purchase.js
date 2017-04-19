@@ -4,10 +4,8 @@ const Tick = require('./tick');
 const TickDisplay = require('./tick_trade');
 const updateValues = require('./update_values');
 const localize = require('../../base/localize').localize;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
-const elementTextContent = require('../../common_functions/common_functions')
-    .elementTextContent;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
+const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
 const isVisible = require('../../common_functions/common_functions').isVisible;
 const padLeft = require('../../common_functions/string_util').padLeft;
 
@@ -26,28 +24,18 @@ const Purchase = (() => {
 
         const receipt = details.buy;
         const passthrough = details.echo_req.passthrough;
-        const container = document.getElementById(
-            'contract_confirmation_container',
-        );
-        const message_container = document.getElementById(
-            'confirmation_message',
-        );
+        const container = document.getElementById('contract_confirmation_container');
+        const message_container = document.getElementById('confirmation_message');
         const heading = document.getElementById('contract_purchase_heading');
         const descr = document.getElementById('contract_purchase_descr');
-        const barrier_element = document.getElementById(
-            'contract_purchase_barrier',
-        );
-        const reference = document.getElementById(
-            'contract_purchase_reference',
-        );
+        const barrier_element = document.getElementById('contract_purchase_barrier');
+        const reference = document.getElementById('contract_purchase_reference');
         const chart = document.getElementById('tick_chart');
         const payout = document.getElementById('contract_purchase_payout');
         const cost = document.getElementById('contract_purchase_cost');
         const profit = document.getElementById('contract_purchase_profit');
         const spots = document.getElementById('contract_purchase_spots');
-        const confirmation_error = document.getElementById(
-            'confirmation_error',
-        );
+        const confirmation_error = document.getElementById('confirmation_error');
         const contracts_list = document.getElementById('contracts_list');
         const button = document.getElementById('contract_purchase_button');
 
@@ -79,10 +67,7 @@ const Purchase = (() => {
             elementTextContent(heading, localize('Contract Confirmation'));
             elementTextContent(descr, receipt.longcode);
             if (barrier_element) barrier_element.textContent = '';
-            elementTextContent(
-                reference,
-                `${localize('Your transaction reference is')} ${receipt.transaction_id}`,
-            );
+            elementTextContent(reference, `${localize('Your transaction reference is')} ${receipt.transaction_id}`);
 
             let payout_value,
                 cost_value;
@@ -94,21 +79,11 @@ const Purchase = (() => {
                 cost_value = passthrough.amount;
                 payout_value = receipt.payout;
             }
-            const profit_value =
-                Math.round((payout_value - cost_value) * 100) / 100;
+            const profit_value = Math.round((payout_value - cost_value) * 100) / 100;
 
-            elementInnerHtml(
-                payout,
-                `${localize('Potential Payout')} <p>${payout_value}</p>`,
-            );
-            elementInnerHtml(
-                cost,
-                `${localize('Total Cost')} <p>${cost_value}</p>`,
-            );
-            elementInnerHtml(
-                profit,
-                `${localize('Potential Profit')} <p>${profit_value}</p>`,
-            );
+            elementInnerHtml(payout, `${localize('Potential Payout')} <p>${payout_value}</p>`);
+            elementInnerHtml(cost, `${localize('Total Cost')} <p>${cost_value}</p>`);
+            elementInnerHtml(profit, `${localize('Potential Profit')} <p>${profit_value}</p>`);
 
             updateValues.updateContractBalance(receipt.balance_after);
 
@@ -130,9 +105,7 @@ const Purchase = (() => {
                 elementTextContent(button, localize('View'));
                 button.setAttribute('contract_id', receipt.contract_id);
                 button.show();
-                $('.open_contract_details')
-                    .attr('contract_id', receipt.contract_id)
-                    .removeClass('invisible');
+                $('.open_contract_details').attr('contract_id', receipt.contract_id).removeClass('invisible');
             } else {
                 button.hide();
                 $('.open_contract_details').addClass('invisible');
@@ -141,10 +114,7 @@ const Purchase = (() => {
 
         if (show_chart) {
             let contract_sentiment;
-            if (
-                passthrough.contract_type === 'CALL' ||
-                passthrough.contract_type === 'ASIANU'
-            ) {
+            if (passthrough.contract_type === 'CALL' || passthrough.contract_type === 'ASIANU') {
                 contract_sentiment = 'up';
             } else {
                 contract_sentiment = 'down';
@@ -169,14 +139,11 @@ const Purchase = (() => {
             }
 
             TickDisplay.init({
-                symbol             : passthrough.symbol,
-                barrier            : barrier,
-                number_of_ticks    : passthrough.duration,
-                previous_tick_epoch: receipt.start_time,
-                contract_category  : sessionStorage.getItem('formname') ===
-                    'asian'
-                    ? 'asian'
-                    : 'callput',
+                symbol              : passthrough.symbol,
+                barrier             : barrier,
+                number_of_ticks     : passthrough.duration,
+                previous_tick_epoch : receipt.start_time,
+                contract_category   : sessionStorage.getItem('formname') === 'asian' ? 'asian' : 'callput',
                 display_symbol      : Symbols.getName(passthrough.symbol),
                 contract_start      : receipt.start_time,
                 display_decimals    : decimal_points,
@@ -195,8 +162,7 @@ const Purchase = (() => {
             return;
         }
 
-        let duration = purchase_data.echo_req &&
-            purchase_data.echo_req.passthrough
+        let duration = purchase_data.echo_req && purchase_data.echo_req.passthrough
             ? purchase_data.echo_req.passthrough.duration
             : null;
 
@@ -220,20 +186,13 @@ const Purchase = (() => {
                 quote: spots2[epoches[s]],
             };
 
-            if (
-                isVisible(spots) &&
-                tick_d.epoch &&
-                tick_d.epoch > purchase_data.buy.start_time
-            ) {
+            if (isVisible(spots) && tick_d.epoch && tick_d.epoch > purchase_data.buy.start_time) {
                 const fragment = document.createElement('div');
                 fragment.classList.add('row');
 
                 const el1 = document.createElement('div');
                 el1.classList.add('col');
-                elementTextContent(
-                    el1,
-                    `${localize('Tick')} ${spots.getElementsByClassName('row').length + 1}`,
-                );
+                elementTextContent(el1, `${localize('Tick')} ${spots.getElementsByClassName('row').length + 1}`);
                 fragment.appendChild(el1);
 
                 const el2 = document.createElement('div');
@@ -258,29 +217,19 @@ const Purchase = (() => {
                     let contract_status,
                         final_price,
                         pnl;
-                    const pass_contract_type =
-                        purchase_data.echo_req.passthrough.contract_type;
-                    const pass_barrier =
-                        purchase_data.echo_req.passthrough.barrier;
+                    const pass_contract_type = purchase_data.echo_req.passthrough.contract_type;
+                    const pass_barrier = purchase_data.echo_req.passthrough.barrier;
 
                     if (
-                        (pass_contract_type === 'DIGITMATCH' &&
-                            +last_digit === +pass_barrier) ||
-                        (pass_contract_type === 'DIGITDIFF' &&
-                            +last_digit !== +pass_barrier) ||
-                        (pass_contract_type === 'DIGITEVEN' &&
-                            +last_digit % 2 === 0) ||
-                        (pass_contract_type === 'DIGITODD' &&
-                            +last_digit % 2) ||
-                        (pass_contract_type === 'DIGITOVER' &&
-                            +last_digit > pass_barrier) ||
-                        (pass_contract_type === 'DIGITUNDER' &&
-                            +last_digit < pass_barrier)
+                        (pass_contract_type === 'DIGITMATCH' && +last_digit === +pass_barrier) ||
+                        (pass_contract_type === 'DIGITDIFF' && +last_digit !== +pass_barrier) ||
+                        (pass_contract_type === 'DIGITEVEN' && +last_digit % 2 === 0) ||
+                        (pass_contract_type === 'DIGITODD' && +last_digit % 2) ||
+                        (pass_contract_type === 'DIGITOVER' && +last_digit > pass_barrier) ||
+                        (pass_contract_type === 'DIGITUNDER' && +last_digit < pass_barrier)
                     ) {
                         spots.className = 'won';
-                        final_price = $('#contract_purchase_payout')
-                            .find('p')
-                            .text();
+                        final_price = $('#contract_purchase_payout').find('p').text();
                         pnl = $('#contract_purchase_cost').find('p').text();
                         contract_status = localize('This contract won');
                     } else {
@@ -290,11 +239,7 @@ const Purchase = (() => {
                         contract_status = localize('This contract lost');
                     }
 
-                    updateValues.updatePurchaseStatus(
-                        final_price,
-                        pnl,
-                        contract_status,
-                    );
+                    updateValues.updatePurchaseStatus(final_price, pnl, contract_status);
                 }
 
                 duration--;

@@ -3,8 +3,7 @@ const CookieStorage = require('./storage').CookieStorage;
 const LocalStore = require('./storage').LocalStore;
 const State = require('./storage').State;
 const defaultRedirectUrl = require('./url').defaultRedirectUrl;
-const getLoginToken = require('../common_functions/common_functions')
-    .getLoginToken;
+const getLoginToken = require('../common_functions/common_functions').getLoginToken;
 const jpClient = require('../common_functions/country_base').jpClient;
 const RealityCheckData = require('../websocket_pages/user/reality_check/reality_check.data');
 const Cookies = require('../../lib/js-cookie');
@@ -38,9 +37,7 @@ const Client = (() => {
     };
 
     const init = () => {
-        client_object.loginid_array = parseLoginIDList(
-            Cookies.get('loginid_list') || '',
-        );
+        client_object.loginid_array = parseLoginIDList(Cookies.get('loginid_list') || '');
 
         set('email', Cookies.get('email'));
         set('loginid', Cookies.get('loginid'));
@@ -48,20 +45,14 @@ const Client = (() => {
     };
 
     const isLoggedIn = () =>
-        get('tokens') &&
-        getLoginToken() &&
-        Cookies.get('loginid') &&
-        client_object.loginid_array.length > 0;
+        get('tokens') && getLoginToken() && Cookies.get('loginid') && client_object.loginid_array.length > 0;
 
     const validateLoginid = () => {
         const loginid_list = Cookies.get('loginid_list');
         const client_id = Cookies.get('loginid');
         if (!client_id || !loginid_list) return;
 
-        const valid_login_ids = new RegExp(
-            '^(MX|MF|VRTC|MLT|CR|FOG|VRTJ|JP)[0-9]+$',
-            'i',
-        );
+        const valid_login_ids = new RegExp('^(MX|MF|VRTC|MLT|CR|FOG|VRTJ|JP)[0-9]+$', 'i');
 
         if (!valid_login_ids.test(client_id)) {
             sendLogoutRequest();
@@ -82,13 +73,7 @@ const Client = (() => {
     // use this function to get variables that have values
     const get = (key) => {
         let value = client_object[key] || LocalStore.get(`client.${key}`) || '';
-        if (
-            !Array.isArray(value) &&
-            (+value === 1 ||
-                +value === 0 ||
-                value === 'true' ||
-                value === 'false')
-        ) {
+        if (!Array.isArray(value) && (+value === 1 || +value === 0 || value === 'true' || value === 'false')) {
             value = JSON.parse(value || false);
         }
         return value;
@@ -115,14 +100,9 @@ const Client = (() => {
             'website_status',
             'terms_conditions_version',
         ]);
-        const get_settings = State.get([
-            'response',
-            'get_settings',
-            'get_settings',
-        ]);
+        const get_settings = State.get(['response', 'get_settings', 'get_settings']);
         return (
-            get_settings.hasOwnProperty('client_tnc_status') &&
-            get_settings.client_tnc_status !== website_tnc_version
+            get_settings.hasOwnProperty('client_tnc_status') && get_settings.client_tnc_status !== website_tnc_version
         );
     };
 
@@ -144,10 +124,7 @@ const Client = (() => {
         const tokens = get('tokens');
         if (client_loginid && tokens) {
             const tokens_obj = JSON.parse(tokens);
-            if (
-                tokens_obj.hasOwnProperty(client_loginid) &&
-                tokens_obj[client_loginid]
-            ) {
+            if (tokens_obj.hasOwnProperty(client_loginid) && tokens_obj[client_loginid]) {
                 token = tokens_obj[client_loginid];
             }
         }
@@ -159,9 +136,7 @@ const Client = (() => {
             return false;
         }
         const tokens = get('tokens');
-        const tokens_obj = tokens && tokens.length > 0
-            ? JSON.parse(tokens)
-            : {};
+        const tokens_obj = tokens && tokens.length > 0 ? JSON.parse(tokens) : {};
         tokens_obj[client_loginid] = token;
         set('tokens', JSON.stringify(tokens_obj));
         return true;
@@ -174,12 +149,7 @@ const Client = (() => {
         cookie.write(Value, cookie_expire, true);
     };
 
-    const processNewAccount = (
-        client_email,
-        client_loginid,
-        token,
-        virtual_client,
-    ) => {
+    const processNewAccount = (client_email, client_loginid, token, virtual_client) => {
         if (!client_email || !client_loginid || !token) {
             return;
         }
@@ -191,9 +161,7 @@ const Client = (() => {
         setCookie('loginid', client_loginid);
         setCookie(
             'loginid_list',
-            virtual_client
-                ? `${client_loginid}:V:E`
-                : `${client_loginid}:R:E+${Cookies.get('loginid_list')}`,
+            virtual_client ? `${client_loginid}:V:E` : `${client_loginid}:R:E+${Cookies.get('loginid_list')}`,
         );
         // set local storage
         localStorage.setItem('GTM_new_account', '1');
@@ -204,15 +172,12 @@ const Client = (() => {
 
     const hasShortCode = (data, code) => (data || {}).shortcode === code;
 
-    const canUpgradeGamingToFinancial = data =>
-        hasShortCode(data.financial_company, 'maltainvest');
+    const canUpgradeGamingToFinancial = data => hasShortCode(data.financial_company, 'maltainvest');
 
     const canUpgradeVirtualToFinancial = data =>
-        !data.gaming_company &&
-        hasShortCode(data.financial_company, 'maltainvest');
+        !data.gaming_company && hasShortCode(data.financial_company, 'maltainvest');
 
-    const canUpgradeVirtualToJapan = data =>
-        !data.gaming_company && hasShortCode(data.financial_company, 'japan');
+    const canUpgradeVirtualToJapan = data => !data.gaming_company && hasShortCode(data.financial_company, 'japan');
 
     const hasGamingFinancialEnabled = () => {
         let has_financial = false,
@@ -238,24 +203,15 @@ const Client = (() => {
                 $('.client_logged_in').removeClass('invisible');
                 if (get('is_virtual')) {
                     $(section).find('.client_virtual').removeClass('invisible');
-                    $('#topbar')
-                        .addClass('secondary-bg-color')
-                        .removeClass('primary-color-dark');
+                    $('#topbar').addClass('secondary-bg-color').removeClass('primary-color-dark');
                 } else {
-                    $(section)
-                        .find('.client_real')
-                        .not(jpClient() ? '.ja-hide' : '')
-                        .removeClass('invisible');
-                    $('#topbar')
-                        .addClass('primary-color-dark')
-                        .removeClass('secondary-bg-color');
+                    $(section).find('.client_real').not(jpClient() ? '.ja-hide' : '').removeClass('invisible');
+                    $('#topbar').addClass('primary-color-dark').removeClass('secondary-bg-color');
                 }
             });
         } else {
             $(section).find('.client_logged_out').removeClass('invisible');
-            $('#topbar')
-                .addClass('primary-color-dark')
-                .removeClass('secondary-bg-color');
+            $('#topbar').addClass('primary-color-dark').removeClass('secondary-bg-color');
         }
     };
 
@@ -281,10 +237,7 @@ const Client = (() => {
             'affiliate_tracking',
             'residence',
         ];
-        const domains = [
-            `.${document.domain.split('.').slice(-2).join('.')}`,
-            `.${document.domain}`,
-        ];
+        const domains = [`.${document.domain.split('.').slice(-2).join('.')}`, `.${document.domain}`];
 
         let parent_path = window.location.pathname.split('/', 2)[1];
         if (parent_path !== '') {
@@ -306,36 +259,21 @@ const Client = (() => {
     };
 
     const currentLandingCompany = () => {
-        const landing_company_response = State.get([
-            'response',
-            'landing_company',
-            'landing_company',
-        ]) || {};
+        const landing_company_response = State.get(['response', 'landing_company', 'landing_company']) || {};
         let client_landing_company = {};
         Object.keys(landing_company_response).forEach((key) => {
-            if (
-                client_object.landing_company_name ===
-                landing_company_response[key].shortcode
-            ) {
+            if (client_object.landing_company_name === landing_company_response[key].shortcode) {
                 client_landing_company = landing_company_response[key];
             }
         });
         return client_landing_company;
     };
 
-    const isFinancial = () =>
-        (client_object.loginid_array.find(obj => obj.id === get('loginid')) || {
-        }).financial;
+    const isFinancial = () => (client_object.loginid_array.find(obj => obj.id === get('loginid')) || {}).financial;
 
     const shouldCompleteTax = () =>
         isFinancial() &&
-        !/crs_tin_information/.test(
-            (State.get([
-                'response',
-                'get_account_status',
-                'get_account_status',
-            ]) || {}).status,
-        );
+        !/crs_tin_information/.test((State.get(['response', 'get_account_status', 'get_account_status']) || {}).status);
 
     return {
         init             : init,

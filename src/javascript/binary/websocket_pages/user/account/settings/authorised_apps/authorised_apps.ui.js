@@ -1,12 +1,9 @@
 const ApplicationsData = require('./authorised_apps.data');
-const showLocalTimeOnHover = require('../../../../../base/clock')
-    .showLocalTimeOnHover;
+const showLocalTimeOnHover = require('../../../../../base/clock').showLocalTimeOnHover;
 const localize = require('../../../../../base/localize').localize;
-const showLoadingImage = require('../../../../../base/utility')
-    .showLoadingImage;
+const showLoadingImage = require('../../../../../base/utility').showLoadingImage;
 const FlexTableUI = require('../../../../../common_functions/attach_dom/flextable');
-const toTitleCase = require('../../../../../common_functions/string_util')
-    .toTitleCase;
+const toTitleCase = require('../../../../../common_functions/string_util').toTitleCase;
 
 const ApplicationsUI = (() => {
     'use strict';
@@ -19,12 +16,8 @@ const ApplicationsUI = (() => {
     };
 
     const formatApp = (app) => {
-        const last_used = app.last_used
-            ? app.last_used.format('YYYY-MM-DD HH:mm:ss')
-            : localize('Never');
-        const scopes = app.scopes
-            .map(scope => localize(toTitleCase(scope)))
-            .join(', ');
+        const last_used = app.last_used ? app.last_used.format('YYYY-MM-DD HH:mm:ss') : localize('Never');
+        const scopes = app.scopes.map(scope => localize(toTitleCase(scope))).join(', ');
         return [
             app.name,
             scopes,
@@ -39,11 +32,7 @@ const ApplicationsUI = (() => {
             text : localize(messages.revoke_access),
         });
         $button.on('click', () => {
-            if (
-                window.confirm(
-                    `${localize(messages.revoke_confirm)}: '${app.name}'?`,
-                )
-            ) {
+            if (window.confirm(`${localize(messages.revoke_confirm)}: '${app.name}'?`)) {
                 BinarySocket.send({
                     oauth_apps: 1,
                     revoke_app: app.id,
@@ -73,10 +62,7 @@ const ApplicationsUI = (() => {
             cols     : columns,
             data     : data,
             style    : ($row, app) => {
-                $row
-                    .children('.action')
-                    .first()
-                    .append(createRevokeButton($row, app));
+                $row.children('.action').first().append(createRevokeButton($row, app));
             },
             formatter: formatApp,
         });
@@ -96,9 +82,7 @@ const ApplicationsUI = (() => {
     };
 
     const init = () => {
-        showLoadingImage(
-            $('<div/>', { id: 'loading' }).insertAfter('#applications-title'),
-        );
+        showLoadingImage($('<div/>', { id: 'loading' }).insertAfter('#applications-title'));
     };
 
     const clean = () => {

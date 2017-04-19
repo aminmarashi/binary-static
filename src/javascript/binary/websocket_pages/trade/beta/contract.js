@@ -1,5 +1,4 @@
-const getFormNameBarrierCategory = require('../common')
-    .getFormNameBarrierCategory;
+const getFormNameBarrierCategory = require('../common').getFormNameBarrierCategory;
 const getLanguage = require('../../../base/language').get;
 const localize = require('../../../base/localize').localize;
 const isEmptyObject = require('../../../base/utility').isEmptyObject;
@@ -53,23 +52,13 @@ const Contract_Beta = (() => {
             durations[expiry_type][current_category][barrier_category] = {};
         }
 
-        if (
-            !durations[expiry_type][current_category][barrier_category][
-                start_type
-            ]
-        ) {
-            durations[expiry_type][current_category][barrier_category][
-                start_type
-            ] = {};
+        if (!durations[expiry_type][current_category][barrier_category][start_type]) {
+            durations[expiry_type][current_category][barrier_category][start_type] = {};
         }
 
-        durations[expiry_type][current_category][barrier_category][
-            start_type
-        ].max_contract_duration = max_duration;
+        durations[expiry_type][current_category][barrier_category][start_type].max_contract_duration = max_duration;
 
-        durations[expiry_type][current_category][barrier_category][
-            start_type
-        ].min_contract_duration = min_duration;
+        durations[expiry_type][current_category][barrier_category][start_type].min_contract_duration = min_duration;
     };
 
     const details = (form_name) => {
@@ -110,10 +99,7 @@ const Contract_Beta = (() => {
                 }
 
                 const symbol = current_obj.underlying_symbol;
-                if (
-                    current_obj.barrier_category &&
-                    current_obj.barrier_category !== 'non_financial'
-                ) {
+                if (current_obj.barrier_category && current_obj.barrier_category !== 'non_financial') {
                     if (!barriers.hasOwnProperty(symbol)) {
                         barriers[symbol] = {};
                     }
@@ -137,24 +123,16 @@ const Contract_Beta = (() => {
                     contract_type[contract_category] = {};
                 }
 
-                if (
-                    !contract_type[contract_category].hasOwnProperty(
-                        current_obj.contract_type,
-                    )
-                ) {
-                    contract_type[contract_category][
-                        current_obj.contract_type
-                    ] = localize(current_obj.contract_display);
+                if (!contract_type[contract_category].hasOwnProperty(current_obj.contract_type)) {
+                    contract_type[contract_category][current_obj.contract_type] = localize(
+                        current_obj.contract_display,
+                    );
                 }
             }
         });
 
         if (form_name && barrier_category) {
-            if (
-                barriers &&
-                barriers[form_name] &&
-                barriers[form_name].barrier_category !== barrier_category
-            ) {
+            if (barriers && barriers[form_name] && barriers[form_name].barrier_category !== barrier_category) {
                 barriers = {};
             }
         }
@@ -168,31 +146,20 @@ const Contract_Beta = (() => {
 
         contracts.available.forEach((current_obj) => {
             const contract_category = current_obj.contract_category;
-            if (
-                contract_category &&
-                !trade_contract_forms.hasOwnProperty(contract_category)
-            ) {
+            if (contract_category && !trade_contract_forms.hasOwnProperty(contract_category)) {
                 if (contract_category === 'callput') {
                     if (current_obj.barrier_category === 'euro_atm') {
                         trade_contract_forms.risefall = localize('Rise/Fall');
                     } else {
-                        trade_contract_forms.higherlower = localize(
-                            'Higher/Lower',
-                        );
+                        trade_contract_forms.higherlower = localize('Higher/Lower');
                     }
                 } else {
-                    trade_contract_forms[contract_category] = localize(
-                        current_obj.contract_category_display,
-                    );
+                    trade_contract_forms[contract_category] = localize(current_obj.contract_category_display);
                     if (contract_category === 'digits') {
-                        trade_contract_forms.matchdiff = localize(
-                            'Matches/Differs',
-                        );
+                        trade_contract_forms.matchdiff = localize('Matches/Differs');
                         if (getLanguage() !== 'ID') {
                             trade_contract_forms.evenodd = localize('Even/Odd');
-                            trade_contract_forms.overunder = localize(
-                                'Over/Under',
-                            );
+                            trade_contract_forms.overunder = localize('Over/Under');
                         }
                     }
                 }

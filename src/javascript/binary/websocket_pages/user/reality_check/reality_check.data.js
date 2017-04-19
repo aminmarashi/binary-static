@@ -32,10 +32,9 @@ const RealityCheckData = (() => {
         const turnover = +data.buy_amount + +data.sell_amount;
         const profit_loss = +data.sell_amount - +data.buy_amount;
 
-        const start_time_string = localize(
-            'Your trading statistics since [_1].',
-            [`${start_time.format('YYYY-MM-DD HH:mm:ss')} GMT`],
-        );
+        const start_time_string = localize('Your trading statistics since [_1].', [
+            `${start_time.format('YYYY-MM-DD HH:mm:ss')} GMT`,
+        ]);
         return {
             start_time_string: start_time_string,
             login_time       : `${start_time.format('YYYY-MM-DD HH:mm:ss')} GMT`,
@@ -59,16 +58,8 @@ const RealityCheckData = (() => {
 
     // use this function to get variables that have values
     const get = (key) => {
-        let value =
-            reality_object[key] ||
-            LocalStore.get(`client.reality_check.${key}`) ||
-            '';
-        if (
-            +value === 1 ||
-            +value === 0 ||
-            value === 'true' ||
-            value === 'false'
-        ) {
+        let value = reality_object[key] || LocalStore.get(`client.reality_check.${key}`) || '';
+        if (+value === 1 || +value === 0 || value === 'true' || value === 'false') {
             value = JSON.parse(value || false);
         }
         return value;

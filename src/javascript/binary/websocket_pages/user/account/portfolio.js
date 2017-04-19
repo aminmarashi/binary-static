@@ -1,6 +1,5 @@
 const toJapanTimeIfNeeded = require('../../../base/clock').toJapanTimeIfNeeded;
-const formatMoney = require('../../../common_functions/currency_to_symbol')
-    .formatMoney;
+const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
 const jpClient = require('../../../common_functions/country_base').jpClient;
 
 const Portfolio = (() => {
@@ -17,9 +16,7 @@ const Portfolio = (() => {
         payout        : parseFloat(c.payout).toFixed(2),
         longcode      : typeof module !== 'undefined'
             ? c.longcode
-            : jpClient()
-                  ? toJapanTimeIfNeeded(undefined, undefined, c.longcode)
-                  : c.longcode,
+            : jpClient() ? toJapanTimeIfNeeded(undefined, undefined, c.longcode) : c.longcode,
         currency : c.currency,
         buy_price: c.buy_price,
         app_id   : c.app_id,

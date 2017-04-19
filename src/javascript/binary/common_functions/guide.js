@@ -42,9 +42,7 @@ const Guide = (() => {
         };
 
         if ($(opt.guideBtnID).length === 0) {
-            console.warn(
-                `Could not find the button placeholder: <div id="${opt.guideBtnID}"></div>`,
-            );
+            console.warn(`Could not find the button placeholder: <div id="${opt.guideBtnID}"></div>`);
             return;
         }
 
@@ -75,10 +73,7 @@ const Guide = (() => {
     const setDisabled = () => {
         if (!isDisabled()) {
             const disabled = Cookies.get(cookie_name);
-            Cookies.set(
-                cookie_name,
-                !disabled ? opt.script : `${disabled},${opt.script}`,
-            );
+            Cookies.set(cookie_name, !disabled ? opt.script : `${disabled},${opt.script}`);
         }
     };
 

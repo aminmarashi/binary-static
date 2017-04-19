@@ -20,8 +20,7 @@ const StartDates_Beta = (() => {
     let has_now = 0;
     State.remove('is_start_dates_displayed');
 
-    const compareStartDate = (a, b) =>
-        (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+    const compareStartDate = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
 
     const displayStartDates = () => {
         const start_dates = Contract_Beta.startDates();
@@ -74,9 +73,7 @@ const StartDates_Beta = (() => {
                         if (typeof first === 'undefined' && !has_now) {
                             first = a.utc().unix();
                         }
-                        content = document.createTextNode(
-                            a.format('HH:mm ddd').replace(' ', ' GMT, '),
-                        );
+                        content = document.createTextNode(a.format('HH:mm ddd').replace(' ', ' GMT, '));
                         if (option.value === Defaults.get('date_start')) {
                             option.setAttribute('selected', 'selected');
                         }

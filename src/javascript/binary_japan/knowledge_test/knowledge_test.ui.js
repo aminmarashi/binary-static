@@ -44,9 +44,7 @@ const KnowledgeTestUI = (() => {
             id   : question_no,
             class: 'question',
         });
-        const $question_data = $('<td></td>').text(
-            localize(question.question_localized),
-        );
+        const $question_data = $('<td></td>').text(localize(question.question_localized));
         const $question_link = $('<a></a>', {
             name : question.id,
             class: 'no-underline',
@@ -60,10 +58,7 @@ const KnowledgeTestUI = (() => {
 
         const true_false = createTrueFalseBox(question, show_answer);
 
-        return $question_row
-            .append($question_data)
-            .append(true_false[0])
-            .append(true_false[1]);
+        return $question_row.append($question_data).append(true_false[0]).append(true_false[1]);
     };
 
     const createQuestionTable = (questions, show_answer) => {
@@ -83,10 +78,7 @@ const KnowledgeTestUI = (() => {
             class: 'false-col',
         }).text(localize('False'));
 
-        $header
-            .append($question_col_header)
-            .append($true_col_header)
-            .append($false_col_header);
+        $header.append($question_col_header).append($true_col_header).append($false_col_header);
 
         const $table_container = $('<table></table>', { id: 'knowledge-test' });
 
@@ -115,9 +107,7 @@ const KnowledgeTestUI = (() => {
             .utc(date)
             .format(
                 'MM',
-            )}${localize('Month')}${moment
-            .utc(date)
-            .format('DD')}${localize('Day')} (${localize('Weekday')})`;
+            )}${localize('Month')}${moment.utc(date).format('DD')}${localize('Day')} (${localize('Weekday')})`;
 
         const $date_row = $('<tr/>')
             .append($('<td/>', { text: localize('Date') }))

@@ -9,9 +9,7 @@ const LostPassword = (() => {
         if (response.verify_email) {
             BinaryPjax.load('user/reset_passwordws');
         } else if (response.error) {
-            $('#form_error')
-                .removeClass('invisible')
-                .text(localize(response.error.message));
+            $('#form_error').removeClass('invisible').text(localize(response.error.message));
         }
     };
 

@@ -1,6 +1,5 @@
 const localize = require('../base/localize').localize;
-const compareBigUnsignedInt = require('../common_functions/string_util')
-    .compareBigUnsignedInt;
+const compareBigUnsignedInt = require('../common_functions/string_util').compareBigUnsignedInt;
 
 const Validation = (() => {
     'use strict';
@@ -16,16 +15,10 @@ const Validation = (() => {
     };
 
     const getFieldType = $field =>
-        ($field.length
-            ? $field.attr('type') === 'checkbox'
-                  ? 'checkbox'
-                  : $field.get(0).localName
-            : null);
+        ($field.length ? $field.attr('type') === 'checkbox' ? 'checkbox' : $field.get(0).localName : null);
 
     const getFieldValue = field =>
-        (field.type === 'checkbox'
-            ? field.$.is(':checked') ? '1' : ''
-            : field.$.val()) || '';
+        (field.type === 'checkbox' ? field.$.is(':checked') ? '1' : '' : field.$.val()) || '';
 
     const initForm = (form_selector, fields) => {
         const $form = $(`${form_selector}:visible`);
@@ -60,11 +53,7 @@ const Validation = (() => {
                             checkField(field);
                             if (field.re_check_field) {
                                 checkField(
-                                    forms[form_selector].fields.find(
-                                        fld =>
-                                            fld.selector ===
-                                            field.re_check_field,
-                                    ),
+                                    forms[form_selector].fields.find(fld => fld.selector === field.re_check_field),
                                 );
                             }
                         });
@@ -87,16 +76,11 @@ const Validation = (() => {
             : 'This field is required.';
         return false;
     };
-    const validEmail = value =>
-        /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
-    const validPassword = value =>
-        /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
-    const validLetterSymbol = value =>
-        !/[`~!@#$%^&*)(_=+\[}{\]\\\/";:\?><,|\d]+/.test(value);
-    const validGeneral = value =>
-        !/[`~!@#$%^&*)(_=+\[}{\]\\\/";:\?><|]+/.test(value);
-    const validAddress = value =>
-        !/[`~!#$%^&*)(_=+\[}{\]\\";:\?><|]+/.test(value);
+    const validEmail = value => /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/.test(value);
+    const validPassword = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
+    const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+\[}{\]\\\/";:\?><,|\d]+/.test(value);
+    const validGeneral = value => !/[`~!@#$%^&*)(_=+\[}{\]\\\/";:\?><|]+/.test(value);
+    const validAddress = value => !/[`~!#$%^&*)(_=+\[}{\]\\";:\?><|]+/.test(value);
     const validPostCode = value => /^[a-zA-Z\d-\s]*$/.test(value);
     const validPhone = value => /^\+?[0-9\s]*$/.test(value);
     const validRegular = (value, options) => options.regex.test(value);
@@ -104,8 +88,7 @@ const Validation = (() => {
 
     const validCompare = (value, options) => value === $(options.to).val();
     const validNotEqual = (value, options) => value !== $(options.to).val();
-    const validMin = (value, options) =>
-        (options.min ? value.trim().length >= options.min : true);
+    const validMin = (value, options) => (options.min ? value.trim().length >= options.min : true);
     const validLength = (value, options) =>
         (options.min ? value.trim().length >= options.min : true) &&
         (options.max ? value.trim().length <= options.max : true);
@@ -118,34 +101,19 @@ const Validation = (() => {
         let is_ok = true,
             message = '';
 
-        if (
-            !(options.type === 'float' ? /^\d+(\.\d+)?$/ : /^\d+$/).test(
-                value,
-            ) || !$.isNumeric(value)
-        ) {
+        if (!(options.type === 'float' ? /^\d+(\.\d+)?$/ : /^\d+$/).test(value) || !$.isNumeric(value)) {
             is_ok = false;
             message = localize('Should be a valid number');
         } else if (
             options.type === 'float' &&
             options.decimals &&
-            !new RegExp(
-                `^\\d+(\\.\\d{${options.decimals.replace(/ /g, '')}})?$`,
-            ).test(value)
+            !new RegExp(`^\\d+(\\.\\d{${options.decimals.replace(/ /g, '')}})?$`).test(value)
         ) {
             is_ok = false;
-            message = localize('Only [_1] decimal points are allowed.', [
-                options.decimals,
-            ]);
-        } else if (
-            'min' in options &&
-            'max' in options &&
-            (+value < +options.min || isMoreThanMax(value, options))
-        ) {
+            message = localize('Only [_1] decimal points are allowed.', [options.decimals]);
+        } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
             is_ok = false;
-            message = localize('Should be between [_1] and [_2]', [
-                options.min,
-                options.max,
-            ]);
+            message = localize('Should be between [_1] and [_2]', [options.min, options.max]);
         } else if ('min' in options && +value < +options.min) {
             is_ok = false;
             message = localize('Should be more than [_1]', [options.min]);
@@ -159,9 +127,7 @@ const Validation = (() => {
     };
 
     const isMoreThanMax = (value, options) =>
-        (options.type === 'float'
-            ? +value > +options.max
-            : compareBigUnsignedInt(value, options.max) === 1);
+        (options.type === 'float' ? +value > +options.max : compareBigUnsignedInt(value, options.max) === 1);
 
     const validators_map = {
         req     : { func: validRequired, message: '' },
@@ -235,17 +201,12 @@ const Validation = (() => {
                 options = valid[1];
             }
 
-            if (
-                type === 'password' &&
-                !validLength(getFieldValue(field), pass_length)
-            ) {
+            if (type === 'password' && !validLength(getFieldValue(field), pass_length)) {
                 field.is_ok = false;
                 type = 'length';
                 options = pass_length;
             } else {
-                const validator = type === 'custom'
-                    ? options.func
-                    : validators_map[type].func;
+                const validator = type === 'custom' ? options.func : validators_map[type].func;
                 field.is_ok = validator(getFieldValue(field), options, field);
             }
 
@@ -253,17 +214,12 @@ const Validation = (() => {
                 message = options.message || validators_map[type].message;
                 if (type === 'length') {
                     message = localize(message, [
-                        options.min === options.max
-                            ? options.min
-                            : `${options.min}-${options.max}`,
+                        options.min === options.max ? options.min : `${options.min}-${options.max}`,
                     ]);
                 } else if (type === 'min') {
                     message = localize(message, [options.min]);
                 } else if (type === 'not_equal') {
-                    message = localize(message, [
-                        localize(options.name1),
-                        localize(options.name2),
-                    ]);
+                    message = localize(message, [localize(options.name1), localize(options.name2)]);
                 }
                 all_is_ok = false;
                 return true;

@@ -3,17 +3,12 @@ const StatementUI = require('./statement.ui');
 const ViewPopup = require('../../view_popup/view_popup');
 const getLanguage = require('../../../../base/language').get;
 const localize = require('../../../../base/localize').localize;
-const showLocalTimeOnHover = require('../../../../base/clock')
-    .showLocalTimeOnHover;
-const addTooltip = require('../../../../common_functions/get_app_details')
-    .addTooltip;
-const buildOauthApps = require('../../../../common_functions/get_app_details')
-    .buildOauthApps;
-const dateValueChanged = require('../../../../common_functions/common_functions')
-    .dateValueChanged;
+const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
+const addTooltip = require('../../../../common_functions/get_app_details').addTooltip;
+const buildOauthApps = require('../../../../common_functions/get_app_details').buildOauthApps;
+const dateValueChanged = require('../../../../common_functions/common_functions').dateValueChanged;
 const jpClient = require('../../../../common_functions/country_base').jpClient;
-const toISOFormat = require('../../../../common_functions/string_util')
-    .toISOFormat;
+const toISOFormat = require('../../../../common_functions/string_util').toISOFormat;
 const DatePicker = require('../../../../components/date_picker');
 
 const StatementInit = (() => {
@@ -34,8 +29,7 @@ const StatementInit = (() => {
 
     const tableExist = () => document.getElementById('statement-table');
 
-    const finishedConsumed = () =>
-        transactions_consumed === transactions_received;
+    const finishedConsumed = () => transactions_consumed === transactions_received;
 
     const getStatement = (opts) => {
         const req = { statement: 1, description: 1 };
@@ -44,9 +38,7 @@ const StatementInit = (() => {
 
         const jump_to_val = $('#jump-to').attr('data-value');
         if (jump_to_val && jump_to_val !== '') {
-            req.date_to =
-                moment.utc(jump_to_val).unix() +
-                (jpClient() ? 15 : 24) * (60 * 60);
+            req.date_to = moment.utc(jump_to_val).unix() + (jpClient() ? 15 : 24) * (60 * 60);
             req.date_from = 0;
         }
         BinarySocket.send(req).then((response) => {
@@ -83,9 +75,7 @@ const StatementInit = (() => {
         }
 
         if (!tableExist()) {
-            StatementUI.createEmptyStatementTable().appendTo(
-                '#statement-container',
-            );
+            StatementUI.createEmptyStatementTable().appendTo('#statement-container');
             $('.act, .credit').addClass('nowrap');
             StatementUI.updateStatementTable(getNextChunkStatement());
 
@@ -96,27 +86,17 @@ const StatementInit = (() => {
                         $('<td/>', { colspan: 7 }).append(
                             $('<p/>', {
                                 class: 'notice-msg center-text',
-                                text : localize(
-                                    'Your account has no trading activity.',
-                                ),
+                                text : localize('Your account has no trading activity.'),
                             }),
                         ),
                     ),
                 );
             } else {
-                $('#jump-to')
-                    .parent()
-                    .parent()
-                    .parent()
-                    .removeClass('invisible');
+                $('#jump-to').parent().parent().parent().removeClass('invisible');
                 if (getLanguage() === 'JA') {
-                    $('#download_csv')
-                        .removeClass('invisible')
-                        .find('a')
-                        .unbind('click')
-                        .click(() => {
-                            StatementUI.exportCSV();
-                        });
+                    $('#download_csv').removeClass('invisible').find('a').unbind('click').click(() => {
+                        StatementUI.exportCSV();
+                    });
                 }
             }
         }
@@ -126,8 +106,7 @@ const StatementInit = (() => {
     const loadStatementChunkWhenScroll = () => {
         $(document).scroll(() => {
             const hidableHeight = (percentage) => {
-                const total_hideable =
-                    $(document).height() - $(window).height();
+                const total_hideable = $(document).height() - $(window).height();
                 return Math.floor(total_hideable * percentage / 100);
             };
 

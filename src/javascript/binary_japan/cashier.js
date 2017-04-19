@@ -4,8 +4,7 @@ const localize = require('../binary/base/localize').localize;
 const defaultRedirectUrl = require('../binary/base/url').defaultRedirectUrl;
 const template = require('../binary/base/utility').template;
 const jpClient = require('../binary/common_functions/country_base').jpClient;
-const jpResidence = require('../binary/common_functions/country_base')
-    .jpResidence;
+const jpResidence = require('../binary/common_functions/country_base').jpResidence;
 
 const CashierJP = (() => {
     'use strict';
@@ -16,9 +15,7 @@ const CashierJP = (() => {
         BinarySocket.wait('get_settings').then(() => {
             $container.removeClass('invisible');
             if (action === 'deposit') {
-                $('#name_id').text(
-                    `${Client.get('loginid') || 'JP12345'} ${Client.get('first_name') || 'Joe Bloggs'}`,
-                );
+                $('#name_id').text(`${Client.get('loginid') || 'JP12345'} ${Client.get('first_name') || 'Joe Bloggs'}`);
             } else if (action === 'withdraw') {
                 $('#id123-control22598118').val(Client.get('loginid'));
                 $('#id123-control22598060').val(Client.get('email'));
@@ -32,19 +29,11 @@ const CashierJP = (() => {
         const withdrawal_amount = $id.val();
 
         const showError = (message) => {
-            $id
-                .parent()
-                .append(
-                    $('<p/>', { class: 'error-msg', text: localize(message) }),
-                );
+            $id.parent().append($('<p/>', { class: 'error-msg', text: localize(message) }));
         };
 
         if (!/^([1-9][0-9]{0,5}|1000000)$/.test(withdrawal_amount)) {
-            showError(
-                template('Please enter a number between [_1].', [
-                    '¥1 - ¥1,000,000',
-                ]),
-            );
+            showError(template('Please enter a number between [_1].', ['¥1 - ¥1,000,000']));
             return false;
         } else if (parseInt(Client.get('balance')) < withdrawal_amount) {
             showError('Insufficient balance.');

@@ -37,9 +37,7 @@ const GTM = (() => {
 
     const pushDataLayer = (data) => {
         if (isGtmApplicable() && !Login.isLoginPages()) {
-            const info = gtmDataLayerInfo(
-                data && typeof data === 'object' ? data : null,
-            );
+            const info = gtmDataLayerInfo(data && typeof data === 'object' ? data : null);
             dataLayer[0] = info.data;
             dataLayer.push(info.data);
             dataLayer.push({ event: info.event });
@@ -77,9 +75,7 @@ const GTM = (() => {
             data.bom_date_joined = data.bom_today;
         }
         if (!Client.get('is_virtual')) {
-            data.bom_age = parseInt(
-                (moment().unix() - get_settings.date_of_birth) / 31557600,
-            );
+            data.bom_age = parseInt((moment().unix() - get_settings.date_of_birth) / 31557600);
             data.bom_firstname = get_settings.first_name;
             data.bom_lastname = get_settings.last_name;
             data.bom_phone = get_settings.phone;

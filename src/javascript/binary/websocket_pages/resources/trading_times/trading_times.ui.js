@@ -4,15 +4,11 @@ const localize = require('../../../base/localize').localize;
 const State = require('../../../base/storage').State;
 const showLoadingImage = require('../../../base/utility').showLoadingImage;
 const Table = require('../../../common_functions/attach_dom/table');
-const dateValueChanged = require('../../../common_functions/common_functions')
-    .dateValueChanged;
-const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions')
-    .jqueryuiTabsToDropdown;
+const dateValueChanged = require('../../../common_functions/common_functions').dateValueChanged;
+const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions').jqueryuiTabsToDropdown;
 const jpClient = require('../../../common_functions/country_base').jpClient;
-const toISOFormat = require('../../../common_functions/string_util')
-    .toISOFormat;
-const toReadableFormat = require('../../../common_functions/string_util')
-    .toReadableFormat;
+const toISOFormat = require('../../../common_functions/string_util').toISOFormat;
+const toReadableFormat = require('../../../common_functions/string_util').toReadableFormat;
 const DatePicker = require('../../../components/date_picker');
 
 const TradingTimesUI = (() => {
@@ -105,9 +101,7 @@ const TradingTimesUI = (() => {
 
         if (is_framed) {
             $container.find('ul').hide();
-            $('<div/>', { class: 'center-text' })
-                .append(jqueryuiTabsToDropdown($container))
-                .prependTo($container);
+            $('<div/>', { class: 'center-text' }).append(jqueryuiTabsToDropdown($container)).prependTo($container);
         }
     };
 
@@ -121,23 +115,15 @@ const TradingTimesUI = (() => {
             should_populate = true;
             // display only "Major Pairs" for Japan
             if (is_japan_trading) {
-                const submarket_info = TradingTimes.getSubmarketInfo(
-                    active_symbols,
-                    submarkets[s].name,
-                );
-                if (
-                    submarket_info.length === 0 ||
-                    submarket_info[0].submarket !== 'major_pairs'
-                ) {
+                const submarket_info = TradingTimes.getSubmarketInfo(active_symbols, submarkets[s].name);
+                if (submarket_info.length === 0 || submarket_info[0].submarket !== 'major_pairs') {
                     should_populate = false;
                 }
             }
 
             if (should_populate) {
                 // submarket table
-                const $submarket_table = createEmptyTable(
-                    `${market.name}-${s}`,
-                );
+                const $submarket_table = createEmptyTable(`${market.name}-${s}`);
 
                 // submarket name
                 $submarket_table
@@ -149,23 +135,10 @@ const TradingTimesUI = (() => {
                 // symbols of this submarket
                 const symbols = submarkets[s].symbols;
                 for (let sy = 0; sy < symbols.length; sy++) {
-                    if (
-                        Object.keys(
-                            TradingTimes.getSymbolInfo(
-                                symbols[sy].symbol,
-                                active_symbols,
-                            ),
-                        ).length !== 0
-                    ) {
+                    if (Object.keys(TradingTimes.getSymbolInfo(symbols[sy].symbol, active_symbols)).length !== 0) {
                         $submarket_table
                             .find('tbody')
-                            .append(
-                                createSubmarketTableRow(
-                                    market.name,
-                                    submarkets[s].name,
-                                    symbols[sy],
-                                ),
-                            );
+                            .append(createSubmarketTableRow(market.name, submarkets[s].name, symbols[sy]));
                     }
                 }
 
@@ -201,9 +174,7 @@ const TradingTimesUI = (() => {
         );
         $table_row.children('.opens').html(symbol.times.open.join('<br />'));
         $table_row.children('.closes').html(symbol.times.close.join('<br />'));
-        $table_row
-            .children('.upcomingevents')
-            .html(createEventsText(symbol.events));
+        $table_row.children('.upcomingevents').html(createEventsText(symbol.events));
 
         return $table_row;
     };

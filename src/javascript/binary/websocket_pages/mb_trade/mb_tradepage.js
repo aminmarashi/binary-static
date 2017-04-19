@@ -4,8 +4,7 @@ const MBTradingEvents = require('./mb_event');
 const MBPrice = require('./mb_price');
 const MBProcess = require('./mb_process');
 const TradingAnalysis = require('../trade/analysis');
-const chartFrameCleanup = require('../trade/charts/chart_frame')
-    .chartFrameCleanup;
+const chartFrameCleanup = require('../trade/charts/chart_frame').chartFrameCleanup;
 const localize = require('../../base/localize').localize;
 const State = require('../../base/storage').State;
 const JapanPortfolio = require('../../../binary_japan/trade_japan/portfolio');

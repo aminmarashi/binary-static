@@ -35,8 +35,7 @@ const Scroll = (() => {
                 // otherwise change it back to relative
                 if (
                     scroll_top + $sidebar[0].offsetHeight >
-                    $sidebar_container[0].offsetHeight +
-                        $sidebar_container.offset().top
+                    $sidebar_container[0].offsetHeight + $sidebar_container.offset().top
                 ) {
                     $sidebar.css({
                         position: 'absolute',
@@ -69,36 +68,19 @@ const Scroll = (() => {
                 for (let i = 0; i < length; i++) {
                     const section = $(`.section:eq(${i})`);
                     const section_offset = section.offset();
-                    const is_offset_top =
-                        section_offset &&
-                        $(this).scrollTop() >= section_offset.top - 5;
-                    if (
-                        ($(window).scrollTop() === 0 || is_offset_top) &&
-                        section.css('display') !== 'none'
-                    ) {
+                    const is_offset_top = section_offset && $(this).scrollTop() >= section_offset.top - 5;
+                    if (($(window).scrollTop() === 0 || is_offset_top) && section.css('display') !== 'none') {
                         // ignore hidden elements
                         sidebar_nav.find('li').removeClass('selected');
 
-                        if (
-                            $(window).scrollTop() === 0 ||
-                            sidebar_nav.width() === 0
-                        ) {
+                        if ($(window).scrollTop() === 0 || sidebar_nav.width() === 0) {
                             // We're at the top of the screen, so highlight first nav item
-                            sidebar_nav
-                                .find('li:first-child')
-                                .addClass('selected');
-                        } else if (
-                            $(window).scrollTop() + $(window).height() >=
-                            $(document).height()
-                        ) {
+                            sidebar_nav.find('li:first-child').addClass('selected');
+                        } else if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
                             // We're at bottom of screen so highlight last nav item.
-                            sidebar_nav
-                                .find('li:last-child')
-                                .addClass('selected');
+                            sidebar_nav.find('li:last-child').addClass('selected');
                         } else {
-                            sidebar_nav
-                                .find(`li:eq(${i})`)
-                                .addClass('selected');
+                            sidebar_nav.find(`li:eq(${i})`).addClass('selected');
                         }
                     }
                 }

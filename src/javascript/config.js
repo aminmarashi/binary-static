@@ -10,8 +10,7 @@ const Cookies = require('./lib/js-cookie');
  */
 
 const getAppId = () =>
-    localStorage.getItem('config.app_id') ||
-    (/staging\.binary\.com/i.test(window.location.hostname) ? '1098' : '1');
+    localStorage.getItem('config.app_id') || (/staging\.binary\.com/i.test(window.location.hostname) ? '1098' : '1');
 
 const getSocketURL = () => {
     let server_url = localStorage.getItem('config.server_url');

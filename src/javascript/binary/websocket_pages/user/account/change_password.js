@@ -44,9 +44,7 @@ const ChangePassword = (() => {
 
     const handler = (response) => {
         if ('error' in response) {
-            $('#form_error')
-                .text(localize(response.error.message))
-                .removeClass('hidden');
+            $('#form_error').text(localize(response.error.message)).removeClass('hidden');
         } else {
             $(form_id).addClass('hidden');
             $('#msg_success').removeClass('invisible');

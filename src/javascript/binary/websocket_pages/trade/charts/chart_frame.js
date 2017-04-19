@@ -10,9 +10,7 @@ const ChartFrame = (() => {
         } else {
             chartFrameCleanup();
             $('#trade_live_chart').hide();
-            $('#chart-error')
-                .text(localize('Chart is not available for this underlying.'))
-                .show();
+            $('#chart-error').text(localize('Chart is not available for this underlying.')).show();
         }
     };
 
@@ -31,8 +29,7 @@ const ChartFrame = (() => {
         const chart_source = $('#chart_frame').attr('src');
         if (
             $('#tab_graph').hasClass('active') &&
-            (Url.paramsHash(chart_source).instrument !== new_underlying ||
-                /^(|about:blank)$/.test(chart_source))
+            (Url.paramsHash(chart_source).instrument !== new_underlying || /^(|about:blank)$/.test(chart_source))
         ) {
             chartFrameCleanup();
             setChartSource();

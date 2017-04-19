@@ -2,11 +2,9 @@ const Statement = require('../statement');
 const Client = require('../../../../base/client');
 const downloadCSV = require('../../../../base/utility').downloadCSV;
 const localize = require('../../../../base/localize').localize;
-const toJapanTimeIfNeeded = require('../../../../base/clock')
-    .toJapanTimeIfNeeded;
+const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
 const jpClient = require('../../../../common_functions/country_base').jpClient;
-const showTooltip = require('../../../../common_functions/get_app_details')
-    .showTooltip;
+const showTooltip = require('../../../../common_functions/get_app_details').showTooltip;
 const Table = require('../../../../common_functions/attach_dom/table');
 
 const StatementUI = (() => {
@@ -16,16 +14,7 @@ const StatementUI = (() => {
         oauth_apps = {};
 
     const table_id = 'statement-table';
-    const columns = [
-        'date',
-        'ref',
-        'payout',
-        'act',
-        'desc',
-        'credit',
-        'bal',
-        'details',
-    ];
+    const columns = ['date', 'ref', 'payout', 'act', 'desc', 'credit', 'bal', 'details'];
 
     const createEmptyStatementTable = () => {
         const header = [
@@ -59,20 +48,14 @@ const StatementUI = (() => {
     };
 
     const createStatementRow = (transaction) => {
-        const statement_data = Statement.getStatementData(
-            transaction,
-            Client.get('currency'),
-            jpClient(),
-        );
+        const statement_data = Statement.getStatementData(transaction, Client.get('currency'), jpClient());
         all_data.push(
             $.extend({}, statement_data, {
                 action: localize(statement_data.action),
                 desc  : localize(statement_data.desc),
             }),
         );
-        const credit_debit_type = parseFloat(transaction.amount) >= 0
-            ? 'profit'
-            : 'loss';
+        const credit_debit_type = parseFloat(transaction.amount) >= 0 ? 'profit' : 'loss';
 
         const $statement_row = Table.createFlexTableRow(
             [
@@ -91,14 +74,10 @@ const StatementUI = (() => {
 
         $statement_row.children('.credit').addClass(credit_debit_type);
         $statement_row.children('.date').addClass('pre');
-        $statement_row
-            .children('.desc')
-            .html(`${localize(statement_data.desc)}<br>`);
+        $statement_row.children('.desc').html(`${localize(statement_data.desc)}<br>`);
 
         // create view button and append
-        if (
-            statement_data.action === 'Sell' || statement_data.action === 'Buy'
-        ) {
+        if (statement_data.action === 'Sell' || statement_data.action === 'Buy') {
             const $view_button = $('<button/>', {
                 class      : 'button open_contract_details',
                 text       : localize('View'),
@@ -126,9 +105,7 @@ const StatementUI = (() => {
     const exportCSV = () => {
         downloadCSV(
             Statement.generateCSV(all_data, jpClient()),
-            `Statement_${Client.get('loginid')}_latest${$('#rows_count').text()}_${toJapanTimeIfNeeded(
-                window.time,
-            )
+            `Statement_${Client.get('loginid')}_latest${$('#rows_count').text()}_${toJapanTimeIfNeeded(window.time)
                 .replace(/\s/g, '_')
                 .replace(/:/g, '')}.csv`,
         );

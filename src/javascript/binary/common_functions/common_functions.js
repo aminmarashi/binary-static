@@ -68,8 +68,7 @@ const makeOption = (text, value, disabled, el_class) => {
  *
  * alternative to jquery $('#id').is(':visible')
  */
-const isVisible = elem =>
-    !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
+const isVisible = elem => !(!elem || (elem.offsetWidth === 0 && elem.offsetHeight === 0));
 
 /*
  * function to check if browser supports the type date/time
@@ -96,8 +95,7 @@ const dateValueChanged = (element, type) => {
     return true;
 };
 
-const selectorExists = element =>
-    typeof element !== 'undefined' && element !== null;
+const selectorExists = element => typeof element !== 'undefined' && element !== null;
 
 // eslint-disable-next-line consistent-return
 const getSetElementValue = (element, text, type) => {
@@ -119,8 +117,6 @@ module.exports = {
     checkInput            : checkInput,
     dateValueChanged      : dateValueChanged,
     selectorExists        : selectorExists,
-    elementTextContent    : (element, text) =>
-        getSetElementValue(element, text, 'textContent'),
-    elementInnerHtml: (element, text) =>
-        getSetElementValue(element, text, 'innerHTML'),
+    elementTextContent    : (element, text) => getSetElementValue(element, text, 'textContent'),
+    elementInnerHtml      : (element, text) => getSetElementValue(element, text, 'innerHTML'),
 };

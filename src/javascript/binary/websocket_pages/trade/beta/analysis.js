@@ -9,8 +9,7 @@ const Client = require('../../../base/client');
 const getLanguage = require('../../../base/language').get;
 const State = require('../../../base/storage').State;
 const Url = require('../../../base/url');
-const elementInnerHtml = require('../../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../../common_functions/common_functions').elementInnerHtml;
 const jpClient = require('../../../common_functions/country_base').jpClient;
 
 /*
@@ -66,17 +65,12 @@ const TradingAnalysis_Beta = (() => {
             $('#tab_trading_times').removeClass('invisible');
         }
 
-        const $analysis_tabs = $('#trading_analysis_content').find(
-            '#analysis_tabs',
-        );
+        const $analysis_tabs = $('#trading_analysis_content').find('#analysis_tabs');
         if ($analysis_tabs.length) {
             $analysis_tabs.find('li a').click(function(e) {
                 e.preventDefault();
                 const $li = $(this).parent();
-                sessionStorage.setItem(
-                    'currentAnalysisTab_Beta',
-                    $li.attr('id'),
-                );
+                sessionStorage.setItem('currentAnalysisTab_Beta', $li.attr('id'));
                 if (!$li.hasClass('active')) {
                     loadAnalysisTab();
                 }
@@ -93,13 +87,8 @@ const TradingAnalysis_Beta = (() => {
         const current_link = document.querySelector(`#${current_tab} a`);
         const content_id = document.getElementById(`${current_tab}-content`);
 
-        const analysis_nav_element = document.querySelector(
-            '#trading_analysis_content #analysis_tabs',
-        );
-        commonTrading.toggleActiveNavMenuElement_Beta(
-            analysis_nav_element,
-            current_link.parentElement,
-        );
+        const analysis_nav_element = document.querySelector('#trading_analysis_content #analysis_tabs');
+        commonTrading.toggleActiveNavMenuElement_Beta(analysis_nav_element, current_link.parentElement);
         toggleActiveAnalysisTabs();
 
         switch (current_tab) {
@@ -111,8 +100,7 @@ const TradingAnalysis_Beta = (() => {
                 break;
             case 'tab_last_digit': {
                 const underlying =
-                    $('#digit_underlying option:selected').val() ||
-                    $('#underlying').find('option:selected').val();
+                    $('#digit_underlying option:selected').val() || $('#underlying').find('option:selected').val();
                 const tick = $('#tick_count').val() || 100;
                 GetTicks.request('', {
                     ticks_history: underlying,
@@ -154,9 +142,7 @@ const TradingAnalysis_Beta = (() => {
 
         if (analysis_container) {
             const child_elements = analysis_container.children;
-            const current_tab_element = document.getElementById(
-                `${current_tab}-content`,
-            );
+            const current_tab_element = document.getElementById(`${current_tab}-content`);
             const classes = current_tab_element.classList;
 
             for (let i = 0, len = child_elements.length; i < len; i++) {
@@ -176,23 +162,17 @@ const TradingAnalysis_Beta = (() => {
         const options = Url.paramsHash(href);
         const form_name = options.form_name || 'risefall';
         const show_image = options.show_image ? options.show_image > 0 : true;
-        const show_winning = options.show_winning
-            ? options.show_winning > 0
-            : true;
+        const show_winning = options.show_winning ? options.show_winning > 0 : true;
         const show_explain = true;
         const hidden_class = 'invisible';
         const $container = $('#tab_explanation-content');
 
         if (show_winning) {
-            $container
-                .find(`#explanation_winning, #winning_${form_name}`)
-                .removeClass(hidden_class);
+            $container.find(`#explanation_winning, #winning_${form_name}`).removeClass(hidden_class);
         }
 
         if (show_explain) {
-            $container
-                .find(`#explanation_explain, #explain_${form_name}`)
-                .removeClass(hidden_class);
+            $container.find(`#explanation_explain, #explain_${form_name}`).removeClass(hidden_class);
         }
 
         const images = {
@@ -235,12 +215,8 @@ const TradingAnalysis_Beta = (() => {
             const image_path = Url.urlForStatic(
                 `images/pages/trade-explanation/${language === 'ja' ? `${language}/` : ''}`,
             );
-            $container
-                .find('#explanation_image_1')
-                .attr('src', image_path + images[form_name].image1);
-            $container
-                .find('#explanation_image_2')
-                .attr('src', image_path + images[form_name].image2);
+            $container.find('#explanation_image_1').attr('src', image_path + images[form_name].image1);
+            $container.find('#explanation_image_2').attr('src', image_path + images[form_name].image2);
             $container.find('#explanation_image').removeClass(hidden_class);
         }
     };

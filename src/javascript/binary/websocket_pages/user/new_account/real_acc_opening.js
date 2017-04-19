@@ -14,9 +14,7 @@ const RealAccOpening = (() => {
 
             const form_id = '#frm_real';
             AccountOpening.populateForm(form_id, () =>
-                AccountOpening.commonValidations().concat(
-                    AccountOpening.selectCheckboxValidation(form_id),
-                ),
+                AccountOpening.commonValidations().concat(AccountOpening.selectCheckboxValidation(form_id)),
             );
             FormManager.handleSubmit({
                 form_selector       : form_id,
@@ -28,8 +26,7 @@ const RealAccOpening = (() => {
         }
     };
 
-    const handleResponse = response =>
-        AccountOpening.handleNewAccount(response, response.msg_type);
+    const handleResponse = response => AccountOpening.handleNewAccount(response, response.msg_type);
 
     return {
         onLoad: onLoad,

@@ -2,10 +2,8 @@ const localize = require('../../../../base/localize').localize;
 const Client = require('../../../../base/client');
 const Header = require('../../../../base/header');
 const State = require('../../../../base/storage').State;
-const detectHedging = require('../../../../common_functions/common_functions')
-    .detectHedging;
-const makeOption = require('../../../../common_functions/common_functions')
-    .makeOption;
+const detectHedging = require('../../../../common_functions/common_functions').detectHedging;
+const makeOption = require('../../../../common_functions/common_functions').makeOption;
 const FormManager = require('../../../../common_functions/form_manager');
 const moment = require('moment');
 require('select2');
@@ -45,9 +43,7 @@ const PersonalDetails = (() => {
     const getDetailsResponse = (data) => {
         const get_settings = $.extend({}, data);
         get_settings.date_of_birth = get_settings.date_of_birth
-            ? moment
-                  .utc(new Date(get_settings.date_of_birth * 1000))
-                  .format('YYYY-MM-DD')
+            ? moment.utc(new Date(get_settings.date_of_birth * 1000)).format('YYYY-MM-DD')
             : '';
         get_settings.name = is_jp
             ? get_settings.last_name
@@ -60,10 +56,7 @@ const PersonalDetails = (() => {
         } else if (is_jp) {
             const jp_settings = get_settings.jp_settings;
             displayGetSettingsData(jp_settings);
-            if (
-                jp_settings.hedge_asset !== null &&
-                jp_settings.hedge_asset_amount !== null
-            ) {
+            if (jp_settings.hedge_asset !== null && jp_settings.hedge_asset_amount !== null) {
                 $('.hedge').removeClass(hidden_class);
             }
             $('.JpAcc').removeClass('invisible hidden');
@@ -92,9 +85,7 @@ const PersonalDetails = (() => {
             has_key = $key.length > 0;
             has_lbl_key = $lbl_key.length > 0;
             // prioritise labels for japan account
-            $key = has_key && has_lbl_key
-                ? is_jp ? $lbl_key : $key
-                : has_key ? $key : $lbl_key;
+            $key = has_key && has_lbl_key ? is_jp ? $lbl_key : $key : has_key ? $key : $lbl_key;
             if ($key.length > 0) {
                 data_key = data[key] === null ? '' : data[key];
                 editable_fields[key] = data_key;
@@ -110,19 +101,14 @@ const PersonalDetails = (() => {
             }
         });
         if (data.country) {
-            $('#residence').replaceWith(
-                $('<label/>').append($('<strong/>', { id: 'lbl_country' })),
-            );
+            $('#residence').replaceWith($('<label/>').append($('<strong/>', { id: 'lbl_country' })));
             $('#lbl_country').text(data.country);
             if (is_virtual) $('#btn_update').addClass(hidden_class);
         }
     };
 
     const additionalCheck = (data) => {
-        if (
-            !isChanged(data) &&
-            (!data.jp_settings || !isChanged(data.jp_settings))
-        ) {
+        if (!isChanged(data) && (!data.jp_settings || !isChanged(data.jp_settings))) {
             showFormMessage('You did not change anything.', false);
             return false;
         }
@@ -132,10 +118,7 @@ const PersonalDetails = (() => {
     const isChanged = (data) => {
         const compare_data = $.extend({}, data);
         return Object.keys(compare_data).some(
-            key =>
-                key !== 'set_settings' &&
-                key !== 'jp_settings' &&
-                editable_fields[key] !== compare_data[key],
+            key => key !== 'set_settings' && key !== 'jp_settings' && editable_fields[key] !== compare_data[key],
         );
     };
 
@@ -188,10 +171,7 @@ const PersonalDetails = (() => {
                 },
                 {
                     selector   : '#address_state',
-                    validations: $('#address_state').prop('nodeName') ===
-                        'SELECT'
-                        ? ''
-                        : ['letter_symbol'],
+                    validations: $('#address_state').prop('nodeName') === 'SELECT' ? '' : ['letter_symbol'],
                 },
                 {
                     selector   : '#address_postcode',
@@ -199,11 +179,7 @@ const PersonalDetails = (() => {
                 },
                 {
                     selector   : '#phone',
-                    validations: [
-                        'req',
-                        'phone',
-                        ['length', { min: 6, max: 35 }],
-                    ],
+                    validations: ['req', 'phone', ['length', { min: 6, max: 35 }]],
                 },
 
                 {
@@ -233,18 +209,12 @@ const PersonalDetails = (() => {
         const is_error = response.set_settings !== 1;
         if (!is_error) {
             // to update tax information message for financial clients
-            BinarySocket.send(
-                { get_account_status: 1 },
-                { forced: true },
-            ).then(() => {
+            BinarySocket.send({ get_account_status: 1 }, { forced: true }).then(() => {
                 showHideTaxMessage();
                 Header.displayAccountStatus();
             });
             // to update the State with latest get_settings data
-            BinarySocket.send(
-                { get_settings: 1 },
-                { forced: true },
-            ).then((data) => {
+            BinarySocket.send({ get_settings: 1 }, { forced: true }).then((data) => {
                 getDetailsResponse(data.get_settings);
             });
         }
@@ -261,9 +231,7 @@ const PersonalDetails = (() => {
             .attr('class', is_success ? 'success-msg' : 'errorfield')
             .html(
                 is_success
-                    ? $('<ul/>', { class: 'checked' }).append(
-                          $('<li/>', { text: localize(msg) }),
-                      )
+                    ? $('<ul/>', { class: 'checked' }).append($('<li/>', { text: localize(msg) }))
                     : localize(msg),
             )
             .css('display', 'block')
@@ -280,9 +248,7 @@ const PersonalDetails = (() => {
             const $options_with_disabled = $('<div/>');
             residence_list.forEach((res) => {
                 $options.append(makeOption(res.text, res.value));
-                $options_with_disabled.append(
-                    makeOption(res.text, res.value, res.disabled),
-                );
+                $options_with_disabled.append(makeOption(res.text, res.value, res.disabled));
             });
 
             if (residence) {
@@ -297,13 +263,9 @@ const PersonalDetails = (() => {
                             .removeClass('invisible');
                     }, 500);
                 });
-                $place_of_birth.val(
-                    get_settings_data.place_of_birth || residence,
-                );
+                $place_of_birth.val(get_settings_data.place_of_birth || residence);
             } else {
-                $('#lbl_country')
-                    .parent()
-                    .replaceWith($('<select/>', { id: 'residence' }));
+                $('#lbl_country').parent().replaceWith($('<select/>', { id: 'residence' }));
                 const $residence = $('#residence');
                 $options_with_disabled.prepend(
                     $('<option/>', {
@@ -325,13 +287,9 @@ const PersonalDetails = (() => {
         $field.empty();
 
         if (states && states.length > 0) {
-            $field.append(
-                $('<option/>', { value: '', text: localize('Please select') }),
-            );
+            $field.append($('<option/>', { value: '', text: localize('Please select') }));
             states.forEach((state) => {
-                $field.append(
-                    $('<option/>', { value: state.value, text: state.text }),
-                );
+                $field.append($('<option/>', { value: state.value, text: state.text }));
             });
         } else {
             $field.replaceWith(
@@ -360,18 +318,12 @@ const PersonalDetails = (() => {
     const onLoad = () => {
         BinarySocket.wait('get_account_status', 'get_settings').then(() => {
             init();
-            get_settings_data = State.get([
-                'response',
-                'get_settings',
-                'get_settings',
-            ]);
+            get_settings_data = State.get(['response', 'get_settings', 'get_settings']);
             getDetailsResponse(get_settings_data);
             if (!is_virtual || !residence) {
                 $('#btn_update').removeClass(hidden_class);
                 if (!is_jp) {
-                    BinarySocket.send({ residence_list: 1 }).then(response =>
-                        populateResidence(response),
-                    );
+                    BinarySocket.send({ residence_list: 1 }).then(response => populateResidence(response));
                 }
                 if (residence) {
                     BinarySocket.send({

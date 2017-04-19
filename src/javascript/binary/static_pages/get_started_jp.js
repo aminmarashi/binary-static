@@ -15,16 +15,8 @@ const GetStartedJP = (() => {
         $sidebar_left_li.removeClass('selected');
         if (updated_tab) {
             $index.hide();
-            $contents
-                .find(
-                    `div[id=content-${updated_tab.slice(1, updated_tab.length)}]`,
-                )
-                .show()
-                .find('div')
-                .show();
-            $sidebar_left_li
-                .filter(`.${updated_tab.slice(1, updated_tab.length)}`)
-                .addClass('selected');
+            $contents.find(`div[id=content-${updated_tab.slice(1, updated_tab.length)}]`).show().find('div').show();
+            $sidebar_left_li.filter(`.${updated_tab.slice(1, updated_tab.length)}`).addClass('selected');
             $contents.show();
         } else {
             $contents.hide();
@@ -45,9 +37,7 @@ const GetStartedJP = (() => {
         const tab = window.location.hash;
         if (tab && tab !== '') {
             $index.hide();
-            $(`.sidebar-left ul li.${tab.slice(1, tab.length)}`).addClass(
-                'selected',
-            );
+            $(`.sidebar-left ul li.${tab.slice(1, tab.length)}`).addClass('selected');
             showSelectedTab();
         }
 

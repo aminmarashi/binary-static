@@ -1,23 +1,20 @@
 const moment = require('moment');
 const TradingAnalysis = require('./analysis');
 const commonTrading = require('./common');
-const processTradingTimesAnswer = require('./common_independent')
-    .processTradingTimesAnswer;
+const processTradingTimesAnswer = require('./common_independent').processTradingTimesAnswer;
 const Contract = require('./contract');
 const Defaults = require('./defaults');
 const Durations = require('./duration');
 const GetTicks = require('./get_ticks');
 const Notifications = require('./notifications');
 const Price = require('./price');
-const setFormPlaceholderContent = require('./set_values')
-    .setFormPlaceholderContent;
+const setFormPlaceholderContent = require('./set_values').setFormPlaceholderContent;
 const StartDates = require('./starttime').StartDates;
 const Symbols = require('./symbols');
 const Tick = require('./tick');
 const localize = require('../../base/localize').localize;
 const State = require('../../base/storage').State;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
 
 const Process = (() => {
     'use strict';
@@ -27,10 +24,7 @@ const Process = (() => {
      * and underlying list
      */
     const processActiveSymbols = () => {
-        BinarySocket.send(
-            { active_symbols: 'brief' },
-            { forced: true },
-        ).then((response) => {
+        BinarySocket.send({ active_symbols: 'brief' }, { forced: true }).then((response) => {
             // populate the Symbols object
             Symbols.details(response);
 
@@ -39,11 +33,7 @@ const Process = (() => {
             // store the market
             Defaults.set('market', market);
 
-            commonTrading.displayMarkets(
-                'contract_markets',
-                Symbols.markets(),
-                market,
-            );
+            commonTrading.displayMarkets('contract_markets', Symbols.markets(), market);
             processMarket();
         });
     };
@@ -65,11 +55,7 @@ const Process = (() => {
         if (!symbol || !Symbols.underlyings()[market][symbol]) {
             symbol = undefined;
         }
-        commonTrading.displayUnderlyings(
-            'underlying',
-            Symbols.underlyings()[market],
-            symbol,
-        );
+        commonTrading.displayUnderlyings('underlying', Symbols.underlyings()[market], symbol);
 
         processMarketUnderlying();
     };
@@ -117,20 +103,11 @@ const Process = (() => {
      * Function to display contract form for current underlying
      */
     const processContract = (contracts) => {
-        if (
-            contracts.hasOwnProperty('error') &&
-            contracts.error.code === 'InvalidSymbol'
-        ) {
+        if (contracts.hasOwnProperty('error') && contracts.error.code === 'InvalidSymbol') {
             Price.processForgetProposals();
-            const container = document.getElementById(
-                'contract_confirmation_container',
-            );
-            const message_container = document.getElementById(
-                'confirmation_message',
-            );
-            const confirmation_error = document.getElementById(
-                'confirmation_error',
-            );
+            const container = document.getElementById('contract_confirmation_container');
+            const message_container = document.getElementById('confirmation_message');
+            const confirmation_error = document.getElementById('confirmation_error');
             const contracts_list = document.getElementById('contracts_list');
             container.style.display = 'block';
             contracts_list.style.display = 'none';
@@ -147,9 +124,7 @@ const Process = (() => {
             contracts.contracts_for.feed_license &&
             contracts.contracts_for.feed_license === 'chartonly');
 
-        document
-            .getElementById('trading_socket_container')
-            .classList.add('show');
+        document.getElementById('trading_socket_container').classList.add('show');
         const init_logo = document.getElementById('trading_init_progress');
         if (init_logo.style.display !== 'none') {
             init_logo.style.display = 'none';
@@ -160,16 +135,10 @@ const Process = (() => {
 
         const contract_categories = Contract.contractForms();
         let formname;
-        if (
-            Defaults.get('formname') &&
-            contract_categories &&
-            contract_categories[Defaults.get('formname')]
-        ) {
+        if (Defaults.get('formname') && contract_categories && contract_categories[Defaults.get('formname')]) {
             formname = Defaults.get('formname');
         } else {
-            const tree = commonTrading.getContractCategoryTree(
-                contract_categories,
-            );
+            const tree = commonTrading.getContractCategoryTree(contract_categories);
             if (tree[0]) {
                 if (typeof tree[0] === 'object') {
                     formname = tree[0][1][0];
@@ -185,11 +154,7 @@ const Process = (() => {
         // change the form placeholder content as per current form (used for mobile menu)
         setFormPlaceholderContent(formname);
 
-        commonTrading.displayContractForms(
-            'contract_form_name_nav',
-            contract_categories,
-            formname,
-        );
+        commonTrading.displayContractForms('contract_form_name_nav', contract_categories, formname);
 
         processContractForm();
 
@@ -207,9 +172,7 @@ const Process = (() => {
 
         let r1;
         if (
-            State.get('is_start_dates_displayed') &&
-            Defaults.get('date_start') &&
-            Defaults.get('date_start') !== 'now'
+            State.get('is_start_dates_displayed') && Defaults.get('date_start') && Defaults.get('date_start') !== 'now'
         ) {
             r1 = Durations.onStartDateChange(Defaults.get('date_start'));
             if (!r1 || Defaults.get('expiry_type') === 'endtime') {
@@ -222,21 +185,12 @@ const Process = (() => {
         if (Defaults.get('amount')) $('#amount').val(Defaults.get('amount'));
         else Defaults.set('amount', document.getElementById('amount').value);
         if (Defaults.get('amount_type')) {
-            commonTrading.selectOption(
-                Defaults.get('amount_type'),
-                document.getElementById('amount_type'),
-            );
+            commonTrading.selectOption(Defaults.get('amount_type'), document.getElementById('amount_type'));
         } else {
-            Defaults.set(
-                'amount_type',
-                document.getElementById('amount_type').value,
-            );
+            Defaults.set('amount_type', document.getElementById('amount_type').value);
         }
         if (Defaults.get('currency')) {
-            commonTrading.selectOption(
-                Defaults.get('currency'),
-                document.getElementById('currency'),
-            );
+            commonTrading.selectOption(Defaults.get('currency'), document.getElementById('currency'));
         }
 
         const expiry_type = Defaults.get('expiry_type') || 'duration';
@@ -249,21 +203,12 @@ const Process = (() => {
 
     const displayPrediction = () => {
         const prediction_element = document.getElementById('prediction_row');
-        if (
-            Contract.form() === 'digits' &&
-            sessionStorage.getItem('formname') !== 'evenodd'
-        ) {
+        if (Contract.form() === 'digits' && sessionStorage.getItem('formname') !== 'evenodd') {
             prediction_element.show();
             if (Defaults.get('prediction')) {
-                commonTrading.selectOption(
-                    Defaults.get('prediction'),
-                    document.getElementById('prediction'),
-                );
+                commonTrading.selectOption(Defaults.get('prediction'), document.getElementById('prediction'));
             } else {
-                Defaults.set(
-                    'prediction',
-                    document.getElementById('prediction').value,
-                );
+                Defaults.set('prediction', document.getElementById('prediction').value);
             }
         } else {
             prediction_element.hide();
@@ -313,10 +258,7 @@ const Process = (() => {
                 onDurationUnitChange(Defaults.get('duration_units'));
             }
             const duration_amount = Defaults.get('duration_amount');
-            if (
-                duration_amount &&
-                duration_amount > $('#duration_minimum').text()
-            ) {
+            if (duration_amount && duration_amount > $('#duration_minimum').text()) {
                 $('#duration_amount').val(duration_amount);
             }
             make_price_request = 1;

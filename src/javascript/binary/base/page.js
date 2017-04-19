@@ -57,10 +57,7 @@ const Page = (() => {
                         }
                         break;
                     case 'new_release_reload_time':
-                        if (
-                            jq_event.originalEvent.newValue !==
-                            jq_event.originalEvent.oldValue
-                        ) {
+                        if (jq_event.originalEvent.newValue !== jq_event.originalEvent.oldValue) {
                             reload(true);
                         }
                         break;
@@ -148,10 +145,7 @@ const Page = (() => {
         const server = localStorage.getItem('config.server_url');
         if (server && server.length > 0) {
             const message = `${/www\.binary\.com/i.test(window.location.hostname) ? '' : `${localize('This is a staging server - For testing purposes only')} - `}
-                ${localize('The server <a href="[_1]">endpoint</a> is: [_2]', [
-                    Url.urlFor('endpoint'),
-                    server,
-                ])}`;
+                ${localize('The server <a href="[_1]">endpoint</a> is: [_2]', [Url.urlFor('endpoint'), server])}`;
             const $end_note = $('#end-note');
             $end_note.html(message).removeClass('invisible');
             $('#footer').css('padding-bottom', $end_note.height());

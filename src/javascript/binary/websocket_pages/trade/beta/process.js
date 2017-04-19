@@ -9,15 +9,13 @@ const Defaults = require('../defaults');
 const GetTicks = require('../get_ticks');
 const Notifications = require('../notifications');
 const Symbols = require('../symbols');
-const setFormPlaceholderContent_Beta = require('../set_values')
-    .setFormPlaceholderContent_Beta;
+const setFormPlaceholderContent_Beta = require('../set_values').setFormPlaceholderContent_Beta;
 const Tick = require('../tick');
 const AssetIndexUI = require('../../resources/asset_index/asset_index.ui');
 const TradingTimesUI = require('../../resources/trading_times/trading_times.ui');
 const localize = require('../../../base/localize').localize;
 const State = require('../../../base/storage').State;
-const elementInnerHtml = require('../../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../../common_functions/common_functions').elementInnerHtml;
 
 const Process_Beta = (() => {
     'use strict';
@@ -27,10 +25,7 @@ const Process_Beta = (() => {
      * and underlying list
      */
     const processActiveSymbols_Beta = () => {
-        BinarySocket.send(
-            { active_symbols: 'brief' },
-            { forced: true },
-        ).then((response) => {
+        BinarySocket.send({ active_symbols: 'brief' }, { forced: true }).then((response) => {
             // populate the Symbols object
             Symbols.details(response);
 
@@ -39,11 +34,7 @@ const Process_Beta = (() => {
             // store the market
             Defaults.set('market', market);
 
-            commonTrading.displayMarkets(
-                'contract_markets',
-                Symbols.markets(),
-                market,
-            );
+            commonTrading.displayMarkets('contract_markets', Symbols.markets(), market);
             processMarket_Beta();
             AssetIndexUI.setActiveSymbols(response);
             TradingTimesUI.setActiveSymbols(response);
@@ -67,11 +58,7 @@ const Process_Beta = (() => {
         if (!symbol || !Symbols.underlyings()[market][symbol]) {
             symbol = undefined;
         }
-        commonTrading.displayUnderlyings(
-            'underlying',
-            Symbols.underlyings()[market],
-            symbol,
-        );
+        commonTrading.displayUnderlyings('underlying', Symbols.underlyings()[market], symbol);
 
         marketUnderlying_Beta();
     };
@@ -115,23 +102,12 @@ const Process_Beta = (() => {
      * Function to display contract form for current underlying
      */
     const processContract_Beta = (contracts) => {
-        if (
-            contracts.hasOwnProperty('error') &&
-            contracts.error.code === 'InvalidSymbol'
-        ) {
+        if (contracts.hasOwnProperty('error') && contracts.error.code === 'InvalidSymbol') {
             Price_Beta.processForgetProposals_Beta();
-            const container = document.getElementById(
-                'contract_confirmation_container',
-            );
-            const message_container = document.getElementById(
-                'confirmation_message',
-            );
-            const confirmation_error = document.getElementById(
-                'confirmation_error',
-            );
-            const confirmation_error_contents = document.getElementById(
-                'confirmation_error_contents',
-            );
+            const container = document.getElementById('contract_confirmation_container');
+            const message_container = document.getElementById('confirmation_message');
+            const confirmation_error = document.getElementById('confirmation_error');
+            const confirmation_error_contents = document.getElementById('confirmation_error_contents');
             const contracts_list = document.getElementById('contracts_list');
             container.style.display = 'block';
             contracts_list.style.display = 'none';
@@ -148,9 +124,7 @@ const Process_Beta = (() => {
             contracts.contracts_for.feed_license &&
             contracts.contracts_for.feed_license === 'chartonly');
 
-        document
-            .getElementById('trading_socket_container_beta')
-            .classList.add('show');
+        document.getElementById('trading_socket_container_beta').classList.add('show');
         const init_logo = document.getElementById('trading_init_progress');
         if (init_logo.style.display !== 'none') {
             init_logo.style.display = 'none';
@@ -161,16 +135,10 @@ const Process_Beta = (() => {
 
         const contract_categories = Contract_Beta.contractForms();
         let formname;
-        if (
-            Defaults.get('formname') &&
-            contract_categories &&
-            contract_categories[Defaults.get('formname')]
-        ) {
+        if (Defaults.get('formname') && contract_categories && contract_categories[Defaults.get('formname')]) {
             formname = Defaults.get('formname');
         } else {
-            const tree = commonTrading.getContractCategoryTree(
-                contract_categories,
-            );
+            const tree = commonTrading.getContractCategoryTree(contract_categories);
             if (tree[0]) {
                 if (typeof tree[0] === 'object') {
                     formname = tree[0][1][0];
@@ -186,11 +154,7 @@ const Process_Beta = (() => {
         // change the form placeholder content as per current form (used for mobile menu)
         setFormPlaceholderContent_Beta(formname);
 
-        commonTrading.displayContractForms(
-            'contract_form_name_nav',
-            contract_categories,
-            formname,
-        );
+        commonTrading.displayContractForms('contract_form_name_nav', contract_categories, formname);
 
         processContractForm_Beta();
 
@@ -208,9 +172,7 @@ const Process_Beta = (() => {
 
         let r1;
         if (
-            State.get('is_start_dates_displayed') &&
-            Defaults.get('date_start') &&
-            Defaults.get('date_start') !== 'now'
+            State.get('is_start_dates_displayed') && Defaults.get('date_start') && Defaults.get('date_start') !== 'now'
         ) {
             r1 = Durations_Beta.onStartDateChange(Defaults.get('date_start'));
             if (!r1 || Defaults.get('expiry_type') === 'endtime') {
@@ -224,22 +186,13 @@ const Process_Beta = (() => {
         else Defaults.set('amount', document.getElementById('amount').value);
 
         if (Defaults.get('amount_type')) {
-            commonTrading.selectOption(
-                Defaults.get('amount_type'),
-                document.getElementById('amount_type'),
-            );
+            commonTrading.selectOption(Defaults.get('amount_type'), document.getElementById('amount_type'));
         } else {
-            Defaults.set(
-                'amount_type',
-                document.getElementById('amount_type').value,
-            );
+            Defaults.set('amount_type', document.getElementById('amount_type').value);
         }
 
         if (Defaults.get('currency')) {
-            commonTrading.selectOption(
-                Defaults.get('currency'),
-                document.getElementById('currency'),
-            );
+            commonTrading.selectOption(Defaults.get('currency'), document.getElementById('currency'));
         }
 
         const expiry_type = Defaults.get('expiry_type') || 'duration';
@@ -252,21 +205,12 @@ const Process_Beta = (() => {
 
     const displayPrediction_Beta = () => {
         const prediction_element = document.getElementById('prediction_row');
-        if (
-            Contract_Beta.form() === 'digits' &&
-            sessionStorage.getItem('formname') !== 'evenodd'
-        ) {
+        if (Contract_Beta.form() === 'digits' && sessionStorage.getItem('formname') !== 'evenodd') {
             prediction_element.show();
             if (Defaults.get('prediction')) {
-                commonTrading.selectOption(
-                    Defaults.get('prediction'),
-                    document.getElementById('prediction'),
-                );
+                commonTrading.selectOption(Defaults.get('prediction'), document.getElementById('prediction'));
             } else {
-                Defaults.set(
-                    'prediction',
-                    document.getElementById('prediction').value,
-                );
+                Defaults.set('prediction', document.getElementById('prediction').value);
             }
         } else {
             prediction_element.hide();
@@ -300,9 +244,7 @@ const Process_Beta = (() => {
         if (value === 'endtime') {
             Durations_Beta.displayEndTime();
             if (Defaults.get('expiry_date')) {
-                Durations_Beta.selectEndDate(
-                    moment(Defaults.get('expiry_date')),
-                );
+                Durations_Beta.selectEndDate(moment(Defaults.get('expiry_date')));
                 make_price_request = -1;
             }
             Defaults.remove('duration_units', 'duration_amount');
@@ -313,10 +255,7 @@ const Process_Beta = (() => {
                 onDurationUnitChange(Defaults.get('duration_units'));
             }
             const duration_amount = Defaults.get('duration_amount');
-            if (
-                duration_amount &&
-                duration_amount > $('#duration_minimum').text()
-            ) {
+            if (duration_amount && duration_amount > $('#duration_minimum').text()) {
                 $('#duration_amount').val(duration_amount);
             }
             make_price_request = 1;

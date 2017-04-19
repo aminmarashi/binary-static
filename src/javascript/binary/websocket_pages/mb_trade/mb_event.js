@@ -90,11 +90,7 @@ const MBTradingEvents = (() => {
                 char +
                 payout_element.value.substring(ev.target.selectionEnd);
 
-            if (
-                (jpClient() && char === '.') ||
-                result[0] === '0' ||
-                !validatePayout(+result)
-            ) {
+            if ((jpClient() && char === '.') || result[0] === '0' || !validatePayout(+result)) {
                 is_ok = false;
             }
 
@@ -107,10 +103,7 @@ const MBTradingEvents = (() => {
         const validatePayout = (payout_amount) => {
             let is_ok = true;
             const contract = MBContract.getCurrentContracts();
-            const max_amount = Array.isArray(contract) &&
-                contract[0].expiry_type !== 'intraday'
-                ? 20000
-                : 5000;
+            const max_amount = Array.isArray(contract) && contract[0].expiry_type !== 'intraday' ? 20000 : 5000;
             if (
                 !payout_amount ||
                 isNaN(payout_amount) ||
@@ -125,8 +118,7 @@ const MBTradingEvents = (() => {
 
         if (payout_element) {
             if (!payout_element.value) {
-                const payout_def =
-                    MBDefaults.get('payout') || (jpClient() ? 1 : 10);
+                const payout_def = MBDefaults.get('payout') || (jpClient() ? 1 : 10);
                 payout_element.value = payout_def;
                 MBDefaults.set('payout', payout_def);
             }
@@ -170,8 +162,7 @@ const MBTradingEvents = (() => {
         const isStandardFloat = value =>
             !isNaN(value) &&
             value % 1 !== 0 &&
-            (+parseFloat(value)).toFixed(10).replace(/^-?\d*\.?|0+$/g, '')
-                .length > 2;
+            (+parseFloat(value)).toFixed(10).replace(/^-?\d*\.?|0+$/g, '').length > 2;
 
         const currency_element = document.getElementById('currency');
         if (currency_element) {

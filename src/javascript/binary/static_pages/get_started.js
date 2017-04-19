@@ -55,9 +55,7 @@ const GetStarted = (() => {
             });
 
             const fragment = location.href.split('#')[1];
-            const $to_show = fragment
-                ? $(`a[name=${fragment}-section]`).parent('.subsection')
-                : $('.subsection.first');
+            const $to_show = fragment ? $(`a[name=${fragment}-section]`).parent('.subsection') : $('.subsection.first');
             updateActiveSubsection($nav, $to_show);
         }
         selectNavElement();

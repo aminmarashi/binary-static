@@ -5,11 +5,9 @@ const Client = require('../../base/client');
 const getLanguage = require('../../base/language').get;
 const localize = require('../../base/localize').localize;
 const isEmptyObject = require('../../base/utility').isEmptyObject;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
 const jpClient = require('../../common_functions/country_base').jpClient;
-const formatCurrency = require('../../common_functions/currency_to_symbol')
-    .formatCurrency;
+const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
 
 /*
  * Contract object mocks the trading form we have on our website
@@ -30,13 +28,7 @@ const MBContract = (() => {
             Y: 'year',
         };
         Object.keys(duration_map).forEach((key) => {
-            dur = dur.replace(
-                key,
-                localize(
-                    duration_map[key] +
-                        (+dur[0] === 1 || /h/.test(key) ? '' : 's'),
-                ),
-            );
+            dur = dur.replace(key, localize(duration_map[key] + (+dur[0] === 1 || /h/.test(key) ? '' : 's')));
         });
         if (!jpClient()) {
             dur = dur.replace(/(\d+)([a-z]+)/ig, '$1 $2 ').trim();
@@ -92,8 +84,7 @@ const MBContract = (() => {
         let trading_period,
             start_end;
         const trading_period_array = [];
-        const available_contracts =
-            contracts_for_response.contracts_for.available;
+        const available_contracts = contracts_for_response.contracts_for.available;
         const selected_option = MBDefaults.get('category');
         const $period_element = $('#period');
         if (!selected_option || !available_contracts) return;
@@ -145,27 +136,17 @@ const MBContract = (() => {
             }
             if (missing_array.length > 0) {
                 let $new_option;
-                existing_array = existing_array
-                    .concat(missing_array)
-                    .sort(sortByExpiryTime);
+                existing_array = existing_array.concat(missing_array).sort(sortByExpiryTime);
                 for (let m = 0; m < existing_array.length; m++) {
-                    if (
-                        $period_element.find(
-                            `option[value="${existing_array[m]}"]`,
-                        ).length < 1
-                    ) {
+                    if ($period_element.find(`option[value="${existing_array[m]}"]`).length < 1) {
                         $new_option = $('<option/>', {
                             value: existing_array[m],
                             text : PeriodText(existing_array[m]),
                         });
                         if (m < 1) {
-                            $new_option.insertBefore(
-                                $period_element.children().eq(m),
-                            );
+                            $new_option.insertBefore($period_element.children().eq(m));
                         } else {
-                            $new_option.insertAfter(
-                                $period_element.children().eq(m - 1),
-                            );
+                            $new_option.insertAfter($period_element.children().eq(m - 1));
                         }
                     }
                 }
@@ -191,8 +172,7 @@ const MBContract = (() => {
             remaining_time_element = document.getElementById('remaining-time');
         }
         if (!period_value) return;
-        const time_left =
-            parseInt(period_value.split('_')[1]) - window.time.unix();
+        const time_left = parseInt(period_value.split('_')[1]) - window.time.unix();
         if (time_left <= 0) {
             location.reload();
         } else if (time_left < 120) {
@@ -216,10 +196,7 @@ const MBContract = (() => {
                 );
             }
         });
-        elementInnerHtml(
-            remaining_time_element,
-            remaining_time_string.join(' '),
-        );
+        elementInnerHtml(remaining_time_element, remaining_time_string.join(' '));
         if (remaining_timeout) clearRemainingTimeout();
         remaining_timeout = setTimeout(displayRemainingTime, 1000);
     };
@@ -242,8 +219,7 @@ const MBContract = (() => {
         }
         let category;
         const contracts_array = [];
-        const available_contracts =
-            contracts_for_response.contracts_for.available;
+        const available_contracts = contracts_for_response.contracts_for.available;
         const $category_element = $('#category');
         const category_names = {
             callput     : localize('Higher/Lower'),
@@ -258,9 +234,7 @@ const MBContract = (() => {
             staysinout  : 4,
         };
         for (let i = 0; i < available_contracts.length; i++) {
-            category =
-                contracts_for_response.contracts_for.available[i]
-                    .contract_category;
+            category = contracts_for_response.contracts_for.available[i].contract_category;
             if (contracts_array.indexOf(category) < 0) {
                 contracts_array.push(category);
             }
@@ -362,45 +336,23 @@ const MBContract = (() => {
         const contracts = getCurrentContracts();
         const $desc_wrappers = $('.prices-wrapper');
         const currency =
-            formatCurrency(Client.get('currency')) ||
-            formatCurrency(document.getElementById('currency').value) ||
-            '¥';
-        const payout = Number(
-            MBDefaults.get('payout') * (jpClient() ? 1000 : 1),
-        ).toLocaleString();
+            formatCurrency(Client.get('currency')) || formatCurrency(document.getElementById('currency').value) || '¥';
+        const payout = Number(MBDefaults.get('payout') * (jpClient() ? 1000 : 1)).toLocaleString();
         const display_name = MBSymbols.getName(MBDefaults.get('underlying'));
-        const date_expiry = PeriodText(contracts[0].trading_period).replace(
-            /\s\(.*\)/,
-            '',
-        );
+        const date_expiry = PeriodText(contracts[0].trading_period).replace(/\s\(.*\)/, '');
         contracts.forEach((c) => {
             const contract_type = c.contract_type;
             const template = getTemplate(contract_type);
             const $wrapper = $($desc_wrappers[template.order]);
             $wrapper
                 .find('.contract-type')
-                .attr(
-                    'class',
-                    `contract-type ${contract_type}${template.order ? ' negative-color' : ''}`,
-                )
+                .attr('class', `contract-type ${contract_type}${template.order ? ' negative-color' : ''}`)
                 .text(localize(template.name));
-            $wrapper
-                .find('.descr')
-                .html(
-                    localize(template.description, [
-                        currency,
-                        payout,
-                        display_name,
-                        date_expiry,
-                    ]),
-                );
+            $wrapper.find('.descr').html(localize(template.description, [currency, payout, display_name, date_expiry]));
         });
     };
 
-    const getCurrency = () =>
-        Client.get('currency') ||
-        document.getElementById('currency').value ||
-        'JPY';
+    const getCurrency = () => Client.get('currency') || document.getElementById('currency').value || 'JPY';
 
     return {
         populatePeriods     : populatePeriods,

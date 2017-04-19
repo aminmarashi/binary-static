@@ -17,9 +17,7 @@ const Menu = (() => {
 
         if (
             Client.isLoggedIn() ||
-            /\/(cashier|resources|trading|trading_beta|multi_barriers_trading)/i.test(
-                window.location.pathname,
-            )
+            /\/(cashier|resources|trading|trading_beta|multi_barriers_trading)/i.test(window.location.pathname)
         ) {
             showMainMenu();
         }
@@ -36,12 +34,7 @@ const Menu = (() => {
 
     const activateMainMenu = () => {
         // First unset everything.
-        $main_menu
-            .find('li.item')
-            .removeClass('active hover')
-            .end()
-            .find('li.sub_item a')
-            .removeClass('a-active');
+        $main_menu.find('li.item').removeClass('active hover').end().find('li.sub_item a').removeClass('a-active');
 
         const active = activeMainMenu();
         const active_item = active.item;
@@ -90,10 +83,7 @@ const Menu = (() => {
 
     const activeMainMenu = () => {
         let pathname = window.location.pathname;
-        if (
-            /cashier/i.test(pathname) &&
-            !/(cashier_password|payment_methods)/.test(pathname)
-        ) {
+        if (/cashier/i.test(pathname) && !/(cashier_password|payment_methods)/.test(pathname)) {
             pathname = $('#topMenuCashier').find('a').attr('href');
         }
         let $item,

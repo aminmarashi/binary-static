@@ -7,8 +7,7 @@ const GTM = require('../../base/gtm');
 const localize = require('../../base/localize').localize;
 const getPropertyValue = require('../../base/utility').getPropertyValue;
 const isEmptyObject = require('../../base/utility').isEmptyObject;
-const elementInnerHtml = require('../../common_functions/common_functions')
-    .elementInnerHtml;
+const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
 const jpClient = require('../../common_functions/country_base').jpClient;
 const addComma = require('../../common_functions/string_util').addComma;
 
@@ -53,28 +52,15 @@ const MBPrice = (() => {
         if (!barrier_obj.barrier && barrier_obj.error) {
             barrier_obj = barrier_obj.error.details;
         }
-        return (
-            (barrier_obj.barrier2 ? `${barrier_obj.barrier2}_` : '') +
-            barrier_obj.barrier
-        );
+        return (barrier_obj.barrier2 ? `${barrier_obj.barrier2}_` : '') + barrier_obj.barrier;
     };
 
     const display = (response) => {
-        Object.keys(
-            response.proposal_array.proposals,
-        ).forEach((contract_type) => {
-            response.proposal_array.proposals[
-                contract_type
-            ].forEach((proposal) => {
+        Object.keys(response.proposal_array.proposals).forEach((contract_type) => {
+            response.proposal_array.proposals[contract_type].forEach((proposal) => {
                 const barrier = makeBarrier(proposal);
-                const prev_proposal = $.extend(
-                    {},
-                    prices[barrier][contract_type],
-                );
-                prices[barrier][contract_type] = $.extend(
-                    { echo_req: response.echo_req },
-                    proposal,
-                );
+                const prev_proposal = $.extend({}, prices[barrier][contract_type]);
+                prices[barrier][contract_type] = $.extend({ echo_req: response.echo_req }, proposal);
 
                 if (isEmptyObject(prev_proposal)) {
                     res_count++;
@@ -82,8 +68,7 @@ const MBPrice = (() => {
 
                 // update previous ask_price to use in price movement
                 if (!isEmptyObject(prev_proposal) && !prev_proposal.error) {
-                    prices[barrier][contract_type].prev_price =
-                        prev_proposal.ask_price;
+                    prices[barrier][contract_type].prev_price = prev_proposal.ask_price;
                 }
             });
 
@@ -101,18 +86,14 @@ const MBPrice = (() => {
             $tables = $(price_selector);
         }
         if (!barriers.length) {
-            barriers = Object.keys(prices).sort(
-                (a, b) => +b.split('_')[0] - +a.split('_')[0],
-            );
+            barriers = Object.keys(prices).sort((a, b) => +b.split('_')[0] - +a.split('_')[0]);
         }
 
         BinarySocket.wait('get_account_status').then((response) => {
             is_unwelcome = /unwelcome/.test(response.get_account_status.status);
             if (is_unwelcome) {
                 MBNotifications.show({
-                    text: localize(
-                        'Sorry, your account is not authorised for any further contract purchases.',
-                    ),
+                    text       : localize('Sorry, your account is not authorised for any further contract purchases.'),
                     uid        : 'UNWELCOME',
                     dismissible: false,
                 });
@@ -122,12 +103,7 @@ const MBPrice = (() => {
         barriers.forEach((barrier) => {
             Object.keys(contract_types).forEach((contract_type) => {
                 $($tables[+contract_types[contract_type].order]).append(
-                    makePriceRow(
-                        getValues(
-                            prices[barrier][contract_type],
-                            contract_type,
-                        ),
-                    ),
+                    makePriceRow(getValues(prices[barrier][contract_type], contract_type)),
                 );
             });
         });
@@ -149,68 +125,44 @@ const MBPrice = (() => {
             const contract_info = contract_types[contract_type];
             const contract_info_opp = contract_types[contract_info.opposite];
             const values = getValues(proposal, contract_type);
-            const values_opp = getValues(
-                prices[barrier][contract_info.opposite],
-                contract_info.opposite,
-            );
+            const values_opp = getValues(prices[barrier][contract_info.opposite], contract_info.opposite);
 
-            elementInnerHtml(
-                price_rows[+contract_info.order],
-                makePriceRow(values, true),
-            );
-            elementInnerHtml(
-                price_rows[+contract_info_opp.order],
-                makePriceRow(values_opp, true),
-            );
+            elementInnerHtml(price_rows[+contract_info.order], makePriceRow(values, true));
+            elementInnerHtml(price_rows[+contract_info_opp.order], makePriceRow(values_opp, true));
         });
     };
 
     const getValues = (proposal, contract_type) => {
         const barrier = makeBarrier(proposal);
         const payout = proposal.echo_req.amount;
-        const proposal_opp =
-            prices[barrier][contract_types[contract_type].opposite];
+        const proposal_opp = prices[barrier][contract_types[contract_type].opposite];
         return {
-            contract_type: contract_type,
-            barrier      : barrier,
+            contract_type      : contract_type,
+            barrier            : barrier,
             // eslint-disable-next-line max-len
-            is_active    : !proposal.error && proposal.ask_price && !is_unwelcome,
-            message      : proposal.error && proposal.error.code !== 'RateLimit'
-                ? proposal.error.message
-                : '',
-            ask_price         : getAskPrice(proposal),
-            sell_price        : payout - getAskPrice(proposal_opp),
-            ask_price_movement: !proposal.error
-                ? getMovementDirection(proposal.prev_price, proposal.ask_price)
-                : '',
+            is_active          : !proposal.error && proposal.ask_price && !is_unwelcome,
+            message            : proposal.error && proposal.error.code !== 'RateLimit' ? proposal.error.message : '',
+            ask_price          : getAskPrice(proposal),
+            sell_price         : payout - getAskPrice(proposal_opp),
+            ask_price_movement : !proposal.error ? getMovementDirection(proposal.prev_price, proposal.ask_price) : '',
             sell_price_movement: proposal_opp && !proposal_opp.error
-                ? getMovementDirection(
-                      proposal_opp.ask_price,
-                      proposal_opp.prev_price,
-                  )
+                ? getMovementDirection(proposal_opp.ask_price, proposal_opp.prev_price)
                 : '',
         };
     };
 
     const getAskPrice = proposal =>
         (proposal.error || +proposal.ask_price === 0
-            ? getPropertyValue(proposal, [
-                'error',
-                'details',
-                'display_value',
-            ]) || proposal.echo_req.amount // In case of RateLimit error, there is no display_value, so we display the request amount
+            ? getPropertyValue(proposal, ['error', 'details', 'display_value']) || proposal.echo_req.amount // In case of RateLimit error, there is no display_value, so we display the request amount
             : proposal.ask_price);
 
-    const getMovementDirection = (prev, current) =>
-        (current > prev ? 'up' : current < prev ? 'down' : '');
+    const getMovementDirection = (prev, current) => (current > prev ? 'up' : current < prev ? 'down' : '');
 
     const makePriceRow = (values, is_update) => {
         const payout = MBDefaults.get('payout');
         const is_japan = jpClient();
         return `${is_update ? '' : `<div data-barrier="${values.barrier}" class="gr-row price-row">`}
-                <div class="gr-4 barrier">${values.barrier
-            .split('_')
-            .join(' ... ')}</div>
+                <div class="gr-4 barrier">${values.barrier.split('_').join(' ... ')}</div>
                 <div class="gr-4 buy-price">
                     <button class="price-button${values.is_active ? '' : ' inactive'}"
                         ${values.is_active ? ` onclick="return HandleClick('MBPrice', '${values.barrier}', '${values.contract_type}')"` : ''}
@@ -256,9 +208,7 @@ const MBPrice = (() => {
         is_displayed = false;
         // display loading
         if ($(price_selector).html()) {
-            $('#loading-overlay')
-                .height($(price_selector).height())
-                .removeClass('invisible');
+            $('#loading-overlay').height($(price_selector).height()).removeClass('invisible');
         }
         $(price_selector).html('');
     };
@@ -297,11 +247,7 @@ const MBPrice = (() => {
                 });
             } else {
                 MBNotifications.hide('BUY_ERROR');
-                ViewPopup.init(
-                    $('<div />', { contract_id: response.buy.contract_id }).get(
-                        0,
-                    ),
-                );
+                ViewPopup.init($('<div />', { contract_id: response.buy.contract_id }).get(0));
                 GTM.pushPurchaseData(response);
             }
         });

@@ -80,9 +80,7 @@ const PaymentAgentList = (() => {
     };
 
     const insertListOption = ($ddl_object, item_text, item_value) => {
-        $ddl_object.append(
-            $('<option/>', { value: item_value, text: item_text }),
-        );
+        $ddl_object.append($('<option/>', { value: item_value, text: item_text }));
     };
 
     // -----------------------
@@ -112,10 +110,7 @@ const PaymentAgentList = (() => {
                     .replace(/%name/g, agent.name)
                     .replace(/%summary/g, agent.summary)
                     .replace(/%deposit_commission/g, agent.deposit_commission)
-                    .replace(
-                        /%withdrawal_commission/g,
-                        agent.withdrawal_commission,
-                    )
+                    .replace(/%withdrawal_commission/g, agent.withdrawal_commission)
                     .replace(/%url/g, agent.url)
                     .replace(/%email/g, agent.email)
                     .replace(/%telephone/g, agent.telephone)

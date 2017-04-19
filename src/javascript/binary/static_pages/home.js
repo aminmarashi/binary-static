@@ -10,9 +10,7 @@ const Home = (() => {
     let clients_country;
 
     const onLoad = () => {
-        if (
-            getLanguage() === 'JA' && !/home-jp/.test(window.location.pathname)
-        ) {
+        if (getLanguage() === 'JA' && !/home-jp/.test(window.location.pathname)) {
             BinaryPjax.load('home-jp');
             return;
         }
@@ -41,9 +39,7 @@ const Home = (() => {
     };
 
     const checkCountry = (req) => {
-        if (
-            clients_country !== 'my' || /@binary\.com$/.test(req.verify_email)
-        ) {
+        if (clients_country !== 'my' || /@binary\.com$/.test(req.verify_email)) {
             return true;
         }
         $('#frm_verify_email').find('div').html(
@@ -63,9 +59,7 @@ const Home = (() => {
         if (!error) {
             BinaryPjax.load('new_account/virtualws');
         } else {
-            $('#signup_error')
-                .css({ display: 'inline-block' })
-                .text(error.message);
+            $('#signup_error').css({ display: 'inline-block' }).text(error.message);
         }
     };
 

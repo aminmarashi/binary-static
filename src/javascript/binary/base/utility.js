@@ -43,10 +43,7 @@ const downloadCSV = (csv_contents, filename) => {
     filename = filename || 'data.csv';
     if (navigator.msSaveBlob) {
         // IE 10+
-        navigator.msSaveBlob(
-            new Blob([csv_contents], { type: 'text/csv;charset=utf-8;' }),
-            filename,
-        );
+        navigator.msSaveBlob(new Blob([csv_contents], { type: 'text/csv;charset=utf-8;' }), filename);
     } else {
         // Other browsers
         const csv = `data:text/csv;charset=utf-8,${csv_contents}`;
@@ -60,8 +57,7 @@ const downloadCSV = (csv_contents, filename) => {
     }
 };
 
-const template = (string, content) =>
-    string.replace(/\[_(\d+)]/g, (s, index) => content[+index - 1]);
+const template = (string, content) => string.replace(/\[_(\d+)]/g, (s, index) => content[+index - 1]);
 
 const isEmptyObject = (obj) => {
     let is_empty = true;

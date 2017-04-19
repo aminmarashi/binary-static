@@ -2,11 +2,9 @@ const moment = require('moment');
 const Client = require('../../../../base/client');
 const Header = require('../../../../base/header');
 const localize = require('../../../../base/localize').localize;
-const dateValueChanged = require('../../../../common_functions/common_functions')
-    .dateValueChanged;
+const dateValueChanged = require('../../../../common_functions/common_functions').dateValueChanged;
 const FormManager = require('../../../../common_functions/form_manager');
-const scrollToHashSection = require('../../../../common_functions/scroll')
-    .scrollToHashSection;
+const scrollToHashSection = require('../../../../common_functions/scroll').scrollToHashSection;
 const DatePicker = require('../../../../components/date_picker');
 const TimePicker = require('../../../../components/time_picker');
 
@@ -43,9 +41,7 @@ const SelfExclusion = (() => {
                     Client.sendLogoutRequest();
                 }
                 if (response.error.message) {
-                    $('#msg_error')
-                        .html(response.error.message)
-                        .removeClass(hidden_class);
+                    $('#msg_error').html(response.error.message).removeClass(hidden_class);
                     $form.addClass(hidden_class);
                 }
                 return;
@@ -109,10 +105,7 @@ const SelfExclusion = (() => {
                     [
                         'custom',
                         {
-                            func: () =>
-                                ($(timeout_time_id).val()
-                                    ? $(timeout_date_id).val().length
-                                    : true),
+                            func   : () => ($(timeout_time_id).val() ? $(timeout_date_id).val().length : true),
                             message: 'This field is required.',
                         },
                     ],
@@ -127,22 +120,14 @@ const SelfExclusion = (() => {
                         'custom',
                         {
                             func: value =>
-                                !value.length ||
-                                toMoment(value).isAfter(
-                                    moment().subtract(1, 'days'),
-                                    'day',
-                                ),
+                                !value.length || toMoment(value).isAfter(moment().subtract(1, 'days'), 'day'),
                             message: 'Time out must be after today.',
                         },
                     ],
                     [
                         'custom',
                         {
-                            func: value =>
-                                !value.length ||
-                                toMoment(value).isBefore(
-                                    moment().add(6, 'weeks'),
-                                ),
+                            func   : value => !value.length || toMoment(value).isBefore(moment().add(6, 'weeks')),
                             message: 'Time out cannot be more than 6 weeks.',
                         },
                     ],
@@ -157,11 +142,7 @@ const SelfExclusion = (() => {
                         'custom',
                         {
                             func: () =>
-                                ($(timeout_date_id).val() &&
-                                    toMoment($(timeout_date_id).val()).isSame(
-                                        moment(),
-                                        'day',
-                                    )
+                                ($(timeout_date_id).val() && toMoment($(timeout_date_id).val()).isSame(moment(), 'day')
                                     ? $(timeout_time_id).val().length
                                     : true),
                             message: 'This field is required.',
@@ -171,9 +152,7 @@ const SelfExclusion = (() => {
                         'custom',
                         {
                             func: value =>
-                                !value.length ||
-                                !$(timeout_date_id).val() ||
-                                getTimeout() > moment().valueOf() / 1000,
+                                !value.length || !$(timeout_date_id).val() || getTimeout() > moment().valueOf() / 1000,
                             message: 'Time out cannot be in the past.',
                         },
                     ],
@@ -201,22 +180,14 @@ const SelfExclusion = (() => {
                     [
                         'custom',
                         {
-                            func: value =>
-                                !value.length ||
-                                toMoment(value).isAfter(
-                                    moment().add(6, 'months'),
-                                ),
+                            func   : value => !value.length || toMoment(value).isAfter(moment().add(6, 'months')),
                             message: 'Exclude time cannot be less than 6 months.',
                         },
                     ],
                     [
                         'custom',
                         {
-                            func: value =>
-                                !value.length ||
-                                toMoment(value).isBefore(
-                                    moment().add(5, 'years'),
-                                ),
+                            func   : value => !value.length || toMoment(value).isBefore(moment().add(5, 'years')),
                             message: 'Exclude time cannot be for more than 5 years.',
                         },
                     ],
@@ -233,21 +204,15 @@ const SelfExclusion = (() => {
         });
     };
 
-    const validSessionDuration = value =>
-        +value <= moment.duration(6, 'weeks').as('minutes');
-    const validDate = value =>
-        !value.length || moment(new Date(value), 'YYYY-MM-DD', true).isValid();
-    const validTime = value =>
-        !value.length || moment(value, 'HH:mm', true).isValid();
+    const validSessionDuration = value => +value <= moment.duration(6, 'weeks').as('minutes');
+    const validDate = value => !value.length || moment(new Date(value), 'YYYY-MM-DD', true).isValid();
+    const validTime = value => !value.length || moment(value, 'HH:mm', true).isValid();
 
     const toMoment = value => moment(new Date(value));
-    const dateFormat = elm_id =>
-        ($(elm_id).val() ? toMoment($(elm_id).val()).format('YYYY-MM-DD') : '');
+    const dateFormat = elm_id => ($(elm_id).val() ? toMoment($(elm_id).val()).format('YYYY-MM-DD') : '');
     const getTimeout = () =>
         ($(timeout_date_id).val()
-            ? moment(
-                  `${dateFormat(timeout_date_id)} ${$(timeout_time_id).val()}`.trim(),
-              ).valueOf() / 1000
+            ? moment(`${dateFormat(timeout_date_id)} ${$(timeout_time_id).val()}`.trim()).valueOf() / 1000
             : '');
 
     const initDatePicker = () => {
@@ -275,8 +240,7 @@ const SelfExclusion = (() => {
         const is_changed = Object.keys(data).some(
             key => // using != in next line since response types is inconsistent
                 key !== 'set_self_exclusion' &&
-                (!(key in self_exclusion_data) ||
-                    self_exclusion_data[key] != data[key]), // eslint-disable-line eqeqeq
+                (!(key in self_exclusion_data) || self_exclusion_data[key] != data[key]), // eslint-disable-line eqeqeq
         );
         if (!is_changed) {
             showFormMessage('You did not change anything.', false);
@@ -285,9 +249,7 @@ const SelfExclusion = (() => {
         let is_confirmed = true;
         if ('timeout_until' in data || 'exclude_until' in data) {
             is_confirmed = window.confirm(
-                localize(
-                    'When you click "OK" you will be excluded from trading on the site until the selected date.',
-                ),
+                localize('When you click "OK" you will be excluded from trading on the site until the selected date.'),
             );
         }
 
@@ -299,10 +261,7 @@ const SelfExclusion = (() => {
             const error_msg = response.error.message;
             const error_fld = response.error.field;
             if (error_fld) {
-                $(`#${error_fld}`)
-                    .siblings('.error-msg')
-                    .removeClass(hidden_class)
-                    .html(error_msg);
+                $(`#${error_fld}`).siblings('.error-msg').removeClass(hidden_class).html(error_msg);
             } else {
                 showFormMessage(localize(error_msg), false);
             }
@@ -321,9 +280,7 @@ const SelfExclusion = (() => {
             .attr('class', is_success ? 'success-msg' : error_class)
             .html(
                 is_success
-                    ? $('<ul/>', { class: 'checked' }).append(
-                          $('<li/>', { text: localize(msg) }),
-                      )
+                    ? $('<ul/>', { class: 'checked' }).append($('<li/>', { text: localize(msg) }))
                     : localize(msg),
             )
             .css('display', 'block')

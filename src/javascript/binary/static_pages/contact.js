@@ -13,20 +13,14 @@ const Contact = (() => {
     const displayCsContacts = () => {
         $('.contact-content').on('change', '#cs_telephone_number', function() {
             const val = $(this).val().split(',');
-            $('#display_cs_telephone').html(
-                val[0] + (val.length > 1 ? `<br />${val[1]}` : ''),
-            );
+            $('#display_cs_telephone').html(val[0] + (val.length > 1 ? `<br />${val[1]}` : ''));
         });
     };
 
     const showLiveChatIcon = () => {
         if (typeof DESK === 'undefined') {
-            loadCSS(
-                'https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_191.cssgz?1367387331',
-            );
-            loadJS(
-                'https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_libraries_191.jsgz?1367387332',
-            );
+            loadCSS('https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_191.cssgz?1367387331');
+            loadJS('https://d3jyn100am7dxp.cloudfront.net/assets/widget_embed_libraries_191.jsgz?1367387332');
         }
 
         const desk_load = setInterval(() => {
@@ -84,9 +78,7 @@ const Contact = (() => {
         // desk.com change icon - crude way
         if ($('#live-chat-icon').length > 0) {
             let timer = null;
-            const image_url = urlForStatic(
-                'images/pages/contact/chat-icon.svg',
-            );
+            const image_url = urlForStatic('images/pages/contact/chat-icon.svg');
             const updateIcon = () => {
                 const desk_widget = $('.a-desk-widget');
                 const image_str = desk_widget.css('background-image');

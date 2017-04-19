@@ -42,9 +42,7 @@ const TradePage_Beta = (() => {
             commonTrading.addEventListenerForm();
             if (!is_jp_client) {
                 new ResizeSensor(
-                    $(
-                        '.col-left .content-tab-container, #contract_prices_container',
-                    ),
+                    $('.col-left .content-tab-container, #contract_prices_container'),
                     adjustAnalysisColumnHeight,
                 );
                 new ResizeSensor($('.col-right'), moreTabsHandler);
@@ -97,20 +95,15 @@ const TradePage_Beta = (() => {
         // add moreTabs container
         let $more_tabs = $ul.find(`.${more_tabs_class}`);
         if ($more_tabs.length === 0) {
-            $more_tabs = $('<div/>', { class: more_tabs_class }).appendTo(
-                $see_more,
-            );
+            $more_tabs = $('<div/>', { class: more_tabs_class }).appendTo($see_more);
         } else {
             $more_tabs.find('>li').each((index, tab) => {
                 $(tab).insertBefore($see_more);
             });
         }
-        $more_tabs
-            .css('top', $ul.find('li:visible').outerHeight() - 1)
-            .unbind('click')
-            .click(() => {
-                hideDropDown('fast');
-            });
+        $more_tabs.css('top', $ul.find('li:visible').outerHeight() - 1).unbind('click').click(() => {
+            hideDropDown('fast');
+        });
 
         // move additional tabs to moreTabs
         const $visible_tabs = $ul.find('>li:visible');
@@ -119,9 +112,7 @@ const TradePage_Beta = (() => {
         });
         let result_width = total_width;
         while (result_width >= max_width) {
-            const $thisTab = $ul
-                .find(`>li:not(.${see_more_class}):visible`)
-                .last();
+            const $thisTab = $ul.find(`>li:not(.${see_more_class}):visible`).last();
             result_width -= $thisTab.outerWidth(true);
             $thisTab.prependTo($more_tabs);
         }
@@ -140,9 +131,7 @@ const TradePage_Beta = (() => {
         const showDropDown = () => {
             $more_tabs.slideDown();
             if ($see_more.find('.over').length === 0) {
-                $('<div/>', { class: 'over' }).insertBefore(
-                    $see_more.find('>a'),
-                );
+                $('<div/>', { class: 'over' }).insertBefore($see_more.find('>a'));
                 $see_more.find('.over').width($see_more.width());
             }
             $see_more.addClass('open');

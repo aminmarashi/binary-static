@@ -16,14 +16,8 @@ const JobDetails = (() => {
 
     const showSelectedDiv = () => {
         const section = window.location.hash;
-        $sections_div
-            .addClass(hidden_class)
-            .filter(section)
-            .removeClass(hidden_class);
-        if (
-            dept === 'Information_Technology' &&
-            /senior_perl_developer/.test(section)
-        ) {
+        $sections_div.addClass(hidden_class).filter(section).removeClass(hidden_class);
+        if (dept === 'Information_Technology' && /senior_perl_developer/.test(section)) {
             $senior_perl_message.removeClass(hidden_class);
         } else {
             $senior_perl_message.addClass(hidden_class);

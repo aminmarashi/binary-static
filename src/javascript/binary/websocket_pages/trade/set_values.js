@@ -8,9 +8,7 @@ const Defaults = require('./defaults');
 const setFormPlaceholderContent = (name) => {
     'use strict';
 
-    const form_placeholder = document.getElementById(
-        'contract_form_nav_placeholder',
-    );
+    const form_placeholder = document.getElementById('contract_form_nav_placeholder');
     if (form_placeholder) {
         name = name || Defaults.get('formname');
         form_placeholder.textContent = Contract.contractForms()[name];
@@ -23,9 +21,7 @@ const setFormPlaceholderContent = (name) => {
 const setFormPlaceholderContent_Beta = (name) => {
     'use strict';
 
-    const form_placeholder = document.getElementById(
-        'contract_form_nav_placeholder',
-    );
+    const form_placeholder = document.getElementById('contract_form_nav_placeholder');
     if (form_placeholder) {
         name = name || Defaults.get('formname');
         form_placeholder.textContent = Contract_Beta.contractForms()[name];

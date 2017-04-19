@@ -3,8 +3,7 @@ const BinaryPjax = require('../../../base/binary_pjax');
 const State = require('../../../base/storage').State;
 const showLoadingImage = require('../../../base/utility').showLoadingImage;
 const Table = require('../../../common_functions/attach_dom/table');
-const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions')
-    .jqueryuiTabsToDropdown;
+const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions').jqueryuiTabsToDropdown;
 const jpClient = require('../../../common_functions/country_base').jpClient;
 
 const AssetIndexUI = (() => {
@@ -54,13 +53,8 @@ const AssetIndexUI = (() => {
             const asset_item = asset_index[i];
             const symbol_info = asset_item[3];
             if (symbol_info) {
-                const $submarket_table = getSubmarketTable(
-                    asset_item,
-                    symbol_info,
-                );
-                $submarket_table
-                    .find('tbody')
-                    .append(createSubmarketTableRow(asset_item, symbol_info));
+                const $submarket_table = getSubmarketTable(asset_item, symbol_info);
+                $submarket_table.find('tbody').append(createSubmarketTableRow(asset_item, symbol_info));
             }
         }
 
@@ -70,9 +64,7 @@ const AssetIndexUI = (() => {
 
         if (is_framed) {
             $container.find('ul').hide();
-            $('<div/>', { class: 'center-text' })
-                .append(jqueryuiTabsToDropdown($container))
-                .prependTo($container);
+            $('<div/>', { class: 'center-text' }).append(jqueryuiTabsToDropdown($container)).prependTo($container);
         }
     };
 
@@ -130,11 +122,7 @@ const AssetIndexUI = (() => {
             cols: market_columns[market].columns,
         };
 
-        const $submarket_table = Table.createFlexTable(
-            [],
-            metadata,
-            market_columns[market].header,
-        );
+        const $submarket_table = Table.createFlexTable([], metadata, market_columns[market].header);
 
         const $submarket_header = $('<tr/>', { class: 'flex-tr' }).append(
             $('<th/>', {

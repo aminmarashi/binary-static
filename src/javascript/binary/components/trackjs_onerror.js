@@ -30,8 +30,7 @@ window._trackJs = {
         payload.network = payload.network.filter(
             item =>
                 // ignore random errors from Intercom
-                !(item.statusCode === 403 &&
-                    payload.message.indexOf('intercom') > -1),
+                !(item.statusCode === 403 && payload.message.indexOf('intercom') > -1),
         );
 
         return true;

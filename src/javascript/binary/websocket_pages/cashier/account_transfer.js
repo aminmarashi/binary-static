@@ -13,11 +13,7 @@ const AccountTransfer = (() => {
 
     const populateAccounts = (response) => {
         if (response.error) {
-            $('#error_message')
-                .find('p')
-                .text(response.error.message)
-                .end()
-                .removeClass(hidden_class);
+            $('#error_message').find('p').text(response.error.message).end().removeClass(hidden_class);
             return;
         }
         accounts = response.accounts;
@@ -31,10 +27,7 @@ const AccountTransfer = (() => {
             if (+account.balance) {
                 from_loginid = accounts[idx].loginid;
                 to_loginid = accounts[1 - idx].loginid;
-                text = localize('from [_1] to [_2]', [
-                    from_loginid,
-                    to_loginid,
-                ]);
+                text = localize('from [_1] to [_2]', [from_loginid, to_loginid]);
                 $transfer.append(
                     $('<option/>', {
                         text           : text,
@@ -48,13 +41,9 @@ const AccountTransfer = (() => {
         });
 
         // show client's login id on top
-        const $client_option = $transfer.find(
-            `option[data-from="${Client.get('loginid')}"]`,
-        );
+        const $client_option = $transfer.find(`option[data-from="${Client.get('loginid')}"]`);
         if ($client_option.length !== 0) {
-            $client_option
-                .insertBefore($transfer.find('option:eq(0)'))
-                .attr('selected', 'selected');
+            $client_option.insertBefore($transfer.find('option:eq(0)')).attr('selected', 'selected');
         }
 
         if (from_loginid) {
@@ -83,8 +72,7 @@ const AccountTransfer = (() => {
         $currency.text(getTransferAttr('data-currency'));
     };
 
-    const getTransferAttr = attribute =>
-        $transfer.find('option:selected').attr(attribute);
+    const getTransferAttr = attribute => $transfer.find('option:selected').attr(attribute);
 
     const bindValidation = () => {
         FormManager.init(form_id, [
@@ -122,13 +110,9 @@ const AccountTransfer = (() => {
 
     const responseHandler = (response) => {
         if (response.error) {
-            $('#form_error')
-                .text(response.error.message)
-                .removeClass(hidden_class);
+            $('#form_error').text(response.error.message).removeClass(hidden_class);
         } else {
-            BinarySocket.send({ transfer_between_accounts: 1 }).then(data =>
-                populateReceipt(data),
-            );
+            BinarySocket.send({ transfer_between_accounts: 1 }).then(data => populateReceipt(data));
         }
     };
 
@@ -137,17 +121,13 @@ const AccountTransfer = (() => {
         accounts = response.accounts;
         accounts.forEach((account, idx) => {
             $(`#loginid_${idx + 1}`).text(account.loginid);
-            $(`#balance_${idx + 1}`).text(
-                `${account.currency} ${account.balance}`,
-            );
+            $(`#balance_${idx + 1}`).text(`${account.currency} ${account.balance}`);
         });
         $('#success_form').removeClass(hidden_class);
     };
 
     const onLoad = () => {
-        BinarySocket.send({ transfer_between_accounts: 1 }).then(response =>
-            populateAccounts(response),
-        );
+        BinarySocket.send({ transfer_between_accounts: 1 }).then(response => populateAccounts(response));
     };
 
     return {

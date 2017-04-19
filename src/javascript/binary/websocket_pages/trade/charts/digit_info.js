@@ -107,19 +107,13 @@ const DigitInfo = (() => {
             elem += `<option value="${underlyings[i]}">${localize(symbols[underlyings[i]])}</option>`;
         }
         $('#digit_underlying').html($(elem)).val(underlying);
-        $('#digit_domain').text(
-            domain.charAt(0).toUpperCase() + domain.slice(1),
-        );
-        $('#digit_info_underlying').text(
-            $('#digit_underlying option:selected').text(),
-        );
+        $('#digit_domain').text(domain.charAt(0).toUpperCase() + domain.slice(1));
+        $('#digit_info_underlying').text($('#digit_underlying option:selected').text());
     };
 
     const onLatest = () => {
         const getLatest = () => {
-            const $digit_underlying_option = $(
-                '#digit_underlying option:selected',
-            );
+            const $digit_underlying_option = $('#digit_underlying option:selected');
             const symbol = $digit_underlying_option.val();
             const count = $('#tick_count').val();
             $('#digit_info_underlying').text($digit_underlying_option.text());
@@ -130,10 +124,7 @@ const DigitInfo = (() => {
                 count        : count,
             };
             if (chart.series[0].name !== symbol) {
-                if (
-                    $('#underlying').find('option:selected').val() !==
-                    $('#digit_underlying').val()
-                ) {
+                if ($('#underlying').find('option:selected').val() !== $('#digit_underlying').val()) {
                     request.subscribe = 1;
                     request.style = 'ticks';
                 }
@@ -148,24 +139,16 @@ const DigitInfo = (() => {
                     if (type === 'tick') {
                         updateChart(response);
                     } else if (type === 'history') {
-                        showChart(
-                            response.echo_req.ticks_history,
-                            response.history.prices,
-                        );
+                        showChart(response.echo_req.ticks_history, response.history.prices);
                     }
                 },
             });
         };
-        $('#digit_underlying, #tick_count')
-            .off('change')
-            .on('change', getLatest);
+        $('#digit_underlying, #tick_count').off('change').on('change', getLatest);
     };
 
     const showChart = (underlying, underlying_spots) => {
-        if (
-            typeof underlying_spots === 'undefined' ||
-            underlying_spots.length <= 0
-        ) {
+        if (typeof underlying_spots === 'undefined' || underlying_spots.length <= 0) {
             console.log('Unexpected error occured in the charts.');
             return;
         }

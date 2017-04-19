@@ -26,9 +26,7 @@ const ResetPassword = (() => {
                 // special handling as backend return inconsistent format
                 err_msg = localize(reset_error_template, [
                     error_code === 'InputValidationFailed'
-                        ? localize(
-                              'There was some invalid character in an input field.',
-                          )
+                        ? localize('There was some invalid character in an input field.')
                         : localize(response.error.message),
                 ]);
             }

@@ -18,9 +18,7 @@ const Url = (() => {
 
     const params = (href) => {
         const arr_params = [];
-        const parsed = (href ? new URL(href) : location_url).search
-            .substr(1)
-            .split('&');
+        const parsed = (href ? new URL(href) : location_url).search.substr(1).split('&');
         let p_l = parsed.length;
         while (p_l--) {
             const param = parsed[p_l].split('=');
@@ -41,8 +39,7 @@ const Url = (() => {
         return param_hash;
     };
 
-    const paramsHashToString = pars =>
-        Object.keys(pars).map(key => `${key}=${pars[key]}`).join('&');
+    const paramsHashToString = pars => Object.keys(pars).map(key => `${key}=${pars[key]}`).join('&');
 
     const urlFor = (path, pars) => {
         if (!path) {
@@ -70,15 +67,10 @@ const Url = (() => {
             static_host = window.staticHost;
         }
         if (!static_host || static_host.length === 0) {
-            static_host = $(
-                'script[src*="binary.min.js"],script[src*="binary.js"]',
-            ).attr('src');
+            static_host = $('script[src*="binary.min.js"],script[src*="binary.js"]').attr('src');
 
             if (static_host && static_host.length > 0) {
-                static_host = static_host.substr(
-                    0,
-                    static_host.indexOf('/js/') + 1,
-                );
+                static_host = static_host.substr(0, static_host.indexOf('/js/') + 1);
             } else {
                 static_host = 'https://www.binary.com/';
             }
@@ -91,8 +83,7 @@ const Url = (() => {
         return static_host + path;
     };
 
-    const defaultRedirectUrl = () =>
-        urlFor(jpClient() ? 'multi_barriers_trading' : 'trading');
+    const defaultRedirectUrl = () => urlFor(jpClient() ? 'multi_barriers_trading' : 'trading');
 
     return {
         init      : init,

@@ -6,8 +6,7 @@ const Login = require('./login');
 const State = require('./storage').State;
 const urlFor = require('./url').urlFor;
 const isEmptyObject = require('./utility').isEmptyObject;
-const checkClientsCountry = require('../common_functions/country_base')
-    .checkClientsCountry;
+const checkClientsCountry = require('../common_functions/country_base').checkClientsCountry;
 const jpClient = require('../common_functions/country_base').jpClient;
 const MetaTrader = require('../websocket_pages/user/metatrader/metatrader');
 
@@ -28,13 +27,7 @@ const Header = (() => {
 
     const bindClick = () => {
         $('#logo').off('click').on('click', () => {
-            BinaryPjax.load(
-                urlFor(
-                    Client.isLoggedIn()
-                        ? jpClient() ? 'multi_barriers_trading' : 'trading'
-                        : '',
-                ),
-            );
+            BinaryPjax.load(urlFor(Client.isLoggedIn() ? jpClient() ? 'multi_barriers_trading' : 'trading' : ''));
         });
         $('#btn_login').off('click').on('click', (e) => {
             e.preventDefault();
@@ -71,36 +64,24 @@ const Header = (() => {
                             $('<a/>', {
                                 href        : `${'java'}${'script:;'}`,
                                 'data-value': curr_id,
-                            }).append(
-                                $('<li/>', { text: localized_type }).append(
-                                    $('<div/>', { text: curr_id }),
-                                ),
-                            ),
+                            }).append($('<li/>', { text: localized_type }).append($('<div/>', { text: curr_id }))),
                         )
-                        .append(
-                            $('<div/>', { class: 'separator-line-thin-gray' }),
-                        );
+                        .append($('<div/>', { class: 'separator-line-thin-gray' }));
                 }
             }
         });
         let $this;
-        $('.login-id-list')
-            .html(loginid_select)
-            .find('a')
-            .off('click')
-            .on('click', function(e) {
-                e.preventDefault();
-                $this = $(this);
-                $this.attr('disabled', 'disabled');
-                switchLoginid($this.attr('data-value'));
-            });
+        $('.login-id-list').html(loginid_select).find('a').off('click').on('click', function(e) {
+            e.preventDefault();
+            $this = $(this);
+            $this.attr('disabled', 'disabled');
+            switchLoginid($this.attr('data-value'));
+        });
     };
 
     const metatraderMenuItemVisibility = (landing_company_response) => {
         if (MetaTrader.isEligible(landing_company_response)) {
-            $('#all-accounts')
-                .find('#user_menu_metatrader')
-                .removeClass('invisible');
+            $('#all-accounts').find('#user_menu_metatrader').removeClass('invisible');
         }
     };
 
@@ -126,16 +107,8 @@ const Header = (() => {
     };
 
     const upgradeMessageVisibility = () => {
-        BinarySocket.wait(
-            'authorize',
-            'landing_company',
-            'get_settings',
-        ).then(() => {
-            const landing_company = State.get([
-                'response',
-                'landing_company',
-                'landing_company',
-            ]);
+        BinarySocket.wait('authorize', 'landing_company', 'get_settings').then(() => {
+            const landing_company = State.get(['response', 'landing_company', 'landing_company']);
             const loginid_array = Client.get('loginid_array');
 
             const $upgrade_msg = $('.upgrademessage');
@@ -151,9 +124,7 @@ const Header = (() => {
             };
 
             if (Client.get('is_virtual')) {
-                const show_upgrade_msg = !loginid_array.some(
-                    client => client.real,
-                );
+                const show_upgrade_msg = !loginid_array.some(client => client.real);
 
                 $upgrade_msg
                     .removeClass(hidden_class)
@@ -170,16 +141,9 @@ const Header = (() => {
                     'jp_account_status',
                 ]) || {}).status;
                 if (jp_account_status && show_upgrade_msg) {
-                    if (
-                        /jp_knowledge_test_(pending|fail)/.test(
-                            jp_account_status,
-                        )
-                    ) {
+                    if (/jp_knowledge_test_(pending|fail)/.test(jp_account_status)) {
                         // do not show upgrade for user that filled up form
-                        showUpgrade(
-                            '/new_account/knowledge_testws',
-                            '{JAPAN ONLY}Take knowledge test',
-                        );
+                        showUpgrade('/new_account/knowledge_testws', '{JAPAN ONLY}Take knowledge test');
                     } else {
                         $upgrade_msg.removeClass(hidden_class);
                         if (jp_account_status === 'jp_activation_pending') {
@@ -205,22 +169,11 @@ const Header = (() => {
                 } else if (show_upgrade_msg) {
                     $upgrade_msg.find('> span').removeClass(hidden_class);
                     if (Client.canUpgradeVirtualToFinancial(landing_company)) {
-                        showUpgrade(
-                            'new_account/maltainvestws',
-                            'Upgrade to a Financial Account',
-                        );
-                    } else if (
-                        Client.canUpgradeVirtualToJapan(landing_company)
-                    ) {
-                        showUpgrade(
-                            'new_account/japanws',
-                            'Upgrade to a Real Account',
-                        );
+                        showUpgrade('new_account/maltainvestws', 'Upgrade to a Financial Account');
+                    } else if (Client.canUpgradeVirtualToJapan(landing_company)) {
+                        showUpgrade('new_account/japanws', 'Upgrade to a Real Account');
                     } else {
-                        showUpgrade(
-                            'new_account/realws',
-                            'Upgrade to a Real Account',
-                        );
+                        showUpgrade('new_account/realws', 'Upgrade to a Real Account');
                     }
                 } else {
                     $upgrade_msg.find('a').addClass(hidden_class).html('');
@@ -230,19 +183,13 @@ const Header = (() => {
                 // also allow UK MLT client to open MF account
                 if (
                     Client.canUpgradeGamingToFinancial(landing_company) ||
-                    (Client.get('residence') === 'gb' &&
-                        /^MLT/.test(Client.get('loginid')))
+                    (Client.get('residence') === 'gb' && /^MLT/.test(Client.get('loginid')))
                 ) {
-                    show_financial = !loginid_array.some(
-                        client => client.financial,
-                    );
+                    show_financial = !loginid_array.some(client => client.financial);
                 }
                 if (show_financial) {
                     $('#virtual-text').parent().addClass('invisible');
-                    showUpgrade(
-                        'new_account/maltainvestws',
-                        'Open a Financial Account',
-                    );
+                    showUpgrade('new_account/maltainvestws', 'Open a Financial Account');
                 } else {
                     $upgrade_msg.addClass(hidden_class);
                 }
@@ -274,11 +221,7 @@ const Header = (() => {
             const riskAssessment = () => {
                 if (get_account_status.risk_classification === 'high') {
                     return isEmptyObject(
-                        State.get([
-                            'response',
-                            'get_financial_assessment',
-                            'get_financial_assessment',
-                        ]),
+                        State.get(['response', 'get_financial_assessment', 'get_financial_assessment']),
                     );
                 }
                 return false;
@@ -328,18 +271,15 @@ const Header = (() => {
 
             const validations = {
                 authenticate: () =>
-                    (!/authenticated/.test(status) ||
-                        !/age_verification/.test(status)) &&
+                    (!/authenticated/.test(status) || !/age_verification/.test(status)) &&
                     !jpClient() &&
                     should_authenticate,
-                financial_limit: () =>
-                    /ukrts_max_turnover_limit_not_set/.test(status),
-                residence: () => !Client.get('residence'),
-                risk     : () => riskAssessment(),
-                tax      : () => Client.shouldCompleteTax(),
-                tnc      : () => Client.shouldAcceptTnc(),
-                unwelcome: () =>
-                    /(unwelcome|(cashier|withdrawal)_locked)/.test(status),
+                financial_limit: () => /ukrts_max_turnover_limit_not_set/.test(status),
+                residence      : () => !Client.get('residence'),
+                risk           : () => riskAssessment(),
+                tax            : () => Client.shouldCompleteTax(),
+                tnc            : () => Client.shouldAcceptTnc(),
+                unwelcome      : () => /(unwelcome|(cashier|withdrawal)_locked)/.test(status),
             };
 
             // real account checks
@@ -390,16 +330,9 @@ const Header = (() => {
                     'get_financial_assessment',
                     'balance',
                 ).then(() => {
-                    get_account_status = State.get([
-                        'response',
-                        'get_account_status',
-                        'get_account_status',
-                    ]) || {};
+                    get_account_status = State.get(['response', 'get_account_status', 'get_account_status']) || {};
                     status = get_account_status.status;
-                    if (
-                        /costarica/.test(Client.get('landing_company_name')) &&
-                        +Client.get('balance') < 200
-                    ) {
+                    if (/costarica/.test(Client.get('landing_company_name')) && +Client.get('balance') < 200) {
                         BinarySocket.send({
                             mt5_login_list: 1,
                         }).then((response) => {
