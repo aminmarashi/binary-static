@@ -1,5 +1,5 @@
-const Client = require('../../../base/client');
-const jpClient = require('../../../common_functions/country_base').jpClient;
+import Client from '../../../base/client';
+import { jpClient } from '../../../common_functions/country_base';
 
 const Settings = (() => {
     'use strict';

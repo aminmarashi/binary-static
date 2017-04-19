@@ -1,6 +1,6 @@
-const urlForStatic = require('../base/url').urlForStatic;
-const loadCSS = require('../../lib/loadCSS').loadCSS;
-const loadJS = require('../../lib/loadJS').loadJS;
+import { urlForStatic } from '../base/url';
+import { loadCSS } from '../../lib/loadCSS';
+import { loadJS } from '../../lib/loadJS';
 
 const Contact = (() => {
     'use strict';

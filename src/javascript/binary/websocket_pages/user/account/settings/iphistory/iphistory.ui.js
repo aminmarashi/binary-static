@@ -1,7 +1,7 @@
-const moment = require('moment');
-const showLocalTimeOnHover = require('../../../../../base/clock').showLocalTimeOnHover;
-const localize = require('../../../../../base/localize').localize;
-const FlexTableUI = require('../../../../../common_functions/attach_dom/flextable');
+import moment from 'moment';
+import { showLocalTimeOnHover } from '../../../../../base/clock';
+import { localize } from '../../../../../base/localize';
+import FlexTableUI from '../../../../../common_functions/attach_dom/flextable';
 
 const IPHistoryUI = (() => {
     'use strict';

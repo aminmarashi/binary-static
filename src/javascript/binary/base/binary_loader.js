@@ -1,11 +1,11 @@
-const BinaryPjax = require('./binary_pjax');
-const pages_config = require('./binary_pages');
-const Client = require('./client');
-const GTM = require('./gtm');
-const localize = require('./localize').localize;
-const Login = require('./login');
-const Page = require('./page');
-const defaultRedirectUrl = require('./url').defaultRedirectUrl;
+import BinaryPjax from './binary_pjax';
+import pages_config from './binary_pages';
+import Client from './client';
+import GTM from './gtm';
+import { localize } from './localize';
+import Login from './login';
+import Page from './page';
+import { defaultRedirectUrl } from './url';
 
 const BinaryLoader = (() => {
     'use strict';

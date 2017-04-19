@@ -1,6 +1,6 @@
-const Defaults = require('./defaults');
-const Client = require('../../base/client');
-const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
+import Defaults from './defaults';
+import Client from '../../base/client';
+import { formatCurrency } from '../../common_functions/currency_to_symbol';
 
 /*
  * Handles currency display

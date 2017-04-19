@@ -1,7 +1,8 @@
-const Highcharts = require('highcharts');
-const Symbols = require('../../symbols');
-const localize = require('../../../../base/localize').localize;
-const template = require('../../../../base/utility').template;
+import Highcharts from 'highcharts';
+import Symbols from '../../symbols';
+import { localize } from '../../../../base/localize';
+import { template } from '../../../../base/utility';
+
 require('highcharts/modules/exporting')(Highcharts);
 
 const DigitInfo_Beta = (() => {

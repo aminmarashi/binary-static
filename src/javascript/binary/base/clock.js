@@ -1,5 +1,5 @@
-const moment = require('moment');
-const jpClient = require('../common_functions/country_base').jpClient;
+import moment from 'moment';
+import { jpClient } from '../common_functions/country_base';
 
 const Clock = (() => {
     'use strict';

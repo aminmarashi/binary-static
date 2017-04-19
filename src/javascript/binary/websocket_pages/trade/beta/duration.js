@@ -1,17 +1,15 @@
-const moment = require('moment');
-const Barriers_Beta = require('./barriers');
-const Contract_Beta = require('./contract');
-const Price_Beta = require('./price');
-const commonTrading = require('../common');
-const processTradingTimesAnswer = require('../common_independent').processTradingTimesAnswer;
-const Defaults = require('../defaults');
-const localize = require('../../../base/localize').localize;
-const State = require('../../../base/storage').State;
-const elementTextContent = require('../../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../../common_functions/common_functions').isVisible;
-const toISOFormat = require('../../../common_functions/string_util').toISOFormat;
-const toReadableFormat = require('../../../common_functions/string_util').toReadableFormat;
-const DatePicker = require('../../../components/date_picker');
+import moment from 'moment';
+import Barriers_Beta from './barriers';
+import Contract_Beta from './contract';
+import Price_Beta from './price';
+import commonTrading from '../common';
+import { processTradingTimesAnswer } from '../common_independent';
+import Defaults from '../defaults';
+import { localize } from '../../../base/localize';
+import { State } from '../../../base/storage';
+import { elementTextContent, isVisible } from '../../../common_functions/common_functions';
+import { toISOFormat, toReadableFormat } from '../../../common_functions/string_util';
+import DatePicker from '../../../components/date_picker';
 
 /*
  * Handles duration processing display

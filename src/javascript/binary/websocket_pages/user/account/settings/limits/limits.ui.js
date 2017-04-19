@@ -1,8 +1,8 @@
-const Table = require('../../../../../common_functions/attach_dom/table');
-const addComma = require('../../../../../common_functions/string_util').addComma;
-const localize = require('../../../../../base/localize').localize;
-const Client = require('../../../../../base/client');
-const elementTextContent = require('../../../../../common_functions/common_functions').elementTextContent;
+import Table from '../../../../../common_functions/attach_dom/table';
+import { addComma } from '../../../../../common_functions/string_util';
+import { localize } from '../../../../../base/localize';
+import Client from '../../../../../base/client';
+import { elementTextContent } from '../../../../../common_functions/common_functions';
 
 const LimitsUI = (() => {
     'use strict';

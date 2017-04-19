@@ -1,13 +1,13 @@
-const ProfitTable = require('../profit_table');
-const Client = require('../../../../base/client');
-const localize = require('../../../../base/localize').localize;
-const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
-const addComma = require('../../../../common_functions/string_util').addComma;
-const elementTextContent = require('../../../../common_functions/common_functions').elementTextContent;
-const formatMoney = require('../../../../common_functions/currency_to_symbol').formatMoney;
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const showTooltip = require('../../../../common_functions/get_app_details').showTooltip;
-const Table = require('../../../../common_functions/attach_dom/table');
+import ProfitTable from '../profit_table';
+import Client from '../../../../base/client';
+import { localize } from '../../../../base/localize';
+import { toJapanTimeIfNeeded } from '../../../../base/clock';
+import { addComma } from '../../../../common_functions/string_util';
+import { elementTextContent } from '../../../../common_functions/common_functions';
+import { formatMoney } from '../../../../common_functions/currency_to_symbol';
+import { jpClient } from '../../../../common_functions/country_base';
+import { showTooltip } from '../../../../common_functions/get_app_details';
+import Table from '../../../../common_functions/attach_dom/table';
 
 const ProfitTableUI = (() => {
     'use strict';

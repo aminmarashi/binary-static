@@ -1,4 +1,4 @@
-const checkInput = require('./common_functions').checkInput;
+import { checkInput } from './common_functions';
 
 const toTitleCase = str =>
     str.replace(/\w[^\s\/\\]*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());

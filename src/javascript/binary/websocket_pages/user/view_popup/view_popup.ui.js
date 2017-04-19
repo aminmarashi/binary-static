@@ -1,7 +1,7 @@
-const MBDefaults = require('../../mb_trade/mb_defaults');
-const Defaults = require('../../trade/defaults');
-const State = require('../../../base/storage').State;
-const getHighestZIndex = require('../../../base/utility').getHighestZIndex;
+import MBDefaults from '../../mb_trade/mb_defaults';
+import Defaults from '../../trade/defaults';
+import { State } from '../../../base/storage';
+import { getHighestZIndex } from '../../../base/utility';
 
 const ViewPopupUI = (() => {
     'use strict';

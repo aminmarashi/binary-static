@@ -1,7 +1,7 @@
-const localize = require('../../base/localize').localize;
-const Login = require('../../base/login');
-const generateBirthDate = require('../../common_functions/attach_dom/birth_date_picker');
-const FormManager = require('../../common_functions/form_manager');
+import { localize } from '../../base/localize';
+import Login from '../../base/login';
+import generateBirthDate from '../../common_functions/attach_dom/birth_date_picker';
+import FormManager from '../../common_functions/form_manager';
 
 const ResetPassword = (() => {
     'use strict';

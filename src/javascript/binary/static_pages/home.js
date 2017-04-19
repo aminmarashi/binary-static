@@ -1,8 +1,8 @@
-const BinaryPjax = require('../base/binary_pjax');
-const getLanguage = require('../base/language').get;
-const localize = require('../base/localize').localize;
-const urlFor = require('../base/url').urlFor;
-const FormManager = require('../common_functions/form_manager');
+import BinaryPjax from '../base/binary_pjax';
+import { get as getLanguage } from '../base/language';
+import { localize } from '../base/localize';
+import { urlFor } from '../base/url';
+import FormManager from '../common_functions/form_manager';
 
 const Home = (() => {
     'use strict';

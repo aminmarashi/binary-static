@@ -1,6 +1,6 @@
-const toJapanTimeIfNeeded = require('../../../base/clock').toJapanTimeIfNeeded;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
-const jpClient = require('../../../common_functions/country_base').jpClient;
+import { toJapanTimeIfNeeded } from '../../../base/clock';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
+import { jpClient } from '../../../common_functions/country_base';
 
 const Portfolio = (() => {
     'use strict';

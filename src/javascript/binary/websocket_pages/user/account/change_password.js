@@ -1,7 +1,7 @@
-const BinaryPjax = require('../../../base/binary_pjax');
-const Client = require('../../../base/client');
-const localize = require('../../../base/localize').localize;
-const FormManager = require('../../../common_functions/form_manager');
+import BinaryPjax from '../../../base/binary_pjax';
+import Client from '../../../base/client';
+import { localize } from '../../../base/localize';
+import FormManager from '../../../common_functions/form_manager';
 
 const ChangePassword = (() => {
     const form_id = '#frm_change_password';

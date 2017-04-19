@@ -1,5 +1,5 @@
-const trading_times = require('../trading_times');
-const { api, expect } = require('../../../common_functions/tests');
+import trading_times from '../trading_times';
+import { api, expect } from '../../../common_functions/tests';
 
 describe('Trading Times', () => {
     let trading_times_res,

@@ -1,5 +1,5 @@
-const statement = require('../statement');
-const { api, expect } = require('../../../../common_functions/tests');
+import statement from '../statement';
+import { api, expect } from '../../../../common_functions/tests';
 
 describe('Statement', () => {
     let statement_ws;

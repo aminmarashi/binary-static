@@ -1,6 +1,6 @@
-const getLanguage = require('./language').get;
-const State = require('./storage').State;
-const urlFor = require('./url').urlFor;
+import { get as getLanguage } from './language';
+import { State } from './storage';
+import { urlFor } from './url';
 
 const BinaryPjax = (() => {
     'use strict';

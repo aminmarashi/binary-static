@@ -1,10 +1,9 @@
-const moment = require('moment');
-const Client = require('../../../base/client');
-const localize = require('../../../base/localize').localize;
-const toJapanTimeIfNeeded = require('../../../base/clock').toJapanTimeIfNeeded;
-const addComma = require('../../../common_functions/string_util').addComma;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
-const toTitleCase = require('../../../common_functions/string_util').toTitleCase;
+import moment from 'moment';
+import Client from '../../../base/client';
+import { localize } from '../../../base/localize';
+import { toJapanTimeIfNeeded } from '../../../base/clock';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
+import { addComma, toTitleCase } from '../../../common_functions/string_util';
 
 const Statement = (() => {
     'use strict';

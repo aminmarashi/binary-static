@@ -1,8 +1,8 @@
-const MBDefaults = require('./mb_defaults');
-const Client = require('../../base/client');
-const State = require('../../base/storage').State;
-const jpClient = require('../../common_functions/country_base').jpClient;
-const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
+import MBDefaults from './mb_defaults';
+import Client from '../../base/client';
+import { State } from '../../base/storage';
+import { jpClient } from '../../common_functions/country_base';
+import { formatCurrency } from '../../common_functions/currency_to_symbol';
 
 /*
  * Handles currency display

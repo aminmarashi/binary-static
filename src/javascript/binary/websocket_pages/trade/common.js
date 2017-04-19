@@ -1,17 +1,15 @@
-const Moment = require('moment');
-const Defaults = require('./defaults');
-const Notifications = require('./notifications');
-const Symbols = require('./symbols');
-const Tick = require('./tick');
-const Client = require('../../base/client');
-const localize = require('../../base/localize').localize;
-const urlFor = require('../../base/url').urlFor;
-const isEmptyObject = require('../../base/utility').isEmptyObject;
-const formatMoney = require('../../common_functions/currency_to_symbol').formatMoney;
-const addComma = require('../../common_functions/string_util').addComma;
-const toISOFormat = require('../../common_functions/string_util').toISOFormat;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
+import Moment from 'moment';
+import Defaults from './defaults';
+import Notifications from './notifications';
+import Symbols from './symbols';
+import Tick from './tick';
+import Client from '../../base/client';
+import { localize } from '../../base/localize';
+import { urlFor } from '../../base/url';
+import { isEmptyObject } from '../../base/utility';
+import { formatMoney } from '../../common_functions/currency_to_symbol';
+import { addComma, toISOFormat } from '../../common_functions/string_util';
+import { elementInnerHtml, elementTextContent } from '../../common_functions/common_functions';
 
 /*
  * This contains common functions we need for processing the response

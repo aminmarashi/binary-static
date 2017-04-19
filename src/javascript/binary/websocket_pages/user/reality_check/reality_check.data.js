@@ -1,6 +1,6 @@
-const moment = require('moment');
-const localize = require('../../../base/localize').localize;
-const LocalStore = require('../../../base/storage').LocalStore;
+import moment from 'moment';
+import { localize } from '../../../base/localize';
+import { LocalStore } from '../../../base/storage';
 
 const RealityCheckData = (() => {
     'use strict';

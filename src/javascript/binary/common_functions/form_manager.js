@@ -1,6 +1,5 @@
-const Validation = require('./form_validation');
-const isEmptyObject = require('../base/utility').isEmptyObject;
-const showLoadingImage = require('../base/utility').showLoadingImage;
+import Validation from './form_validation';
+import { isEmptyObject, showLoadingImage } from '../base/utility';
 
 const FormManager = (() => {
     'use strict';

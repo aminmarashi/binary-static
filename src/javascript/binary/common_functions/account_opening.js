@@ -1,12 +1,12 @@
-const generateBirthDate = require('./attach_dom/birth_date_picker');
-const BinaryPjax = require('../base/binary_pjax');
-const Client = require('../base/client');
-const localize = require('../base/localize').localize;
-const State = require('../base/storage').State;
-const makeOption = require('../common_functions/common_functions').makeOption;
-const FormManager = require('../common_functions/form_manager');
-const Cookies = require('../../lib/js-cookie');
-require('select2');
+import 'select2';
+import generateBirthDate from './attach_dom/birth_date_picker';
+import BinaryPjax from '../base/binary_pjax';
+import Client from '../base/client';
+import { localize } from '../base/localize';
+import { State } from '../base/storage';
+import { makeOption } from '../common_functions/common_functions';
+import FormManager from '../common_functions/form_manager';
+import Cookies from '../../lib/js-cookie';
 
 const AccountOpening = (() => {
     'use strict';

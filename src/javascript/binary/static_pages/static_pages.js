@@ -1,6 +1,6 @@
-const GetStarted = require('./get_started');
-const handleHash = require('../base/utility').handleHash;
-const Scroll = require('../common_functions/scroll');
+import GetStarted from './get_started';
+import { handleHash } from '../base/utility';
+import Scroll from '../common_functions/scroll';
 
 module.exports = {
     OpenPositions: {

@@ -1,10 +1,10 @@
-const moment = require('moment');
-const Contract_Beta = require('./contract');
-const Durations_Beta = require('./duration');
-const getStartDateNode = require('../common_independent').getStartDateNode;
-const Defaults = require('../defaults');
-const localize = require('../../../base/localize').localize;
-const State = require('../../../base/storage').State;
+import moment from 'moment';
+import Contract_Beta from './contract';
+import Durations_Beta from './duration';
+import { getStartDateNode } from '../common_independent';
+import Defaults from '../defaults';
+import { localize } from '../../../base/localize';
+import { State } from '../../../base/storage';
 
 /*
  * Handles start time display

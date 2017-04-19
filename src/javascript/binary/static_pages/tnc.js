@@ -1,7 +1,7 @@
-const localize = require('../base/localize').localize;
-const urlParam = require('../base/url').param;
-const Scroll = require('../common_functions/scroll');
-const TNCApproval = require('../websocket_pages/user/tnc_approval');
+import { localize } from '../base/localize';
+import { param as urlParam } from '../base/url';
+import Scroll from '../common_functions/scroll';
+import TNCApproval from '../websocket_pages/user/tnc_approval';
 
 const TermsAndConditions = (() => {
     'use strict';

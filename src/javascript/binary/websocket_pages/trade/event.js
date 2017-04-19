@@ -1,24 +1,23 @@
-const moment = require('moment');
-const TradingAnalysis = require('./analysis');
-const Barriers = require('./barriers');
-const commonTrading = require('./common');
-const chartFrameSource = require('./charts/chart_frame').chartFrameSource;
-const Defaults = require('./defaults');
-const Durations = require('./duration');
-const GetTicks = require('./get_ticks');
-const Notifications = require('./notifications');
-const Price = require('./price');
-const Process = require('./process');
-const Purchase = require('./purchase');
-const setFormPlaceholderContent = require('./set_values').setFormPlaceholderContent;
-const getStartDateNode = require('./common_independent').getStartDateNode;
-const Tick = require('./tick');
-const BinaryPjax = require('../../base/binary_pjax');
-const GTM = require('../../base/gtm');
-const dateValueChanged = require('../../common_functions/common_functions').dateValueChanged;
-const isVisible = require('../../common_functions/common_functions').isVisible;
-const onlyNumericOnKeypress = require('../../common_functions/event_handler');
-const TimePicker = require('../../components/time_picker');
+import moment from 'moment';
+import TradingAnalysis from './analysis';
+import Barriers from './barriers';
+import commonTrading from './common';
+import { chartFrameSource } from './charts/chart_frame';
+import Defaults from './defaults';
+import Durations from './duration';
+import GetTicks from './get_ticks';
+import Notifications from './notifications';
+import Price from './price';
+import Process from './process';
+import Purchase from './purchase';
+import { setFormPlaceholderContent } from './set_values';
+import { getStartDateNode } from './common_independent';
+import Tick from './tick';
+import BinaryPjax from '../../base/binary_pjax';
+import GTM from '../../base/gtm';
+import { dateValueChanged, isVisible } from '../../common_functions/common_functions';
+import onlyNumericOnKeypress from '../../common_functions/event_handler';
+import TimePicker from '../../components/time_picker';
 
 /*
  * TradingEvents object contains all the event handler function for

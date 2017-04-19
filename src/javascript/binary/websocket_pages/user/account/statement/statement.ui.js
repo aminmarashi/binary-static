@@ -1,11 +1,11 @@
-const Statement = require('../statement');
-const Client = require('../../../../base/client');
-const downloadCSV = require('../../../../base/utility').downloadCSV;
-const localize = require('../../../../base/localize').localize;
-const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const showTooltip = require('../../../../common_functions/get_app_details').showTooltip;
-const Table = require('../../../../common_functions/attach_dom/table');
+import Statement from '../statement';
+import Client from '../../../../base/client';
+import { downloadCSV } from '../../../../base/utility';
+import { localize } from '../../../../base/localize';
+import { toJapanTimeIfNeeded } from '../../../../base/clock';
+import { jpClient } from '../../../../common_functions/country_base';
+import { showTooltip } from '../../../../common_functions/get_app_details';
+import Table from '../../../../common_functions/attach_dom/table';
 
 const StatementUI = (() => {
     'use strict';

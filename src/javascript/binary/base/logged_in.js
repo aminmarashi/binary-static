@@ -1,10 +1,9 @@
-const Client = require('./client');
-const GTM = require('./gtm');
-const getLanguage = require('./language').get;
-const defaultRedirectUrl = require('./url').defaultRedirectUrl;
-const urlFor = require('./url').urlFor;
-const isEmptyObject = require('./utility').isEmptyObject;
-const Cookies = require('../../lib/js-cookie');
+import Client from './client';
+import GTM from './gtm';
+import { get as getLanguage } from './language';
+import { defaultRedirectUrl, urlFor } from './url';
+import { isEmptyObject } from './utility';
+import Cookies from '../../lib/js-cookie';
 
 const LoggedInHandler = (() => {
     'use strict';

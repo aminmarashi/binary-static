@@ -1,5 +1,5 @@
-const CookieStorage = require('./storage').CookieStorage;
-const Cookies = require('../../lib/js-cookie');
+import { CookieStorage } from './storage';
+import Cookies from '../../lib/js-cookie';
 
 const Language = (() => {
     'use strict';

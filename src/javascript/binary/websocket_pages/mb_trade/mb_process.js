@@ -1,17 +1,17 @@
-const MBContract = require('./mb_contract');
-const MBDefaults = require('./mb_defaults');
-const MBNotifications = require('./mb_notifications');
-const MBPrice = require('./mb_price');
-const MBSymbols = require('./mb_symbols');
-const MBTick = require('./mb_tick');
-const TradingAnalysis = require('../trade/analysis');
-const commonTrading = require('../trade/common');
-const BinaryPjax = require('../../base/binary_pjax');
-const Client = require('../../base/client');
-const getLanguage = require('../../base/language').get;
-const localize = require('../../base/localize').localize;
-const State = require('../../base/storage').State;
-const jpClient = require('../../common_functions/country_base').jpClient;
+import MBContract from './mb_contract';
+import MBDefaults from './mb_defaults';
+import MBNotifications from './mb_notifications';
+import MBPrice from './mb_price';
+import MBSymbols from './mb_symbols';
+import MBTick from './mb_tick';
+import TradingAnalysis from '../trade/analysis';
+import commonTrading from '../trade/common';
+import BinaryPjax from '../../base/binary_pjax';
+import Client from '../../base/client';
+import { get as getLanguage } from '../../base/language';
+import { localize } from '../../base/localize';
+import { State } from '../../base/storage';
+import { jpClient } from '../../common_functions/country_base';
 
 const MBProcess = (() => {
     'use strict';

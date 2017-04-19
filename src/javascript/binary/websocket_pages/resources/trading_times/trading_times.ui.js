@@ -1,15 +1,13 @@
-const moment = require('moment');
-const TradingTimes = require('../trading_times');
-const localize = require('../../../base/localize').localize;
-const State = require('../../../base/storage').State;
-const showLoadingImage = require('../../../base/utility').showLoadingImage;
-const Table = require('../../../common_functions/attach_dom/table');
-const dateValueChanged = require('../../../common_functions/common_functions').dateValueChanged;
-const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions').jqueryuiTabsToDropdown;
-const jpClient = require('../../../common_functions/country_base').jpClient;
-const toISOFormat = require('../../../common_functions/string_util').toISOFormat;
-const toReadableFormat = require('../../../common_functions/string_util').toReadableFormat;
-const DatePicker = require('../../../components/date_picker');
+import moment from 'moment';
+import TradingTimes from '../trading_times';
+import { localize } from '../../../base/localize';
+import { State } from '../../../base/storage';
+import { showLoadingImage } from '../../../base/utility';
+import Table from '../../../common_functions/attach_dom/table';
+import { dateValueChanged, jqueryuiTabsToDropdown } from '../../../common_functions/common_functions';
+import { jpClient } from '../../../common_functions/country_base';
+import { toISOFormat, toReadableFormat } from '../../../common_functions/string_util';
+import DatePicker from '../../../components/date_picker';
 
 const TradingTimesUI = (() => {
     'use strict';

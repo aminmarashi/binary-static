@@ -1,24 +1,23 @@
-const moment = require('moment');
-const TradingAnalysis_Beta = require('./analysis');
-const Barriers_Beta = require('./barriers');
-const Durations_Beta = require('./duration');
-const Price_Beta = require('./price');
-const Process_Beta = require('./process');
-const Purchase_Beta = require('./purchase');
-const chartFrameSource = require('../charts/chart_frame').chartFrameSource;
-const Defaults = require('../defaults');
-const GetTicks = require('../get_ticks');
-const setFormPlaceholderContent_Beta = require('../set_values').setFormPlaceholderContent_Beta;
-const Tick = require('../tick');
-const commonTrading = require('../common');
-const getStartDateNode = require('../common_independent').getStartDateNode;
-const Notifications = require('../notifications');
-const BinaryPjax = require('../../../base/binary_pjax');
-const GTM = require('../../../base/gtm');
-const dateValueChanged = require('../../../common_functions/common_functions').dateValueChanged;
-const isVisible = require('../../../common_functions/common_functions').isVisible;
-const onlyNumericOnKeypress = require('../../../common_functions/event_handler');
-const TimePicker = require('../../../components/time_picker');
+import moment from 'moment';
+import TradingAnalysis_Beta from './analysis';
+import Barriers_Beta from './barriers';
+import Durations_Beta from './duration';
+import Price_Beta from './price';
+import Process_Beta from './process';
+import Purchase_Beta from './purchase';
+import { chartFrameSource } from '../charts/chart_frame';
+import Defaults from '../defaults';
+import GetTicks from '../get_ticks';
+import { setFormPlaceholderContent_Beta } from '../set_values';
+import Tick from '../tick';
+import commonTrading from '../common';
+import { getStartDateNode } from '../common_independent';
+import Notifications from '../notifications';
+import BinaryPjax from '../../../base/binary_pjax';
+import GTM from '../../../base/gtm';
+import { dateValueChanged, isVisible } from '../../../common_functions/common_functions';
+import onlyNumericOnKeypress from '../../../common_functions/event_handler';
+import TimePicker from '../../../components/time_picker';
 
 /*
  * TradingEvents object contains all the event handler function for

@@ -1,9 +1,9 @@
-const RealityCheckData = require('./reality_check.data');
-const showLocalTimeOnHover = require('../../../base/clock').showLocalTimeOnHover;
-const urlFor = require('../../../base/url').urlFor;
-const FormManager = require('../../../common_functions/form_manager');
-require('../../../../lib/polyfills/array.includes');
-require('../../../../lib/polyfills/string.includes');
+import RealityCheckData from './reality_check.data';
+import { showLocalTimeOnHover } from '../../../base/clock';
+import { urlFor } from '../../../base/url';
+import FormManager from '../../../common_functions/form_manager';
+import '../../../../lib/polyfills/array.includes';
+import '../../../../lib/polyfills/string.includes';
 
 const RealityCheckUI = (() => {
     'use strict';

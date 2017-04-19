@@ -1,18 +1,18 @@
-const TradingAnalysis_Beta = require('./analysis');
-const TradingEvents_Beta = require('./event');
-const Price_Beta = require('./price');
-const Process_Beta = require('./process');
-const commonTrading = require('../common');
-const chartFrameCleanup = require('../charts/chart_frame').chartFrameCleanup;
-const displayCurrencies = require('../currency');
-const Defaults = require('../defaults');
-const PortfolioInit = require('../../user/account/portfolio/portfolio.init');
-const ViewPopup = require('../../user/view_popup/view_popup');
-const BinaryPjax = require('../../../base/binary_pjax');
-const State = require('../../../base/storage').State;
-const jpClient = require('../../../common_functions/country_base').jpClient;
-const Guide = require('../../../common_functions/guide');
-const ResizeSensor = require('../../../../lib/resize-sensor');
+import TradingAnalysis_Beta from './analysis';
+import TradingEvents_Beta from './event';
+import Price_Beta from './price';
+import Process_Beta from './process';
+import commonTrading from '../common';
+import { chartFrameCleanup } from '../charts/chart_frame';
+import displayCurrencies from '../currency';
+import Defaults from '../defaults';
+import PortfolioInit from '../../user/account/portfolio/portfolio.init';
+import ViewPopup from '../../user/view_popup/view_popup';
+import BinaryPjax from '../../../base/binary_pjax';
+import { State } from '../../../base/storage';
+import { jpClient } from '../../../common_functions/country_base';
+import Guide from '../../../common_functions/guide';
+import ResizeSensor from '../../../../lib/resize-sensor';
 
 const TradePage_Beta = (() => {
     'use strict';

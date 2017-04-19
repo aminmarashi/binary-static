@@ -1,7 +1,7 @@
-const moment = require('moment');
-const localize = require('../base/localize').localize;
-const checkInput = require('../common_functions/common_functions').checkInput;
-const padLeft = require('../common_functions/string_util').padLeft;
+import moment from 'moment';
+import { localize } from '../base/localize';
+import { checkInput } from '../common_functions/common_functions';
+import { padLeft } from '../common_functions/string_util';
 
 const TimePicker = (() => {
     'use strict';

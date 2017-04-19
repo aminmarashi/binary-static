@@ -1,5 +1,5 @@
-const MBDefaults = require('./mb_defaults');
-const MBNotifications = require('./mb_notifications');
+import MBDefaults from './mb_defaults';
+import MBNotifications from './mb_notifications';
 
 /*
  * MBTick object handles all the process/display related to tick streaming

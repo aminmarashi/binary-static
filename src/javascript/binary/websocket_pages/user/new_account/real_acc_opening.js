@@ -1,7 +1,7 @@
-const BinaryPjax = require('../../../base/binary_pjax');
-const Client = require('../../../base/client');
-const AccountOpening = require('../../../common_functions/account_opening');
-const FormManager = require('../../../common_functions/form_manager');
+import BinaryPjax from '../../../base/binary_pjax';
+import Client from '../../../base/client';
+import AccountOpening from '../../../common_functions/account_opening';
+import FormManager from '../../../common_functions/form_manager';
 
 const RealAccOpening = (() => {
     'use strict';

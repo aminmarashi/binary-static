@@ -1,4 +1,4 @@
-const isEmptyObject = require('../../base/utility').isEmptyObject;
+import { isEmptyObject } from '../../base/utility';
 
 /*
  * Handles trading page default values

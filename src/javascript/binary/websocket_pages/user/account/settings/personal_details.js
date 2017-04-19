@@ -1,12 +1,11 @@
-const localize = require('../../../../base/localize').localize;
-const Client = require('../../../../base/client');
-const Header = require('../../../../base/header');
-const State = require('../../../../base/storage').State;
-const detectHedging = require('../../../../common_functions/common_functions').detectHedging;
-const makeOption = require('../../../../common_functions/common_functions').makeOption;
-const FormManager = require('../../../../common_functions/form_manager');
-const moment = require('moment');
-require('select2');
+import moment from 'moment';
+import 'select2';
+import { localize } from '../../../../base/localize';
+import Client from '../../../../base/client';
+import Header from '../../../../base/header';
+import { State } from '../../../../base/storage';
+import { detectHedging, makeOption } from '../../../../common_functions/common_functions';
+import FormManager from '../../../../common_functions/form_manager';
 
 const PersonalDetails = (() => {
     'use strict';

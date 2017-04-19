@@ -1,5 +1,5 @@
-const urlForStatic = require('../../base/url').urlForStatic;
-const Cookies = require('../../../lib/js-cookie');
+import { urlForStatic } from '../../base/url';
+import Cookies from '../../../lib/js-cookie';
 
 const PaymentAgentList = (() => {
     'use strict';

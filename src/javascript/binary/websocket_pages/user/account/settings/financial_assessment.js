@@ -1,11 +1,10 @@
-const BinaryPjax = require('../../../../base/binary_pjax');
-const Header = require('../../../../base/header');
-const localize = require('../../../../base/localize').localize;
-const State = require('../../../../base/storage').State;
-const isEmptyObject = require('../../../../base/utility').isEmptyObject;
-const showLoadingImage = require('../../../../base/utility').showLoadingImage;
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const Validation = require('../../../../common_functions/form_validation');
+import BinaryPjax from '../../../../base/binary_pjax';
+import Header from '../../../../base/header';
+import { localize } from '../../../../base/localize';
+import { State } from '../../../../base/storage';
+import { isEmptyObject, showLoadingImage } from '../../../../base/utility';
+import { jpClient } from '../../../../common_functions/country_base';
+import Validation from '../../../../common_functions/form_validation';
 
 const FinancialAssessment = (() => {
     'use strict';

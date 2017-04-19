@@ -1,4 +1,4 @@
-const Cookies = require('../../lib/js-cookie');
+import Cookies from '../../lib/js-cookie';
 
 const emailRot13 = str =>
     str.replace(/[a-zA-Z]/g, (c) => {

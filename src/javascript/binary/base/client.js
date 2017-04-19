@@ -1,12 +1,10 @@
-const moment = require('moment');
-const CookieStorage = require('./storage').CookieStorage;
-const LocalStore = require('./storage').LocalStore;
-const State = require('./storage').State;
-const defaultRedirectUrl = require('./url').defaultRedirectUrl;
-const getLoginToken = require('../common_functions/common_functions').getLoginToken;
-const jpClient = require('../common_functions/country_base').jpClient;
-const RealityCheckData = require('../websocket_pages/user/reality_check/reality_check.data');
-const Cookies = require('../../lib/js-cookie');
+import moment from 'moment';
+import { CookieStorage, LocalStore, State } from './storage';
+import { defaultRedirectUrl } from './url';
+import { getLoginToken } from '../common_functions/common_functions';
+import { jpClient } from '../common_functions/country_base';
+import RealityCheckData from '../websocket_pages/user/reality_check/reality_check.data';
+import Cookies from '../../lib/js-cookie';
 
 const Client = (() => {
     'use strict';

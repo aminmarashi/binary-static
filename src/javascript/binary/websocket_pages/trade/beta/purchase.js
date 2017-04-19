@@ -1,16 +1,13 @@
-const Contract_Beta = require('./contract');
-const TickDisplay_Beta = require('./tick_trade');
-const commonTrading = require('../common');
-const Symbols = require('../symbols');
-const Tick = require('../tick');
-const Client = require('../../../base/client');
-const localize = require('../../../base/localize').localize;
-const elementInnerHtml = require('../../../common_functions/common_functions').elementInnerHtml;
-const elementTextContent = require('../../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../../common_functions/common_functions').isVisible;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
-const addComma = require('../../../common_functions/string_util').addComma;
-const toTitleCase = require('../../../common_functions/string_util').toTitleCase;
+import Contract_Beta from './contract';
+import TickDisplay_Beta from './tick_trade';
+import commonTrading from '../common';
+import Symbols from '../symbols';
+import Tick from '../tick';
+import Client from '../../../base/client';
+import { localize } from '../../../base/localize';
+import { elementInnerHtml, elementTextContent, isVisible } from '../../../common_functions/common_functions';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
+import { addComma, toTitleCase } from '../../../common_functions/string_util';
 
 /*
  * Purchase object that handles all the functions related to

@@ -1,6 +1,6 @@
-const moment = require('moment');
-const Client = require('../base/client');
-const localize = require('../base/localize').localize;
+import moment from 'moment';
+import Client from '../base/client';
+import { localize } from '../base/localize';
 
 const SessionDurationLimit = (() => {
     'use strict';

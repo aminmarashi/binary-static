@@ -1,5 +1,5 @@
-const moment = require('moment');
-const urlForStatic = require('../base/url').urlForStatic;
+import moment from 'moment';
+import { urlForStatic } from '../base/url';
 
 const check_new_release = () => {
     // calling this method is handled by GTM tags

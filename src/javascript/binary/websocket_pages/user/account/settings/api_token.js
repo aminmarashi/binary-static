@@ -1,10 +1,10 @@
-const BinaryPjax = require('../../../../base/binary_pjax');
-const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
-const localize = require('../../../../base/localize').localize;
-const FlexTableUI = require('../../../../common_functions/attach_dom/flextable');
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const FormManager = require('../../../../common_functions/form_manager');
-const toTitleCase = require('../../../../common_functions/string_util').toTitleCase;
+import BinaryPjax from '../../../../base/binary_pjax';
+import { showLocalTimeOnHover } from '../../../../base/clock';
+import { localize } from '../../../../base/localize';
+import FlexTableUI from '../../../../common_functions/attach_dom/flextable';
+import { jpClient } from '../../../../common_functions/country_base';
+import FormManager from '../../../../common_functions/form_manager';
+import { toTitleCase } from '../../../../common_functions/string_util';
 
 const APIToken = (() => {
     'use strict';

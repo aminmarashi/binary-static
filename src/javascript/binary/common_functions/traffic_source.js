@@ -1,6 +1,6 @@
-const Client = require('../base/client');
-const CookieStorage = require('../base/storage').CookieStorage;
-const Url = require('../base/url');
+import Client from '../base/client';
+import { CookieStorage } from '../base/storage';
+import Url from '../base/url';
 
 /*
  * Handles utm parameters/referrer to use on signup

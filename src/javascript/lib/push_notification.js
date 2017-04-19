@@ -1,7 +1,7 @@
-const Client         = require('../binary/base/client');
-const getLanguage    = require('../binary/base/language').get;
-const urlForStatic   = require('../binary/base/url').urlForStatic;
-const Pushwoosh      = require('web-push-notifications').Pushwoosh;
+import Client         from '../binary/base/client';
+import { get as getLanguage    } from '../binary/base/language';
+import { urlForStatic as urlForStatic   } from '../binary/base/url';
+import { Pushwoosh as Pushwoosh      } from 'web-push-notifications';
 
 const BinaryPushwoosh = (() => {
     const pw = new Pushwoosh();

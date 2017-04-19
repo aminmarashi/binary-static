@@ -1,19 +1,18 @@
-const Barriers = require('./barriers');
-const Barriers_Beta = require('./beta/barriers');
-const DigitInfo_Beta = require('./beta/charts/digit_info');
-const Purchase_Beta = require('./beta/purchase');
-const TickDisplay_Beta = require('./beta/tick_trade');
-const updateWarmChart = require('./common').updateWarmChart;
-const DigitInfo = require('./charts/digit_info');
-const Defaults = require('./defaults');
-const getActiveTab = require('./get_active_tab').getActiveTab;
-const getActiveTab_Beta = require('./get_active_tab').getActiveTab_Beta;
-const Purchase = require('./purchase');
-const Tick = require('./tick');
-const TickDisplay = require('./tick_trade');
-const MBDefaults = require('../mb_trade/mb_defaults');
-const MBTick = require('../mb_trade/mb_tick');
-const State = require('../../base/storage').State;
+import Barriers from './barriers';
+import Barriers_Beta from './beta/barriers';
+import DigitInfo_Beta from './beta/charts/digit_info';
+import Purchase_Beta from './beta/purchase';
+import TickDisplay_Beta from './beta/tick_trade';
+import { updateWarmChart } from './common';
+import DigitInfo from './charts/digit_info';
+import Defaults from './defaults';
+import { getActiveTab, getActiveTab_Beta } from './get_active_tab';
+import Purchase from './purchase';
+import Tick from './tick';
+import TickDisplay from './tick_trade';
+import MBDefaults from '../mb_trade/mb_defaults';
+import MBTick from '../mb_trade/mb_tick';
+import { State } from '../../base/storage';
 
 const GetTicks = (() => {
     let underlying;

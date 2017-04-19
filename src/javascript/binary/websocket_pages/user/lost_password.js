@@ -1,6 +1,6 @@
-const BinaryPjax = require('../../base/binary_pjax');
-const localize = require('../../base/localize').localize;
-const FormManager = require('../../common_functions/form_manager');
+import BinaryPjax from '../../base/binary_pjax';
+import { localize } from '../../base/localize';
+import FormManager from '../../common_functions/form_manager';
 
 const LostPassword = (() => {
     'use strict';

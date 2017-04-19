@@ -1,7 +1,7 @@
-const Client = require('../../base/client');
-const localize = require('../../base/localize').localize;
-const formatMoney = require('../../common_functions/currency_to_symbol').formatMoney;
-const addComma = require('../../common_functions/string_util').addComma;
+import Client from '../../base/client';
+import { localize } from '../../base/localize';
+import { formatMoney } from '../../common_functions/currency_to_symbol';
+import { addComma } from '../../common_functions/string_util';
 
 const updatePurchaseStatus = (final_price, pnl, contract_status) => {
     $('#contract_purchase_heading').text(localize(contract_status));

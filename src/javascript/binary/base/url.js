@@ -1,5 +1,5 @@
-const getLanguage = require('./language').get;
-const jpClient = require('../common_functions/country_base').jpClient;
+import { get as getLanguage } from './language';
+import { jpClient } from '../common_functions/country_base';
 
 const Url = (() => {
     'use strict';

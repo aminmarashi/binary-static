@@ -1,5 +1,5 @@
-const asset_index = require('../asset_index');
-const { api, expect } = require('../../../common_functions/tests');
+import asset_index from '../asset_index';
+import { api, expect } from '../../../common_functions/tests';
 
 describe('Asset Index', () => {
     let asset_index_res,

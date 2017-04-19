@@ -1,5 +1,5 @@
-const Client = require('./client');
-require('../../lib/mmenu/jquery.mmenu.min.all.js');
+import Client from './client';
+import '../../lib/mmenu/jquery.mmenu.min.all';
 
 const Menu = (() => {
     'use strict';

@@ -9,6 +9,12 @@
     "serve": "sudo -p 'enter password for sudo:' grunt serve",
     "precommit": "lint-staged"
   },
+  "babel": {
+    "babelrc": false,
+    "presets": [
+      "es2015"
+    ]
+  },
   "lint-staged": {
     "*js": [
       "prettier-eslint --write",

@@ -1,5 +1,4 @@
-const urlParam = require('../base/url').param;
-const urlFor = require('../base/url').urlFor;
+import { param as urlParam, urlFor } from '../base/url';
 
 const JobDetails = (() => {
     'use strict';

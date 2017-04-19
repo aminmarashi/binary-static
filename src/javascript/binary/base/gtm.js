@@ -1,11 +1,11 @@
-const moment = require('moment');
-const Client = require('./client');
-const getLanguage = require('./language').get;
-const Login = require('./login');
-const State = require('./storage').State;
-const isVisible = require('../common_functions/common_functions').isVisible;
-const getAppId = require('../../config').getAppId;
-const Cookies = require('../../lib/js-cookie');
+import moment from 'moment';
+import Client from './client';
+import { get as getLanguage } from './language';
+import Login from './login';
+import { State } from './storage';
+import { isVisible } from '../common_functions/common_functions';
+import { getAppId } from '../../config';
+import Cookies from '../../lib/js-cookie';
 
 const GTM = (() => {
     'use strict';

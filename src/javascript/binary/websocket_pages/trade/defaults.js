@@ -1,6 +1,6 @@
-const Url = require('../../base/url');
-const isEmptyObject = require('../../base/utility').isEmptyObject;
-const isVisible = require('../../common_functions/common_functions').isVisible;
+import Url from '../../base/url';
+import { isEmptyObject } from '../../base/utility';
+import { isVisible } from '../../common_functions/common_functions';
 
 /*
  * Handles trading page default values

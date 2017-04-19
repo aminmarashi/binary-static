@@ -1,12 +1,12 @@
-const moment = require('moment');
-const Client = require('../../../../base/client');
-const Header = require('../../../../base/header');
-const localize = require('../../../../base/localize').localize;
-const dateValueChanged = require('../../../../common_functions/common_functions').dateValueChanged;
-const FormManager = require('../../../../common_functions/form_manager');
-const scrollToHashSection = require('../../../../common_functions/scroll').scrollToHashSection;
-const DatePicker = require('../../../../components/date_picker');
-const TimePicker = require('../../../../components/time_picker');
+import moment from 'moment';
+import Client from '../../../../base/client';
+import Header from '../../../../base/header';
+import { localize } from '../../../../base/localize';
+import { dateValueChanged } from '../../../../common_functions/common_functions';
+import FormManager from '../../../../common_functions/form_manager';
+import { scrollToHashSection } from '../../../../common_functions/scroll';
+import DatePicker from '../../../../components/date_picker';
+import TimePicker from '../../../../components/time_picker';
 
 const SelfExclusion = (() => {
     'use strict';

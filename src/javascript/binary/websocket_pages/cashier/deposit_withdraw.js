@@ -1,8 +1,8 @@
-const Client = require('../../base/client');
-const localize = require('../../base/localize').localize;
-const template = require('../../base/utility').template;
-const appendTextValueChild = require('../../common_functions/common_functions').appendTextValueChild;
-const FormManager = require('../../common_functions/form_manager');
+import Client from '../../base/client';
+import { localize } from '../../base/localize';
+import { template } from '../../base/utility';
+import { appendTextValueChild } from '../../common_functions/common_functions';
+import FormManager from '../../common_functions/form_manager';
 
 const DepositWithdraw = (() => {
     'use strict';

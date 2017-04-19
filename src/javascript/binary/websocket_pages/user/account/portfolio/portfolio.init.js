@@ -1,13 +1,13 @@
-const Portfolio = require('../portfolio').Portfolio;
-const ViewPopup = require('../../view_popup/view_popup');
-const Client = require('../../../../base/client');
-const toJapanTimeIfNeeded = require('../../../../base/clock').toJapanTimeIfNeeded;
-const localize = require('../../../../base/localize').localize;
-const urlParam = require('../../../../base/url').param;
-const showLoadingImage = require('../../../../base/utility').showLoadingImage;
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const formatMoney = require('../../../../common_functions/currency_to_symbol').formatMoney;
-const GetAppDetails = require('../../../../common_functions/get_app_details');
+import { Portfolio } from '../portfolio';
+import ViewPopup from '../../view_popup/view_popup';
+import Client from '../../../../base/client';
+import { toJapanTimeIfNeeded } from '../../../../base/clock';
+import { localize } from '../../../../base/localize';
+import { param as urlParam } from '../../../../base/url';
+import { showLoadingImage } from '../../../../base/utility';
+import { jpClient } from '../../../../common_functions/country_base';
+import { formatMoney } from '../../../../common_functions/currency_to_symbol';
+import GetAppDetails from '../../../../common_functions/get_app_details';
 
 const PortfolioInit = (() => {
     'use strict';

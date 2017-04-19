@@ -1,10 +1,9 @@
-const moment = require('moment');
-const countDecimalPlaces = require('./common_independent').countDecimalPlaces;
-const Contract = require('./contract');
-const Defaults = require('./defaults');
-const Tick = require('./tick');
-const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../common_functions/common_functions').isVisible;
+import moment from 'moment';
+import { countDecimalPlaces } from './common_independent';
+import Contract from './contract';
+import Defaults from './defaults';
+import Tick from './tick';
+import { elementTextContent, isVisible } from '../../common_functions/common_functions';
 
 /*
  * Handles barrier processing and display

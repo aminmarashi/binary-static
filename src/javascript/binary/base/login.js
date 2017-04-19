@@ -1,6 +1,6 @@
-const Client = require('./client');
-const getLanguage = require('./language').get;
-const getAppId = require('../../config').getAppId;
+import Client from './client';
+import { get as getLanguage } from './language';
+import { getAppId } from '../../config';
 
 const Login = (() => {
     'use strict';

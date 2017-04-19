@@ -1,13 +1,13 @@
-const moment = require('moment');
-const MBDefaults = require('./mb_defaults');
-const MBSymbols = require('./mb_symbols');
-const Client = require('../../base/client');
-const getLanguage = require('../../base/language').get;
-const localize = require('../../base/localize').localize;
-const isEmptyObject = require('../../base/utility').isEmptyObject;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const jpClient = require('../../common_functions/country_base').jpClient;
-const formatCurrency = require('../../common_functions/currency_to_symbol').formatCurrency;
+import moment from 'moment';
+import MBDefaults from './mb_defaults';
+import MBSymbols from './mb_symbols';
+import Client from '../../base/client';
+import { get as getLanguage } from '../../base/language';
+import { localize } from '../../base/localize';
+import { isEmptyObject } from '../../base/utility';
+import { elementInnerHtml } from '../../common_functions/common_functions';
+import { jpClient } from '../../common_functions/country_base';
+import { formatCurrency } from '../../common_functions/currency_to_symbol';
 
 /*
  * Contract object mocks the trading form we have on our website

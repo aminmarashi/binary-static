@@ -1,4 +1,4 @@
-const Client = require('../base/client');
+import Client from '../base/client';
 
 const GetStarted = (() => {
     'use strict';

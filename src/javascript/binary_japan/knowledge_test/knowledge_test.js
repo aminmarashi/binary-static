@@ -1,9 +1,9 @@
-const KnowledgeTestUI = require('./knowledge_test.ui');
-const BinaryPjax = require('../../binary/base/binary_pjax');
-const toJapanTimeIfNeeded = require('../../binary/base/clock').toJapanTimeIfNeeded;
-const Header = require('../../binary/base/header');
-const localize = require('../../binary/base/localize').localize;
-const urlFor = require('../../binary/base/url').urlFor;
+import KnowledgeTestUI from './knowledge_test.ui';
+import BinaryPjax from '../../binary/base/binary_pjax';
+import { toJapanTimeIfNeeded } from '../../binary/base/clock';
+import Header from '../../binary/base/header';
+import { localize } from '../../binary/base/localize';
+import { urlFor } from '../../binary/base/url';
 
 const KnowledgeTest = (() => {
     'use strict';

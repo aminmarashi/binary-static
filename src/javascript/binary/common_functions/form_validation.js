@@ -1,5 +1,5 @@
-const localize = require('../base/localize').localize;
-const compareBigUnsignedInt = require('../common_functions/string_util').compareBigUnsignedInt;
+import { localize } from '../base/localize';
+import { compareBigUnsignedInt } from '../common_functions/string_util';
 
 const Validation = (() => {
     'use strict';

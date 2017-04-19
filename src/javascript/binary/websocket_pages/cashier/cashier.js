@@ -1,10 +1,8 @@
-const BinaryPjax = require('../../base/binary_pjax');
-const Client = require('../../base/client');
-const Header = require('../../base/header');
-const defaultRedirectUrl = require('../../base/url').defaultRedirectUrl;
-const urlFor = require('../../base/url').urlFor;
-const jpClient = require('../../common_functions/country_base').jpClient;
-const jpResidence = require('../../common_functions/country_base').jpResidence;
+import BinaryPjax from '../../base/binary_pjax';
+import Client from '../../base/client';
+import Header from '../../base/header';
+import { defaultRedirectUrl, urlFor } from '../../base/url';
+import { jpClient, jpResidence } from '../../common_functions/country_base';
 
 const Cashier = (() => {
     'use strict';

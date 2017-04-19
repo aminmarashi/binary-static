@@ -1,6 +1,6 @@
-const moment = require('moment');
-const localize = require('../../binary/base/localize').localize;
-const urlForStatic = require('../../binary/base/url').urlForStatic;
+import moment from 'moment';
+import { localize } from '../../binary/base/localize';
+import { urlForStatic } from '../../binary/base/url';
 
 const KnowledgeTestUI = (() => {
     'use strict';

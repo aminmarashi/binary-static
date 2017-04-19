@@ -1,6 +1,6 @@
-const RealityCheckData = require('./reality_check.data');
-const RealityCheckUI = require('./reality_check.ui');
-const Client = require('../../../base/client');
+import RealityCheckData from './reality_check.data';
+import RealityCheckUI from './reality_check.ui';
+import Client from '../../../base/client';
 
 const RealityCheck = (() => {
     'use strict';

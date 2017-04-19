@@ -1,15 +1,14 @@
-const MBContract = require('./mb_contract');
-const MBDefaults = require('./mb_defaults');
-const MBNotifications = require('./mb_notifications');
-const ViewPopup = require('../user/view_popup/view_popup');
-const Client = require('../../base/client');
-const GTM = require('../../base/gtm');
-const localize = require('../../base/localize').localize;
-const getPropertyValue = require('../../base/utility').getPropertyValue;
-const isEmptyObject = require('../../base/utility').isEmptyObject;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const jpClient = require('../../common_functions/country_base').jpClient;
-const addComma = require('../../common_functions/string_util').addComma;
+import MBContract from './mb_contract';
+import MBDefaults from './mb_defaults';
+import MBNotifications from './mb_notifications';
+import ViewPopup from '../user/view_popup/view_popup';
+import Client from '../../base/client';
+import GTM from '../../base/gtm';
+import { localize } from '../../base/localize';
+import { getPropertyValue, isEmptyObject } from '../../base/utility';
+import { elementInnerHtml } from '../../common_functions/common_functions';
+import { jpClient } from '../../common_functions/country_base';
+import { addComma } from '../../common_functions/string_util';
 
 /*
  * Price object handles all the functions we need to display prices

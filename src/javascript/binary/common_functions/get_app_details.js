@@ -1,4 +1,4 @@
-const localize = require('../base/localize').localize;
+import { localize } from '../base/localize';
 
 const buildOauthApps = (response) => {
     if (!response || !response.oauth_apps) return {};

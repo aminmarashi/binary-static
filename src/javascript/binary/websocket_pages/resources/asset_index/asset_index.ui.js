@@ -1,10 +1,10 @@
-const AssetIndex = require('../asset_index');
-const BinaryPjax = require('../../../base/binary_pjax');
-const State = require('../../../base/storage').State;
-const showLoadingImage = require('../../../base/utility').showLoadingImage;
-const Table = require('../../../common_functions/attach_dom/table');
-const jqueryuiTabsToDropdown = require('../../../common_functions/common_functions').jqueryuiTabsToDropdown;
-const jpClient = require('../../../common_functions/country_base').jpClient;
+import AssetIndex from '../asset_index';
+import BinaryPjax from '../../../base/binary_pjax';
+import { State } from '../../../base/storage';
+import { showLoadingImage } from '../../../base/utility';
+import Table from '../../../common_functions/attach_dom/table';
+import { jqueryuiTabsToDropdown } from '../../../common_functions/common_functions';
+import { jpClient } from '../../../common_functions/country_base';
 
 const AssetIndexUI = (() => {
     'use strict';

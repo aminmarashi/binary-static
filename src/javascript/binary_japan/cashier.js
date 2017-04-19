@@ -1,10 +1,9 @@
-const BinaryPjax = require('../binary/base/binary_pjax');
-const Client = require('../binary/base/client');
-const localize = require('../binary/base/localize').localize;
-const defaultRedirectUrl = require('../binary/base/url').defaultRedirectUrl;
-const template = require('../binary/base/utility').template;
-const jpClient = require('../binary/common_functions/country_base').jpClient;
-const jpResidence = require('../binary/common_functions/country_base').jpResidence;
+import BinaryPjax from '../binary/base/binary_pjax';
+import Client from '../binary/base/client';
+import { localize } from '../binary/base/localize';
+import { defaultRedirectUrl } from '../binary/base/url';
+import { template } from '../binary/base/utility';
+import { jpClient, jpResidence } from '../binary/common_functions/country_base';
 
 const CashierJP = (() => {
     'use strict';

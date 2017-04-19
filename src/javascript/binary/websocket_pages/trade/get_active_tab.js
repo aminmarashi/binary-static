@@ -1,5 +1,5 @@
-const Client = require('../../base/client');
-const State = require('../../base/storage').State;
+import Client from '../../base/client';
+import { State } from '../../base/storage';
 
 /*
  * get the current active tab if its visible i.e allowed for current parameters

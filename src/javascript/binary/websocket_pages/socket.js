@@ -1,24 +1,23 @@
-const MBNotifications = require('./mb_trade/mb_notifications');
-const MBTradePage = require('./mb_trade/mb_tradepage');
-const TradePage_Beta = require('./trade/beta/tradepage');
-const reloadPage = require('./trade/common').reloadPage;
-const Notifications = require('./trade/notifications');
-const TradePage = require('./trade/tradepage');
-const updateBalance = require('./user/update_balance');
-const Client = require('../base/client');
-const Clock = require('../base/clock');
-const GTM = require('../base/gtm');
-const Header = require('../base/header');
-const getLanguage = require('../base/language').get;
-const localize = require('../base/localize').localize;
-const Login = require('../base/login');
-const State = require('../base/storage').State;
-const getPropertyValue = require('../base/utility').getPropertyValue;
-const getLoginToken = require('../common_functions/common_functions').getLoginToken;
-const SessionDurationLimit = require('../common_functions/session_duration_limit');
-const getAppId = require('../../config').getAppId;
-const getSocketURL = require('../../config').getSocketURL;
-const Cookies = require('../../lib/js-cookie');
+import MBNotifications from './mb_trade/mb_notifications';
+import MBTradePage from './mb_trade/mb_tradepage';
+import TradePage_Beta from './trade/beta/tradepage';
+import { reloadPage } from './trade/common';
+import Notifications from './trade/notifications';
+import TradePage from './trade/tradepage';
+import updateBalance from './user/update_balance';
+import Client from '../base/client';
+import Clock from '../base/clock';
+import GTM from '../base/gtm';
+import Header from '../base/header';
+import { get as getLanguage } from '../base/language';
+import { localize } from '../base/localize';
+import Login from '../base/login';
+import { State } from '../base/storage';
+import { getPropertyValue } from '../base/utility';
+import { getLoginToken } from '../common_functions/common_functions';
+import SessionDurationLimit from '../common_functions/session_duration_limit';
+import { getAppId, getSocketURL } from '../../config';
+import Cookies from '../../lib/js-cookie';
 
 /*
  * It provides a abstraction layer over native javascript Websocket.

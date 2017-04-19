@@ -1,9 +1,9 @@
-const ApplicationsData = require('./authorised_apps.data');
-const showLocalTimeOnHover = require('../../../../../base/clock').showLocalTimeOnHover;
-const localize = require('../../../../../base/localize').localize;
-const showLoadingImage = require('../../../../../base/utility').showLoadingImage;
-const FlexTableUI = require('../../../../../common_functions/attach_dom/flextable');
-const toTitleCase = require('../../../../../common_functions/string_util').toTitleCase;
+import ApplicationsData from './authorised_apps.data';
+import { showLocalTimeOnHover } from '../../../../../base/clock';
+import { localize } from '../../../../../base/localize';
+import { showLoadingImage } from '../../../../../base/utility';
+import FlexTableUI from '../../../../../common_functions/attach_dom/flextable';
+import { toTitleCase } from '../../../../../common_functions/string_util';
 
 const ApplicationsUI = (() => {
     'use strict';

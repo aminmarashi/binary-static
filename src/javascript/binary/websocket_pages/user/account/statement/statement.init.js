@@ -1,15 +1,14 @@
-const moment = require('moment');
-const StatementUI = require('./statement.ui');
-const ViewPopup = require('../../view_popup/view_popup');
-const getLanguage = require('../../../../base/language').get;
-const localize = require('../../../../base/localize').localize;
-const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
-const addTooltip = require('../../../../common_functions/get_app_details').addTooltip;
-const buildOauthApps = require('../../../../common_functions/get_app_details').buildOauthApps;
-const dateValueChanged = require('../../../../common_functions/common_functions').dateValueChanged;
-const jpClient = require('../../../../common_functions/country_base').jpClient;
-const toISOFormat = require('../../../../common_functions/string_util').toISOFormat;
-const DatePicker = require('../../../../components/date_picker');
+import moment from 'moment';
+import StatementUI from './statement.ui';
+import ViewPopup from '../../view_popup/view_popup';
+import { get as getLanguage } from '../../../../base/language';
+import { localize } from '../../../../base/localize';
+import { showLocalTimeOnHover } from '../../../../base/clock';
+import { addTooltip, buildOauthApps } from '../../../../common_functions/get_app_details';
+import { dateValueChanged } from '../../../../common_functions/common_functions';
+import { jpClient } from '../../../../common_functions/country_base';
+import { toISOFormat } from '../../../../common_functions/string_util';
+import DatePicker from '../../../../components/date_picker';
 
 const StatementInit = (() => {
     'use strict';

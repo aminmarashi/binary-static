@@ -1,9 +1,8 @@
-const moment = require('moment');
-const localize = require('../base/localize').localize;
-const isEmptyObject = require('../base/utility').isEmptyObject;
-const checkInput = require('../common_functions/common_functions').checkInput;
-const toReadableFormat = require('../common_functions/string_util').toReadableFormat;
-const padLeft = require('../common_functions/string_util').padLeft;
+import moment from 'moment';
+import { localize } from '../base/localize';
+import { isEmptyObject } from '../base/utility';
+import { checkInput } from '../common_functions/common_functions';
+import { toReadableFormat, padLeft } from '../common_functions/string_util';
 
 const DatePicker = (() => {
     'use strict';

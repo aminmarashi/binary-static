@@ -1,9 +1,8 @@
-const LimitsUI = require('./limits.ui');
-const Client = require('../../../../../base/client');
-const localize = require('../../../../../base/localize').localize;
-const elementInnerHtml = require('../../../../../common_functions/common_functions').elementInnerHtml;
-const elementTextContent = require('../../../../../common_functions/common_functions').elementTextContent;
-const addComma = require('../../../../../common_functions/string_util').addComma;
+import LimitsUI from './limits.ui';
+import Client from '../../../../../base/client';
+import { localize } from '../../../../../base/localize';
+import { elementInnerHtml, elementTextContent } from '../../../../../common_functions/common_functions';
+import { addComma } from '../../../../../common_functions/string_util';
 
 const LimitsInit = (() => {
     'use strict';

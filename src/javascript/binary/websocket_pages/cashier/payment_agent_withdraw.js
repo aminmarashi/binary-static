@@ -1,7 +1,7 @@
-const Client = require('../../base/client');
-const localize = require('../../base/localize').localize;
-const FormManager = require('../../common_functions/form_manager');
-const Cookies = require('../../../lib/js-cookie');
+import Client from '../../base/client';
+import { localize } from '../../base/localize';
+import FormManager from '../../common_functions/form_manager';
+import Cookies from '../../../lib/js-cookie';
 
 const PaymentAgentWithdraw = (() => {
     'use strict';

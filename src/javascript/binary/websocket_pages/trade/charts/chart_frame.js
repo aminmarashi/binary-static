@@ -1,7 +1,7 @@
-const getLanguage = require('../../../base/language').get;
-const localize = require('../../../base/localize').localize;
-const Url = require('../../../base/url');
-const jpClient = require('../../../common_functions/country_base').jpClient;
+import { get as getLanguage } from '../../../base/language';
+import { localize } from '../../../base/localize';
+import Url from '../../../base/url';
+import { jpClient } from '../../../common_functions/country_base';
 
 const ChartFrame = (() => {
     const showHighchart = () => {

@@ -1,11 +1,11 @@
-const Highcharts = require('highcharts');
-const moment = require('moment');
-const Tick = require('./tick');
-const updatePurchaseStatus = require('./update_values').updatePurchaseStatus;
-const ViewPopupUI = require('../user/view_popup/view_popup.ui');
-const localize = require('../../base/localize').localize;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const isVisible = require('../../common_functions/common_functions').isVisible;
+import Highcharts from 'highcharts';
+import moment from 'moment';
+import Tick from './tick';
+import { updatePurchaseStatus } from './update_values';
+import ViewPopupUI from '../user/view_popup/view_popup.ui';
+import { localize } from '../../base/localize';
+import { elementInnerHtml, isVisible } from '../../common_functions/common_functions';
+
 require('highcharts/modules/exporting')(Highcharts);
 
 const TickDisplay = (() => {

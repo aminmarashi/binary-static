@@ -1,5 +1,4 @@
-const getAppId = require('../../config').getAppId;
-const getSocketURL = require('../../config').getSocketURL;
+import { getAppId, getSocketURL } from '../../config';
 
 const Endpoint = (() => {
     'use strict';

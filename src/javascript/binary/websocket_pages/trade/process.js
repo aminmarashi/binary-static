@@ -1,20 +1,20 @@
-const moment = require('moment');
-const TradingAnalysis = require('./analysis');
-const commonTrading = require('./common');
-const processTradingTimesAnswer = require('./common_independent').processTradingTimesAnswer;
-const Contract = require('./contract');
-const Defaults = require('./defaults');
-const Durations = require('./duration');
-const GetTicks = require('./get_ticks');
-const Notifications = require('./notifications');
-const Price = require('./price');
-const setFormPlaceholderContent = require('./set_values').setFormPlaceholderContent;
-const StartDates = require('./starttime').StartDates;
-const Symbols = require('./symbols');
-const Tick = require('./tick');
-const localize = require('../../base/localize').localize;
-const State = require('../../base/storage').State;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
+import moment from 'moment';
+import TradingAnalysis from './analysis';
+import commonTrading from './common';
+import { processTradingTimesAnswer } from './common_independent';
+import Contract from './contract';
+import Defaults from './defaults';
+import Durations from './duration';
+import GetTicks from './get_ticks';
+import Notifications from './notifications';
+import Price from './price';
+import { setFormPlaceholderContent } from './set_values';
+import { StartDates } from './starttime';
+import Symbols from './symbols';
+import Tick from './tick';
+import { localize } from '../../base/localize';
+import { State } from '../../base/storage';
+import { elementInnerHtml } from '../../common_functions/common_functions';
 
 const Process = (() => {
     'use strict';

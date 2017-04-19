@@ -1,11 +1,11 @@
-const showHighchart = require('./charts/chart_frame').showHighchart;
-const getActiveTab = require('./get_active_tab').getActiveTab;
-const GetTicks = require('./get_ticks');
-const getLanguage = require('../../base/language').get;
-const State = require('../../base/storage').State;
-const Url = require('../../base/url');
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const JapanPortfolio = require('../../../binary_japan/trade_japan/portfolio');
+import { showHighchart } from './charts/chart_frame';
+import { getActiveTab } from './get_active_tab';
+import GetTicks from './get_ticks';
+import { get as getLanguage } from '../../base/language';
+import { State } from '../../base/storage';
+import Url from '../../base/url';
+import { elementInnerHtml } from '../../common_functions/common_functions';
+import JapanPortfolio from '../../../binary_japan/trade_japan/portfolio';
 
 /*
  * This file contains the code related to loading of trading page bottom analysis

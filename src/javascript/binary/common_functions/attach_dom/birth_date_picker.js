@@ -1,7 +1,7 @@
-const moment = require('moment');
-const dateValueChanged = require('../common_functions').dateValueChanged;
-const toISOFormat = require('../string_util').toISOFormat;
-const DatePicker = require('../../components/date_picker');
+import moment from 'moment';
+import { dateValueChanged } from '../common_functions';
+import { toISOFormat } from '../string_util';
+import DatePicker from '../../components/date_picker';
 
 const generateBirthDate = () => {
     const date_of_birth = '#date_of_birth';

@@ -1,14 +1,11 @@
-const moment = require('moment');
-const Contract_Beta = require('./contract');
-const commonTrading = require('../common');
-const displayPriceMovement = require('../common_independent').displayPriceMovement;
-const getStartDateNode = require('../common_independent').getStartDateNode;
-const getTradingTimes = require('../common_independent').getTradingTimes;
-const Defaults = require('../defaults');
-const localize = require('../../../base/localize').localize;
-const elementTextContent = require('../../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../../common_functions/common_functions').isVisible;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
+import moment from 'moment';
+import Contract_Beta from './contract';
+import commonTrading from '../common';
+import { displayPriceMovement, getStartDateNode, getTradingTimes } from '../common_independent';
+import Defaults from '../defaults';
+import { localize } from '../../../base/localize';
+import { elementTextContent, isVisible } from '../../../common_functions/common_functions';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
 
 /*
  * Price object handles all the functions we need to display prices

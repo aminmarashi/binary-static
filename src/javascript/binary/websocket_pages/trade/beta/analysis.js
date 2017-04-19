@@ -1,16 +1,16 @@
-const commonTrading = require('../common');
-const showHighchart = require('../charts/chart_frame').showHighchart;
-const getActiveTab = require('../get_active_tab').getActiveTab_Beta;
-const GetTicks = require('../get_ticks');
-const AssetIndexUI = require('../../resources/asset_index/asset_index.ui');
-const TradingTimesUI = require('../../resources/trading_times/trading_times.ui');
-const PortfolioInit = require('../../user/account/portfolio/portfolio.init');
-const Client = require('../../../base/client');
-const getLanguage = require('../../../base/language').get;
-const State = require('../../../base/storage').State;
-const Url = require('../../../base/url');
-const elementInnerHtml = require('../../../common_functions/common_functions').elementInnerHtml;
-const jpClient = require('../../../common_functions/country_base').jpClient;
+import commonTrading from '../common';
+import { showHighchart } from '../charts/chart_frame';
+import { getActiveTab_Beta as getActiveTab } from '../get_active_tab';
+import GetTicks from '../get_ticks';
+import AssetIndexUI from '../../resources/asset_index/asset_index.ui';
+import TradingTimesUI from '../../resources/trading_times/trading_times.ui';
+import PortfolioInit from '../../user/account/portfolio/portfolio.init';
+import Client from '../../../base/client';
+import { get as getLanguage } from '../../../base/language';
+import { State } from '../../../base/storage';
+import Url from '../../../base/url';
+import { elementInnerHtml } from '../../../common_functions/common_functions';
+import { jpClient } from '../../../common_functions/country_base';
 
 /*
  * This file contains the code related to loading of trading page bottom analysis

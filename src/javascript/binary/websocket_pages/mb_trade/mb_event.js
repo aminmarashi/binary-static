@@ -1,11 +1,11 @@
-const MBContract = require('./mb_contract');
-const MBDefaults = require('./mb_defaults');
-const MBNotifications = require('./mb_notifications');
-const MBProcess = require('./mb_process');
-const MBTick = require('./mb_tick');
-const TradingAnalysis = require('../trade/analysis');
-const debounce = require('../trade/common').debounce;
-const jpClient = require('../../common_functions/country_base').jpClient;
+import MBContract from './mb_contract';
+import MBDefaults from './mb_defaults';
+import MBNotifications from './mb_notifications';
+import MBProcess from './mb_process';
+import MBTick from './mb_tick';
+import TradingAnalysis from '../trade/analysis';
+import { debounce } from '../trade/common';
+import { jpClient } from '../../common_functions/country_base';
 
 /*
  * TradingEvents object contains all the event handler function required for

@@ -1,5 +1,5 @@
-const profitTable = require('../profit_table');
-const { api, expect } = require('../../../../common_functions/tests');
+import profitTable from '../profit_table';
+import { api, expect } from '../../../../common_functions/tests';
 
 describe('Profit Table', () => {
     let profit_table;

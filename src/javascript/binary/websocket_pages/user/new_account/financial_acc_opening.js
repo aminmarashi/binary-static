@@ -1,12 +1,12 @@
-const BinaryPjax = require('../../../base/binary_pjax');
-const Client = require('../../../base/client');
-const State = require('../../../base/storage').State;
-const defaultRedirectUrl = require('../../../base/url').defaultRedirectUrl;
-const isEmptyObject = require('../../../base/utility').isEmptyObject;
-const AccountOpening = require('../../../common_functions/account_opening');
-const FormManager = require('../../../common_functions/form_manager');
-const toISOFormat = require('../../../common_functions/string_util').toISOFormat;
-const moment = require('moment');
+import moment from 'moment';
+import BinaryPjax from '../../../base/binary_pjax';
+import Client from '../../../base/client';
+import { State } from '../../../base/storage';
+import { defaultRedirectUrl } from '../../../base/url';
+import { isEmptyObject } from '../../../base/utility';
+import AccountOpening from '../../../common_functions/account_opening';
+import FormManager from '../../../common_functions/form_manager';
+import { toISOFormat } from '../../../common_functions/string_util';
 
 const FinancialAccOpening = (() => {
     const form_id = '#financial-form';

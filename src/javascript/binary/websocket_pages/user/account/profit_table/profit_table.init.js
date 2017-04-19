@@ -1,9 +1,8 @@
-const ProfitTableUI = require('./profit_table.ui');
-const ViewPopup = require('../../view_popup/view_popup');
-const localize = require('../../../../base/localize').localize;
-const showLocalTimeOnHover = require('../../../../base/clock').showLocalTimeOnHover;
-const addTooltip = require('../../../../common_functions/get_app_details').addTooltip;
-const buildOauthApps = require('../../../../common_functions/get_app_details').buildOauthApps;
+import ProfitTableUI from './profit_table.ui';
+import ViewPopup from '../../view_popup/view_popup';
+import { localize } from '../../../../base/localize';
+import { showLocalTimeOnHover } from '../../../../base/clock';
+import { addTooltip, buildOauthApps } from '../../../../common_functions/get_app_details';
 
 const ProfitTableInit = (() => {
     let batch_size,

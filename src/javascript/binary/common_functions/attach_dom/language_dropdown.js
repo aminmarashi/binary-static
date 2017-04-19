@@ -1,4 +1,4 @@
-const Language = require('../../base/language');
+import Language from '../../base/language';
 
 const createLanguageDropDown = (website_status) => {
     const $languages = $('.languages');

@@ -1,13 +1,12 @@
-const moment = require('moment');
-const ViewPopupUI = require('./view_popup.ui');
-const Highchart = require('../../trade/charts/highchart');
-const TickDisplay = require('../../trade/tick_trade');
-const showLocalTimeOnHover = require('../../../base/clock').showLocalTimeOnHover;
-const toJapanTimeIfNeeded = require('../../../base/clock').toJapanTimeIfNeeded;
-const localize = require('../../../base/localize').localize;
-const State = require('../../../base/storage').State;
-const isEmptyObject = require('../../../base/utility').isEmptyObject;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
+import moment from 'moment';
+import ViewPopupUI from './view_popup.ui';
+import Highchart from '../../trade/charts/highchart';
+import TickDisplay from '../../trade/tick_trade';
+import { showLocalTimeOnHover, toJapanTimeIfNeeded } from '../../../base/clock';
+import { localize } from '../../../base/localize';
+import { State } from '../../../base/storage';
+import { isEmptyObject } from '../../../base/utility';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
 
 const ViewPopup = (() => {
     'use strict';

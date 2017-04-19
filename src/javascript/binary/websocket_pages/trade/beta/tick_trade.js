@@ -1,11 +1,12 @@
-const Highcharts = require('highcharts');
-const moment = require('moment');
-const commonTrading = require('../common');
-const Tick = require('../tick');
-const ViewPopupUI = require('../../user/view_popup/view_popup.ui');
-const localize = require('../../../base/localize').localize;
-const isVisible = require('../../../common_functions/common_functions').isVisible;
-const addComma = require('../../../common_functions/string_util').addComma;
+import Highcharts from 'highcharts';
+import moment from 'moment';
+import commonTrading from '../common';
+import Tick from '../tick';
+import ViewPopupUI from '../../user/view_popup/view_popup.ui';
+import { localize } from '../../../base/localize';
+import { isVisible } from '../../../common_functions/common_functions';
+import { addComma } from '../../../common_functions/string_util';
+
 require('highcharts/modules/exporting')(Highcharts);
 
 const TickDisplay_Beta = (() => {

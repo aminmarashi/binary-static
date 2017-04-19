@@ -1,7 +1,7 @@
-const showLoadingImage = require('../../../base/utility').showLoadingImage;
-const formatMoney = require('../../../common_functions/currency_to_symbol').formatMoney;
-const Validation = require('../../../common_functions/form_validation');
-const MetaTraderConfig = require('./metatrader.config');
+import { showLoadingImage } from '../../../base/utility';
+import { formatMoney } from '../../../common_functions/currency_to_symbol';
+import Validation from '../../../common_functions/form_validation';
+import MetaTraderConfig from './metatrader.config';
 
 const MetaTraderUI = (() => {
     'use strict';

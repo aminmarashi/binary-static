@@ -1,4 +1,4 @@
-const Table = require('./table');
+import Table from './table';
 
 const FlexTableUI = (() => {
     'use strict';

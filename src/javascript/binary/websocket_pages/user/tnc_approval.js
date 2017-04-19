@@ -1,9 +1,8 @@
-const BinaryPjax = require('../../base/binary_pjax');
-const Client = require('../../base/client');
-const Header = require('../../base/header');
-const defaultRedirectUrl = require('../../base/url').defaultRedirectUrl;
-const urlFor = require('../../base/url').urlFor;
-const template = require('../../base/utility').template;
+import BinaryPjax from '../../base/binary_pjax';
+import Client from '../../base/client';
+import Header from '../../base/header';
+import { defaultRedirectUrl, urlFor } from '../../base/url';
+import { template } from '../../base/utility';
 
 const TNCApproval = (() => {
     'use strict';

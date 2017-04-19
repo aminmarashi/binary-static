@@ -1,8 +1,6 @@
-const moment = require('moment');
-const countDecimalPlaces = require('./common_independent').countDecimalPlaces;
-const displayPriceMovement = require('./common_independent').displayPriceMovement;
-const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../common_functions/common_functions').isVisible;
+import moment from 'moment';
+import { countDecimalPlaces, displayPriceMovement } from './common_independent';
+import { elementTextContent, isVisible } from '../../common_functions/common_functions';
 
 /*
  * Tick object handles all the process/display related to tick streaming

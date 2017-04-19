@@ -1,13 +1,11 @@
-const Contract = require('./contract');
-const Symbols = require('./symbols');
-const Tick = require('./tick');
-const TickDisplay = require('./tick_trade');
-const updateValues = require('./update_values');
-const localize = require('../../base/localize').localize;
-const elementInnerHtml = require('../../common_functions/common_functions').elementInnerHtml;
-const elementTextContent = require('../../common_functions/common_functions').elementTextContent;
-const isVisible = require('../../common_functions/common_functions').isVisible;
-const padLeft = require('../../common_functions/string_util').padLeft;
+import Contract from './contract';
+import Symbols from './symbols';
+import Tick from './tick';
+import TickDisplay from './tick_trade';
+import updateValues from './update_values';
+import { localize } from '../../base/localize';
+import { elementInnerHtml, elementTextContent, isVisible } from '../../common_functions/common_functions';
+import { padLeft } from '../../common_functions/string_util';
 
 /*
  * Purchase object that handles all the functions related to

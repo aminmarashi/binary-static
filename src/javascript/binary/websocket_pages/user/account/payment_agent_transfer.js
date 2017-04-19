@@ -1,7 +1,7 @@
-const PaymentAgentTransferUI = require('./payment_agent_transfer/payment_agent_transfer.ui');
-const Client = require('../../../base/client');
-const State = require('../../../base/storage').State;
-const FormManager = require('../../../common_functions/form_manager');
+import PaymentAgentTransferUI from './payment_agent_transfer/payment_agent_transfer.ui';
+import Client from '../../../base/client';
+import { State } from '../../../base/storage';
+import FormManager from '../../../common_functions/form_manager';
 
 const PaymentAgentTransfer = (() => {
     const hidden_class = 'invisible';

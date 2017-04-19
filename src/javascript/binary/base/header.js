@@ -1,14 +1,13 @@
-const BinaryPjax = require('./binary_pjax');
-const Client = require('./client');
-const GTM = require('./gtm');
-const localize = require('./localize').localize;
-const Login = require('./login');
-const State = require('./storage').State;
-const urlFor = require('./url').urlFor;
-const isEmptyObject = require('./utility').isEmptyObject;
-const checkClientsCountry = require('../common_functions/country_base').checkClientsCountry;
-const jpClient = require('../common_functions/country_base').jpClient;
-const MetaTrader = require('../websocket_pages/user/metatrader/metatrader');
+import BinaryPjax from './binary_pjax';
+import Client from './client';
+import GTM from './gtm';
+import { localize } from './localize';
+import Login from './login';
+import { State } from './storage';
+import { urlFor } from './url';
+import { isEmptyObject } from './utility';
+import { checkClientsCountry, jpClient } from '../common_functions/country_base';
+import MetaTrader from '../websocket_pages/user/metatrader/metatrader';
 
 const Header = (() => {
     'use strict';
