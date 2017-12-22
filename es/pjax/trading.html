@@ -1,20 +1,48 @@
 <div id="content" class="trading-content">
+            
+                <div id="ico_banner_container"  class="ico-banner-container">
+    <div id="ico_banner" class="ico-banner invisible ja-hide top-margin bottom-margin">
+        <div class="gr-row gr-centered">
+            <div class="gr-12">
+                <div class="gr-row gr-no-gutter ico-box">
+                    <div class="gr-3 gr-padding-10 ico-column left-bg"></div>
+                    <div class="gr-9 gr-padding-10 ico-column">
+                        <div class="gr-row gr-no-gutter">
+                            <div class="gr-8 gr-12-p gr-12-m"><p>La ICO de Binary.com ya está disponible</p></div>
+                            <div class="gr-4 gr-12-p gr-12-m learn-btn"><a id="ico_link_button" class="button"><span>Participe ahora</span></a></div>
+                        </div>
+                    </div>
+                    <div id="close_ico_banner" class="close-btn"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            
             <div id="page_info" style="display:none;">
                 <title>Trusted by traders since 2000 | Binary.com</title>
                 <div id="content_class">trading-content</div>
             </div>
-            <div class="container">
+            
+                <div class="container">
+            
 
 
-
-  <div id="trading_socket_container" class="tab-menu-wrap">
+<div id="trading_socket_container" class="tab-menu-wrap">
     <div id="notifications_wrapper"></div>
     <div id="loading_container" class="overlay_container"></div>
-    <div id="guideBtn"></div>
-    <div class="center-text">
-        <a href="https://itunes.apple.com/app/apple-store/id1091187567?pt=117911266&ct=trading_page&mt=8" target="_blank" id="appstore"></a>
-        <a href="https://goo.gl/5KmSsU" target="_blank" id="androidApp"></a>
+    <a id="deposit_btn_trade" class="client_real invisible gr-hide-m button" href="/binary-static/es/cashier/forwardws.html#deposit">
+        <span>
+            <img src="/binary-static/images/common/plus.svg">
+            Depósito
+        </span>
+    </a>
+    <div class="client_virtual invisible">
+        <div id="upgrade_btn_trade" class="invisible upgrademessage gr-hide-m">
+            <a class="button"></a>
+        </div>
     </div>
+    <div class="client_virtual client_logged_out invisible" id="guideBtn"></div>
     <div class="row" id="contract_symbol_container">
         <div id="contract_markets_container">
             <select id="contract_markets"></select>
@@ -189,6 +217,8 @@
                     
                         <th class="payout nowrap">Pago potencial</th>
                     
+                        <th class="expires nowrap invisible ja-show">Expiry</th>
+                    
                         <th class="details">Detalles del contrato</th>
                     
                         <th class="purchase">Comprar</th>
@@ -213,7 +243,11 @@
                             Total
                         </th>
                     
-                        <th class="ref" colspan="2">
+                        <th class="ref ja-hide" colspan="2">
+                            
+                        </th>
+                    
+                        <th class="ref invisible ja-show" colspan="3">
                             
                         </th>
                     
@@ -317,7 +351,7 @@
 </div>
 <div id="all_prices"></div>
 <div id="trading_bottom_content">
-    <div class="content-tab-container page-section">
+    <div class="content-tab-container page-section ">
         
         <div id="">
         <ul id="betsBottomPage" class="tm-ul follow-default">
@@ -474,7 +508,7 @@
 
         <div id="explain_endsinout" class="invisible">
             <h3>Punto de salida</h3>
-            <p>The <strong>exit spot</strong> is the latest tick at or before the <strong>end time</strong>.</p>
+            <p>El <strong>precio de salida</strong> corresponde al último valor en efecto al momento de la <strong>finalización del contrato</strong> o justo antes de esta.</p>
             <p>La <strong>hora de finalización</strong> es la cantidad de minutos/horas después del <strong>inicio</strong> (en caso de tener menos de un día de duración) o al final del día de contratación (en caso de tener un día o más de duración).</p>
             <p>El <strong>inicio</strong> es cuando el contrato esté procesado por nuestros servidores.</p>
             <p class="hint"><strong>Nota: </strong>Los contratos termina Dentro/Fuera serán reembolsados al precio de compra si hay menos de 2 ticks entre el tiempo de inicio y el tiempo final.</p>
@@ -488,7 +522,7 @@
 
         <div id="explain_higherlower" class="invisible">
             <h3>Punto de salida</h3>
-            <p>The <strong>exit spot</strong> is the latest tick at or before the <strong>end time</strong>.</p>
+            <p>El <strong>precio de salida</strong> corresponde al último valor en efecto al momento de la <strong>finalización del contrato</strong> o justo antes de esta.</p>
             <p>La <strong>hora de finalización</strong> es la cantidad de segundos/minutos/horas después del <strong>inicio del contrato</strong> (en caso de tener menos de un día de duración) o al final del día de contratación (en caso de tener un día o más de duración).</p>
             <p>El <strong>inicio</strong> es cuando el contrato esté procesado por nuestros servidores.</p>
             <p class="hint"><strong>Nota: </strong>Los contratos Superiores/Inferiores serán reembolsados con el precio de compra si hay menos de 2 ticks entre el tiempo de inicio y el tiempo final.</p>
@@ -510,7 +544,7 @@
             <br />
             <h3>Punto de salida</h3>
             <p>
-                The <strong>exit spot</strong> is the latest tick at or before the <strong>end time</strong>.
+                El <strong>precio de salida</strong> corresponde al último valor en efecto al momento de la <strong>finalización del contrato</strong> o justo antes de esta.
                 <br />
                 Si selecciona como <strong>hora de comienzo</strong> "ahora", la <strong>hora de finalización</strong> es el número seleccionado de minutos/horas tras la <strong>hora de comienzo</strong> (si la duración es inferior a un día), o al final del día de comercio (si la duración es de un día o más).
                 <br />
